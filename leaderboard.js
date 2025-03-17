@@ -66,7 +66,10 @@ function displayLeaderboard(data) {
             player.twitchPlayers = '❌'
         }
 
-        // If using spt ver
+        // Get skill
+        const rankLabel = getRankLabel(player.totalScore);
+
+        // spt ver
         const sptVerClass = parseFloat(player.sptVer) < 3.11 ? 'old-version' : 'current-version';
 
         row.innerHTML = `
@@ -78,6 +81,7 @@ function displayLeaderboard(data) {
             <td class="${player.survivedToDiedRatioClass}">${player.survivedToDiedRatio}%</td>
             <td class="${player.killToDeathRatioClass}">${player.killToDeathRatio}</td>
             <td class="${player.averageLifeTimeClass}">${player.averageLifeTime}</td>
+            <td>${player.totalScore.toFixed(2)} (${rankLabel})</td>
             <td>${player.twitchPlayers}</td>
             <td class="${sptVerClass}">${player.sptVer}</td>
         `;
@@ -180,9 +184,9 @@ function addColorIndicators(data) {
 // Ranks
 function calculateRanks(data) {
     data.forEach(player => {
-        const kdrScore = player.killToDeathRatio * 0.4; // 40% weight
+        const kdrScore = player.killToDeathRatio * 0.3; // 40% weight
         const sdrScore = player.survivedToDiedRatio * 0.3; // 30% weight
-        const altScore = convertTimeToSeconds(player.averageLifeTime) / 60 * 0.2; // 20% weight
+        const altScore = convertTimeToSeconds(player.averageLifeTime) / 60 * 0.3; // 20% weight
         const raidsScore = player.totalRaids * 0.1; // 10% weight
 
         // Total rating
@@ -205,6 +209,22 @@ function calculateRanks(data) {
             player.medal = '';
         }
     });
+}
+
+function getRankLabel(totalScore) {
+    if (totalScore < 8) return 'L-';
+    if (totalScore < 9) return 'L';
+    if (totalScore < 15) return 'L+';
+    if (totalScore < 20) return 'M-';
+    if (totalScore < 30) return 'M';
+    if (totalScore < 33) return 'M+';
+    if (totalScore < 35) return 'H-';
+    if (totalScore < 40) return 'H';
+    if (totalScore < 50) return 'H+';
+    if (totalScore < 60) return 'P-';
+    if (totalScore < 80) return 'P';
+    if (totalScore < 100) return 'P+';
+    return 'G'; // 120 и выше
 }
 
 // Overall stats calc
