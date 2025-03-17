@@ -1,0 +1,81 @@
+{
+    "leaderboard": [
+        {
+            "name": "ttv_gigachad",
+            "lastPlayed": "05.03.2025",
+            "pmcLevel": "37",
+            "totalRaids": "97",
+            "survivedToDiedRatio": "47",
+            "killToDeathRatio": "9.41",
+            "averageLifeTime": "10:29",
+            "accountType": "",
+            "isUsingTwitchPlayers": "true"
+        },
+        {
+            "name": "LiveOrDie",
+            "lastPlayed": "11.03.2025",
+            "pmcLevel": "24",
+            "totalRaids": "24",
+            "survivedToDiedRatio": "47",
+            "killToDeathRatio": "9.36",
+            "averageLifeTime": "12:34",
+            "accountType": "",
+            "isUsingTwitchPlayers": "true"
+        },
+        {
+            "name": "freshman",
+            "lastPlayed": "11.03.2025",
+            "pmcLevel": "3",
+            "totalRaids": "4",
+            "survivedToDiedRatio": "25",
+            "killToDeathRatio": "2.67",
+            "averageLifeTime": "04:26",
+            "accountType": "",
+            "isUsingTwitchPlayers": "true"
+        },
+        {
+            "name": "nhui",
+            "lastPlayed": "13.02.2025",
+            "pmcLevel": "14",
+            "totalRaids": "27",
+            "survivedToDiedRatio": "55",
+            "killToDeathRatio": "13.42",
+            "averageLifeTime": "14:58",
+            "accountType": "",
+            "isUsingTwitchPlayers": "true"
+        },
+        {
+            "name": "misery__",
+            "lastPlayed": "15.03.2025",
+            "pmcLevel": "15",
+            "totalRaids": "39",
+            "survivedToDiedRatio": "58",
+            "killToDeathRatio": "8.5",
+            "averageLifeTime": "11:23",
+            "accountType": "Unheard",
+            "isUsingTwitchPlayers": "true"
+        },
+        {
+            "name": "Hunter0",
+            "lastPlayed": "13.02.2025",
+            "pmcLevel": "16",
+            "totalRaids": "32",
+            "survivedToDiedRatio": "58",
+            "killToDeathRatio": "14.15",
+            "averageLifeTime": "15:11",
+            "accountType": "",
+            "isUsingTwitchPlayers": "true"
+        },
+        {
+            "name": "BOSINN",
+            "lastPlayed": "16.02.2025",
+            "pmcLevel": "22",
+            "totalRaids": "42",
+            "survivedToDiedRatio": "47",
+            "killToDeathRatio": "3.23",
+            "averageLifeTime": "09:51",
+            "accountType": "Unheard",
+            "isUsingTwitchPlayers": "true"
+        }
+    ]
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="icon" href="ico.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitch Players Leaderboard</title>
+</head>
+<body>
+    <h1>Twitch Players Leaderboard</h1>
+
+    <div class="header-buttons">
+        <a href="/index.html" class="main-button">To Main Page</a>
+        <button class="main-button" id="submitStats">Submit Your Stats</button>
+    </div>
+
+    <div class="stats-container">
+        <h2>Overall Statistics</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalDeaths">0</div>
+                <div class="stat-label">💀 Total Deaths by Twitch Players</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalRaids">0</div>
+                <div class="stat-label">🎮 Total Raids</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalKills">0</div>
+                <div class="stat-label" style="text-transform: uppercase;">Total Kills</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="averageKDR">0.00</div>
+                <div class="stat-label">⚔️ Average K/D Ratio</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="averageSurvival">0%</div>
+                <div class="stat-label">🛡️ Average Survival Rate</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loadingNotification" style="display: none;">Loading Players...</div>
+
+    <table id="leaderboardTable">
+        <thead>
+            <tr>
+                <th data-sort="rank">Rank</th>
+                <th data-sort="name">Name</th>
+                <th data-sort="lastPlayed">Last Played</th>
+                <th data-sort="pmcLevel">Level</th>
+                <th data-sort="totalRaids">Raids</th>
+                <th data-sort="survivedToDiedRatio">Survival Rate</th>
+                <th data-sort="killToDeathRatio">K/D Ratio</th>
+                <th data-sort="averageLifeTime">Average Life Time</th>
+                <th data-sort="averageLifeTime">Using Twitch Players</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <script src="leaderboard.js"></script>
+</body>
+</html>
