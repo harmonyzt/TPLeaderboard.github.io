@@ -12,7 +12,7 @@
 
     <div class="header-buttons">
         <a href="https://harmonyzt.github.io/twitchplayers.github.io/" class="main-button">To Main Page</a>
-        <a class="main-button" id="submitStats">Submit Your Stats</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9ECEzK8q-nUwmxJzUw4QZ7n8Hek9q9odRXyGSzx3fa7C-wg/viewform?usp=dialog" class="main-button" id="submitStats">Submit Your Stats</a>
     </div>
 
     <div class="stats-container">
@@ -27,7 +27,7 @@
                 <div class="stat-label">🎮 Total Raids</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" id="totalKills" style="font-size: 36px;">0</div>
+                <div class="stat-value" id="totalKills" style="font-size: 35px;">0</div>
                 <div class="stat-label" style="text-transform: uppercase; font-size: 22px;">Total Kills</div>
             </div>
             <div class="stat-card">
@@ -54,7 +54,8 @@
                 <th data-sort="survivedToDiedRatio">Survival Rate</th>
                 <th data-sort="killToDeathRatio">K/D Ratio</th>
                 <th data-sort="averageLifeTime">Average Life Time</th>
-                <th data-sort="averageLifeTime">Using Twitch Players</th>
+                <th data-sort="usingTP">Using Twitch Players</th>
+                <th data-sort="sptVer">SPT Version</th>
             </tr>
         </thead>
         <tbody>
@@ -62,6 +63,6 @@
         </tbody>
     </table>
 
-    <script src="leaderboard.js"></script>
+    <script src="/js/leaderboard.js"></script>
 </body>
 </html>

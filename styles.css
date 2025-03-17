@@ -27,6 +27,16 @@ h1 {
     text-shadow: 0 0 1px #b91a34, 0 0 2px #b91a34, 0 0 3px #b91a34; /* Меньше размытие */
 }
 
+.old-version {
+    color: #f6c65d; 
+    font-weight: bold;
+}
+
+.current-version {
+    color: #6fdf60;
+    font-weight: bold;
+}
+
 #loadingNotification {
     position: fixed;
     font-weight: 700;
