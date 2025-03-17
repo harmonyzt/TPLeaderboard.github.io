@@ -49,11 +49,11 @@ function displayLeaderboard(data) {
         let accountColor = '';
         switch (player.accountType) {
             case 'EOD':
-                accountIcon = '<img src="/media/EOD.png" alt="EOD" class="account-icon">';
+                accountIcon = '<img src="media/EOD.png" alt="EOD" class="account-icon">';
                 accountColor = '#be8301';
                 break;
             case 'Unheard':
-                accountIcon = '<img src="/media/Unheard.png" alt="Unheard" class="account-icon">';
+                accountIcon = '<img src="media/Unheard.png" alt="Unheard" class="account-icon">';
                 accountColor = '#54d0e7';
                 break;
         }
