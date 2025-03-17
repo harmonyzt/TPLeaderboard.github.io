@@ -179,10 +179,20 @@ function addColorIndicators(data) {
 
 // Ranks
 function calculateRanks(data) {
-    // Sorting by Kill/Death Ratio
-    data.sort((a, b) => b.killToDeathRatio - a.killToDeathRatio);
+    data.forEach(player => {
+        const kdrScore = player.killToDeathRatio * 0.4; // 40% weight
+        const sdrScore = player.survivedToDiedRatio * 0.3; // 30% weight
+        const altScore = convertTimeToSeconds(player.averageLifeTime) / 60 * 0.2; // 20% weight
+        const raidsScore = player.totalRaids * 0.1; // 10% weight
 
-    // Adding ranks and medals
+        // Total rating
+        player.totalScore = kdrScore + sdrScore + altScore + raidsScore;
+    });
+
+    // Sorting by all rating
+    data.sort((a, b) => b.totalScore - a.totalScore);
+
+    // Adding ranks
     data.forEach((player, index) => {
         player.rank = index + 1;
         if (player.rank === 1) {
@@ -194,7 +204,6 @@ function calculateRanks(data) {
         } else {
             player.medal = '';
         }
-
     });
 }
 
