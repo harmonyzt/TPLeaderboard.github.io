@@ -72,8 +72,23 @@ function displayLeaderboard(data) {
         // Get skill
         const rankLabel = getRankLabel(player.totalScore);
 
-        // spt ver
-        const sptVerClass = parseFloat(player.sptVer) < 3.11 ? 'old-version' : 'current-version';
+        // Better SPT version compare
+        function compareVersions(version1, version2) {
+            const v1 = version1.split('.').map(Number);
+            const v2 = version2.split('.').map(Number);
+
+            for (let i = 0; i < Math.max(v1.length, v2.length); i++) {
+                const part1 = v1[i] || 0;
+                const part2 = v2[i] || 0;
+
+                if (part1 > part2) return 1;  // version1 > version2
+                if (part1 < part2) return -1; // version1 < version2
+            }
+
+            return 0;
+        }
+
+        const sptVerClass = compareVersions(player.sptVer, '3.11.1') < 0 ? 'old-version' : 'current-version';
 
         row.innerHTML = `
             <td class="rank ${rankClass}">${player.rank} ${player.medal}</td>
