@@ -327,3 +327,50 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Cant find elements for modal');
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    // format time diff
+    function formatTimeDifference(date) {
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000); // Difference in seconds
+
+        const intervals = {
+            year: 31536000,
+            month: 2592000,
+            week: 604800,
+            day: 86400,
+            hour: 3600,
+            minute: 60,
+            second: 1,
+        };
+
+        // Find interval
+        for (const [unit, seconds] of Object.entries(intervals)) {
+            const interval = Math.floor(diffInSeconds / seconds);
+            if (interval >= 1) {
+                return `${interval} ${unit}${interval === 1 ? '' : 's'} ago`;
+            }
+        }
+
+        return 'just now';
+    }
+
+    // Load date
+    fetch('js/last-updated.txt')
+        .then(response => response.text())
+        .then(data => {
+            const dateParts = data.split(/[ .:]/);
+            const year = parseInt(dateParts[0], 10);
+            const month = parseInt(dateParts[1], 10) - 1; // JS is so stupid holy fuck
+            const day = parseInt(dateParts[2], 10);
+            const hour = parseInt(dateParts[3], 10);
+            const minute = parseInt(dateParts[4], 10);
+
+            const lastUpdatedDate = new Date(year, month, day, hour, minute);
+
+            const formattedDifference = formatTimeDifference(lastUpdatedDate);
+
+            // Display
+            document.getElementById('highlight').textContent = formattedDifference;
+        }).catch(error => console.error('Error loading date:', error));
+});

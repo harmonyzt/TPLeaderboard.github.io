@@ -278,7 +278,7 @@ button:hover {
 .stats-container h2 {
     color: #f6cd5d;
     font-size: 1.8rem;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: center;
 }
 
@@ -310,9 +310,21 @@ button:hover {
     font-weight: 700;
 }
 
+.update-info {
+    text-align: center;
+    font-size: 14px;
+    color: #a0a0a0;
+    margin-bottom: 10px;
+}
+
+#highlight {
+    color: #007bff;
+    font-weight: bold;
+}
+
 /* Modal */
 .modal {
-    display: none; 
+    display: none;
     position: fixed;
     z-index: 1001;
     left: 0;
@@ -333,13 +345,13 @@ button:hover {
 
 .modal-content {
     background-color: #2e2511;
-    margin: 10% auto; 
+    margin: 10% auto;
     padding: 20px;
-    border: 1px solid #ff4343; 
+    border: 1px solid #ff4343;
     border-radius: 10px;
     width: 80%;
-    max-width: 600px; 
-    color: #f6c65d; 
+    max-width: 600px;
+    color: #f6c65d;
 }
 
 .close {
@@ -352,7 +364,7 @@ button:hover {
 }
 
 .close:hover {
-    color: #da6879; 
+    color: #da6879;
 }
 
 .modal-content {
@@ -360,6 +372,13 @@ button:hover {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
