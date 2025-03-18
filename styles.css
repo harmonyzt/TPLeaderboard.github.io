@@ -337,6 +337,7 @@ button:hover {
 
 .modal li {
     color: #ffffff;
+    margin: 5px;
 }
 
 .modal p {
@@ -350,7 +351,7 @@ button:hover {
     border: 1px solid #ff4343;
     border-radius: 10px;
     width: 80%;
-    max-width: 600px;
+    max-width: 750px;
     color: #f6c65d;
 }
 

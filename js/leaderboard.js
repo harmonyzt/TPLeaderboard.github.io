@@ -211,8 +211,8 @@ function calculateRanks(data) {
         player.totalScore = kdrScore + sdrScore + raidsScore + pmcLevelScore;
 
         // Tune the players score down if he has less than 20 raids
-        if (player.totalRaids < 25) {
-            player.totalScore -= 20;
+        if (player.totalRaids < 30) {
+            player.totalScore -= 25;
         }
     });
 
