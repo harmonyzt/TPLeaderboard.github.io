@@ -1,3 +1,6 @@
+// When data loaded
+document.addEventListener('DOMContentLoaded', loadLeaderboardData);
+
 let leaderboardData = []; // For keeping data
 let sortDirection = {}; // Sort direction
 
@@ -58,12 +61,12 @@ function displayLeaderboard(data) {
                 break;
         }
 
-        //If using Twitch Players
-        let twitchPlayers
+        // If using Twitch Players
+        let TPicon = '';
         if (player.isUsingTwitchPlayers) {
-            player.twitchPlayers = '✅'
+            TPicon = '✅';
         } else {
-            player.twitchPlayers = '❌'
+            TPicon = '❌';
         }
 
         // Get skill
@@ -82,7 +85,7 @@ function displayLeaderboard(data) {
             <td class="${player.killToDeathRatioClass}">${player.killToDeathRatio}</td>
             <td class="${player.averageLifeTimeClass}">${player.averageLifeTime}</td>
             <td>${player.totalScore.toFixed(2)} (${rankLabel})</td>
-            <td>${player.twitchPlayers}</td>
+            <td>${TPicon}</td>
             <td class="${sptVerClass}">${player.sptVer}</td>
         `;
 
@@ -189,19 +192,19 @@ function calculateRanks(data) {
         const raidsScore = Math.log(player.totalRaids + 1) * 0.2; // 20% weight with smoothing
         const pmcLevelScore = player.pmcLevel * 0.1; // 10% weight
 
-        // Общий рейтинг
+        // Total score
         player.totalScore = kdrScore + sdrScore + raidsScore + pmcLevelScore;
 
-        // Игроки с малым количеством рейдов не попадают в топ
-        if (player.totalRaids < 20) {
-            player.totalScore -= 15;
+        // Tune the players score down if he has less than 20 raids
+        if (player.totalRaids < 25) {
+            player.totalScore -= 20;
         }
     });
 
-    // Сортируем по общему рейтингу
+    // Sorting by rating score
     data.sort((a, b) => b.totalScore - a.totalScore);
 
-    // Добавляем ранги и медали
+    // Ranks and medals :D
     data.forEach((player, index) => {
         player.rank = index + 1;
         if (player.rank === 1) {
@@ -269,11 +272,14 @@ function calculateOverallStats(data) {
 // Simple number animation (CountUp.js)
 function animateNumber(elementId, targetValue, decimals = 0) {
     const element = document.getElementById(elementId);
+    const suffix = elementId === 'averageSurvival' ? '%' : '';
+
     const countUp = new CountUp(element, targetValue, {
-        startVal: 0, 
+        startVal: 0,
         duration: 2,
         decimalPlaces: decimals,
         separator: ',',
+        suffix: suffix
     });
 
     if (!countUp.error) {
@@ -283,5 +289,26 @@ function animateNumber(elementId, targetValue, decimals = 0) {
     }
 }
 
-// When data loaded
-document.addEventListener('DOMContentLoaded', loadLeaderboardData);
+document.addEventListener('DOMContentLoaded', () => {
+    const infoButton = document.getElementById('infoButton');
+    const modal = document.getElementById('infoModal');
+    const closeButton = document.querySelector('.close');
+
+    if (infoButton && modal && closeButton) {
+        infoButton.addEventListener('click', () => {
+            modal.style.display = 'block';
+        });
+
+        closeButton.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    } else {
+        console.error('Cant find elements for modal');
+    }
+});

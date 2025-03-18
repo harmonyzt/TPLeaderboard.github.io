@@ -9,7 +9,7 @@
             "killToDeathRatio": "9.41",
             "averageLifeTime": "10:29",
             "accountType": "",
-            "isUsingTwitchPlayers": "true",
+            "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
         {
@@ -21,20 +21,20 @@
             "killToDeathRatio": "12.17",
             "averageLifeTime": "12:25",
             "accountType": "",
-            "isUsingTwitchPlayers": "true",
+            "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
         {
             "name": "freshman",
-            "lastPlayed": "11.03.2025",
-            "pmcLevel": "3",
-            "totalRaids": "4",
-            "survivedToDiedRatio": "25",
-            "killToDeathRatio": "2.67",
-            "averageLifeTime": "04:26",
+            "lastPlayed": "16.03.2025",
+            "pmcLevel": "1",
+            "totalRaids": "1",
+            "survivedToDiedRatio": "0",
+            "killToDeathRatio": "0",
+            "averageLifeTime": "00:13",
             "accountType": "",
-            "isUsingTwitchPlayers": "true",
-            "sptVer": "3.10.5"
+            "isUsingTwitchPlayers": false,
+            "sptVer": "3.11"
         },
         {
             "name": "nhui",
@@ -45,7 +45,7 @@
             "killToDeathRatio": "13.42",
             "averageLifeTime": "14:58",
             "accountType": "",
-            "isUsingTwitchPlayers": "true",
+            "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
         {
@@ -57,7 +57,7 @@
             "killToDeathRatio": "8.5",
             "averageLifeTime": "11:23",
             "accountType": "Unheard",
-            "isUsingTwitchPlayers": "true",
+            "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
         {
@@ -69,7 +69,7 @@
             "killToDeathRatio": "14.15",
             "averageLifeTime": "15:11",
             "accountType": "",
-            "isUsingTwitchPlayers": "true",
+            "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
         {
@@ -81,7 +81,7 @@
             "killToDeathRatio": "3.23",
             "averageLifeTime": "09:51",
             "accountType": "Unheard",
-            "isUsingTwitchPlayers": "true",
+            "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
         {
@@ -93,7 +93,7 @@
             "killToDeathRatio": "13.37",
             "averageLifeTime": "11:23",
             "accountType": "",
-            "isUsingTwitchPlayers": "true",
+            "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
         {
@@ -105,7 +105,7 @@
             "killToDeathRatio": "1",
             "averageLifeTime": "15:33",
             "accountType": "",
-            "isUsingTwitchPlayers": "true",
+            "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
         {
@@ -117,7 +117,7 @@
             "killToDeathRatio": "7.36",
             "averageLifeTime": "10:41",
             "accountType": "",
-            "isUsingTwitchPlayers": "true",
+            "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
         {
@@ -129,7 +129,7 @@
             "killToDeathRatio": "18",
             "averageLifeTime": "11:49",
             "accountType": "",
-            "isUsingTwitchPlayers": "true",
+            "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
         {
@@ -141,7 +141,7 @@
             "killToDeathRatio": "5",
             "averageLifeTime": "11:32",
             "accountType": "",
-            "isUsingTwitchPlayers": "true",
+            "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         }
     ]
