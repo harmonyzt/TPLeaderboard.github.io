@@ -60,7 +60,7 @@ function displayLeaderboard(data) {
 
         //If using Twitch Players
         let twitchPlayers
-        if(player.isUsingTwitchPlayers){
+        if (player.isUsingTwitchPlayers) {
             player.twitchPlayers = '✅'
         } else {
             player.twitchPlayers = '❌'
@@ -184,9 +184,9 @@ function addColorIndicators(data) {
 // Ranks
 function calculateRanks(data) {
     data.forEach(player => {
-        const kdrScore = player.killToDeathRatio * 0.3; // 40% weight
+        const kdrScore = player.killToDeathRatio * 0.3; // 30% weight
         const sdrScore = player.survivedToDiedRatio * 0.3; // 30% weight
-        const altScore = convertTimeToSeconds(player.averageLifeTime) / 60 * 0.3; // 20% weight
+        const altScore = convertTimeToSeconds(player.averageLifeTime) / 60 * 0.3; // 30% weight
         const raidsScore = player.totalRaids * 0.1; // 10% weight
 
         // Total rating
@@ -234,9 +234,15 @@ function calculateOverallStats(data) {
     let totalKills = 0;
     let totalKDR = 0;
     let totalSurvival = 0;
+    let totalDeathsFromTwitchPlayers = 0;
 
     data.forEach(player => {
-        totalDeaths += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
+        if (player.isUsingTwitchPlayers) {
+            totalDeaths += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
+            totalDeathsFromTwitchPlayers += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
+        } else {
+            totalDeaths += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
+        }
         totalRaids += parseInt(player.totalRaids);
         totalKills += parseFloat(player.killToDeathRatio) * Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
         totalKDR += parseFloat(player.killToDeathRatio);
@@ -247,11 +253,28 @@ function calculateOverallStats(data) {
     const averageSurvival = (totalSurvival / data.length).toFixed(2);
 
     // Update all stats
-    document.getElementById('totalDeaths').textContent = totalDeaths;
-    document.getElementById('totalRaids').textContent = totalRaids;
-    document.getElementById('totalKills').textContent = Math.round(totalKills);
-    document.getElementById('averageKDR').textContent = averageKDR;
-    document.getElementById('averageSurvival').textContent = `${averageSurvival}%`;
+    animateNumber('totalDeaths', totalDeaths);
+    animateNumber('totalDeathsFromTP', totalDeathsFromTwitchPlayers);
+    animateNumber('totalRaids', totalRaids);
+    animateNumber('totalKills', Math.round(totalKills));
+    animateNumber('averageKDR', averageKDR, 2); // 2 знака после запятой
+    animateNumber('averageSurvival', averageSurvival, 2); // 2 знака после запятой
+}
+
+function animateNumber(elementId, targetValue, decimals = 0) {
+    const element = document.getElementById(elementId);
+    const countUp = new CountUp(element, targetValue, {
+        startVal: 0, // Начинаем с 0
+        duration: 2, // Длительность анимации в секундах
+        decimalPlaces: decimals, // Количество знаков после запятой
+        separator: ',', // Разделитель тысяч (опционально)
+    });
+
+    if (!countUp.error) {
+        countUp.start(); // Запуск анимации
+    } else {
+        console.error(countUp.error);
+    }
 }
 
 // When data loaded
