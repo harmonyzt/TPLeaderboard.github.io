@@ -181,22 +181,27 @@ function addColorIndicators(data) {
     });
 }
 
-// Ranks
+// Ranking calculation (needed comments for this one)
 function calculateRanks(data) {
     data.forEach(player => {
-        const kdrScore = player.killToDeathRatio * 0.3; // 30% weight
+        const kdrScore = player.killToDeathRatio * 0.4; // 40% weight
         const sdrScore = player.survivedToDiedRatio * 0.3; // 30% weight
-        const altScore = convertTimeToSeconds(player.averageLifeTime) / 60 * 0.3; // 30% weight
-        const raidsScore = player.totalRaids * 0.1; // 10% weight
+        const raidsScore = Math.log(player.totalRaids + 1) * 0.2; // 20% weight with smoothing
+        const pmcLevelScore = player.pmcLevel * 0.1; // 10% weight
 
-        // Total rating
-        player.totalScore = kdrScore + sdrScore + altScore + raidsScore;
+        // Общий рейтинг
+        player.totalScore = kdrScore + sdrScore + raidsScore + pmcLevelScore;
+
+        // Игроки с малым количеством рейдов не попадают в топ
+        if (player.totalRaids < 20) {
+            player.totalScore -= 15;
+        }
     });
 
-    // Sorting by all rating
+    // Сортируем по общему рейтингу
     data.sort((a, b) => b.totalScore - a.totalScore);
 
-    // Adding ranks
+    // Добавляем ранги и медали
     data.forEach((player, index) => {
         player.rank = index + 1;
         if (player.rank === 1) {
@@ -212,19 +217,19 @@ function calculateRanks(data) {
 }
 
 function getRankLabel(totalScore) {
-    if (totalScore < 8) return 'L-';
-    if (totalScore < 9) return 'L';
-    if (totalScore < 15) return 'L+';
-    if (totalScore < 20) return 'M-';
-    if (totalScore < 30) return 'M';
-    if (totalScore < 33) return 'M+';
-    if (totalScore < 35) return 'H-';
-    if (totalScore < 40) return 'H';
-    if (totalScore < 50) return 'H+';
+    if (totalScore < 15) return 'L-';
+    if (totalScore < 17) return 'L';
+    if (totalScore < 20) return 'L+';
+    if (totalScore < 23) return 'M-';
+    if (totalScore < 24) return 'M';
+    if (totalScore < 25) return 'M+';
+    if (totalScore < 30) return 'H-';
+    if (totalScore < 35) return 'H';
+    if (totalScore < 40) return 'H+';
     if (totalScore < 60) return 'P-';
     if (totalScore < 80) return 'P';
     if (totalScore < 100) return 'P+';
-    return 'G'; // 120 и выше
+    return 'G';
 }
 
 // Overall stats calc
@@ -257,21 +262,22 @@ function calculateOverallStats(data) {
     animateNumber('totalDeathsFromTP', totalDeathsFromTwitchPlayers);
     animateNumber('totalRaids', totalRaids);
     animateNumber('totalKills', Math.round(totalKills));
-    animateNumber('averageKDR', averageKDR, 2); // 2 знака после запятой
-    animateNumber('averageSurvival', averageSurvival, 2); // 2 знака после запятой
+    animateNumber('averageKDR', averageKDR, 2);
+    animateNumber('averageSurvival', averageSurvival, 2);
 }
 
+// Simple number animation (CountUp.js)
 function animateNumber(elementId, targetValue, decimals = 0) {
     const element = document.getElementById(elementId);
     const countUp = new CountUp(element, targetValue, {
-        startVal: 0, // Начинаем с 0
-        duration: 2, // Длительность анимации в секундах
-        decimalPlaces: decimals, // Количество знаков после запятой
-        separator: ',', // Разделитель тысяч (опционально)
+        startVal: 0, 
+        duration: 2,
+        decimalPlaces: decimals,
+        separator: ',',
     });
 
     if (!countUp.error) {
-        countUp.start(); // Запуск анимации
+        countUp.start();
     } else {
         console.error(countUp.error);
     }
