@@ -57,7 +57,7 @@
             "killToDeathRatio": "8.5",
             "averageLifeTime": "11:23",
             "accountType": "Unheard",
-            "isUsingTwitchPlayers": true,
+            "isUsingTwitchPlayers": false,
             "sptVer": "3.10.5"
         },
         {
