@@ -7,7 +7,7 @@ async function loadLeaderboardData() {
     loadingNotification.style.display = 'block';
 
     try {
-        const response = await fetch('data.json');
+        const response = await fetch('js/data.json');
         if (!response.ok) {
             throw new Error('Failed to load leaderboard data');
         }
