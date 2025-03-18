@@ -210,13 +210,13 @@ function calculateRanks(data) {
         // Total score
         player.totalScore = kdrScore + sdrScore + raidsScore + pmcLevelScore;
 
-        // Tune the players score down if he has less than 20 raids
+        // Tune the player skill score down if he has less than 30 raids
         if (player.totalRaids < 30) {
             player.totalScore -= 25;
         }
     });
 
-    // Sorting by rating score
+    // Sorting by skill score
     data.sort((a, b) => b.totalScore - a.totalScore);
 
     // Ranks and medals :D
