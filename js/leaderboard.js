@@ -61,17 +61,6 @@ function displayLeaderboard(data) {
                 break;
         }
 
-        // If using Twitch Players
-        let TPicon = '';
-        if (player.isUsingTwitchPlayers) {
-            TPicon = '✅';
-        } else {
-            TPicon = '❌';
-        }
-
-        // Get skill
-        const rankLabel = getRankLabel(player.totalScore);
-
         // Better SPT version compare
         function compareVersions(version1, version2) {
             const v1 = version1.split('.').map(Number);
@@ -87,6 +76,18 @@ function displayLeaderboard(data) {
 
             return 0;
         }
+
+        // If using Twitch Players
+        let TPicon = '';
+        if (player.isUsingTwitchPlayers) {
+            TPicon = '✅';
+        } else {
+            TPicon = '❌';
+        }
+
+        // Get skill
+        const rankLabel = getRankLabel(player.totalScore, player.totalRaids);
+
 
         const sptVerClass = compareVersions(player.sptVer, '3.11.1') < 0 ? 'old-version' : 'current-version';
 
@@ -212,7 +213,7 @@ function calculateRanks(data) {
 
         // Tune the player skill score down if he has less than 30 raids
         if (player.totalRaids < 30) {
-            player.totalScore -= 25;
+            player.totalScore = 0;
         }
     });
 
@@ -234,7 +235,11 @@ function calculateRanks(data) {
     });
 }
 
-function getRankLabel(totalScore) {
+function getRankLabel(totalScore, totalRaids) {
+    if (totalRaids < 30){
+        return 'Calibrating'
+    }
+
     if (totalScore < 15) return 'L-';
     if (totalScore < 17) return 'L';
     if (totalScore < 20) return 'L+';
