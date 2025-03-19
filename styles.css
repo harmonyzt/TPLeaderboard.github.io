@@ -53,11 +53,12 @@ h1 {
     border-radius: 10px;
     z-index: 1000;
     margin-top: 50px;
+    display: none;
 }
 
 table {
     width: 100%;
-    max-width: 1700px;
+    max-width: 1500px;
     margin: 20px auto;
     border-collapse: collapse;
     background-color: #ffffff1b;

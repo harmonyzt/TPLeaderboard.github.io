@@ -48,6 +48,7 @@ function displayLeaderboard(data) {
             nameClass = 'bronze-name';
         }
 
+        // EFT Account icons and colors
         let accountIcon = '';
         let accountColor = '';
         switch (player.accountType) {
@@ -61,7 +62,19 @@ function displayLeaderboard(data) {
                 break;
         }
 
-        // Better SPT version compare
+        // If using Twitch Players
+        let TPicon = '';
+        if (player.isUsingTwitchPlayers) {
+            TPicon = '✅';
+        } else {
+            TPicon = '❌';
+        }
+
+        // Get skill
+        const rankLabel = getRankLabel(player.totalScore);
+
+        // Compare SPT version of user
+        const sptVerClass = compareVersions(player.sptVer, '3.11.1') < 0 ? 'old-version' : 'current-version';
         function compareVersions(version1, version2) {
             const v1 = version1.split('.').map(Number);
             const v2 = version2.split('.').map(Number);
@@ -77,20 +90,6 @@ function displayLeaderboard(data) {
             return 0;
         }
 
-        // If using Twitch Players
-        let TPicon = '';
-        if (player.isUsingTwitchPlayers) {
-            TPicon = '✅';
-        } else {
-            TPicon = '❌';
-        }
-
-        // Get skill
-        const rankLabel = getRankLabel(player.totalScore, player.totalRaids);
-
-
-        const sptVerClass = compareVersions(player.sptVer, '3.11.1') < 0 ? 'old-version' : 'current-version';
-
         row.innerHTML = `
             <td class="rank ${rankClass}">${player.rank} ${player.medal}</td>
             <td class="player-name ${nameClass}" style="color: ${accountColor}">${accountIcon} ${player.name}</td>
@@ -100,7 +99,7 @@ function displayLeaderboard(data) {
             <td class="${player.survivedToDiedRatioClass}">${player.survivedToDiedRatio}%</td>
             <td class="${player.killToDeathRatioClass}">${player.killToDeathRatio}</td>
             <td class="${player.averageLifeTimeClass}">${player.averageLifeTime}</td>
-            <td>${player.totalScore.toFixed(2)} (${rankLabel})</td>
+            <td>${player.totalScore <= 0 ? 'Calibrating...' : player.totalScore.toFixed(2)} ${player.totalScore <= 0 ? '' : `(${rankLabel})`}</td>
             <td>${TPicon}</td>
             <td class="${sptVerClass}">${player.sptVer}</td>
         `;
@@ -135,7 +134,7 @@ function sortLeaderboard(sortKey) {
             valueB = b.rank;
         }
 
-        if (sortKey === 'pmcLevel' || sortKey === 'totalRaids' || sortKey === 'survivedToDiedRatio' || sortKey === 'killToDeathRatio') {
+        if (sortKey === 'pmcLevel' || sortKey === 'totalRaids' || sortKey === 'survivedToDiedRatio' || sortKey === 'killToDeathRatio' || sortKey === 'totalScore') {
             valueA = parseFloat(valueA);
             valueB = parseFloat(valueB);
         }
@@ -215,6 +214,12 @@ function calculateRanks(data) {
         if (player.totalRaids < 30) {
             player.totalScore = 0;
         }
+
+        // If player is not using Twitch Players (with intent that it's gonna be easier) tune down his total score
+        // Very hacky, but should work for now
+        if(!player.isUsingTwitchPlayers){
+            player.totalScore -= 5;
+        }
     });
 
     // Sorting by skill score
@@ -235,11 +240,7 @@ function calculateRanks(data) {
     });
 }
 
-function getRankLabel(totalScore, totalRaids) {
-    if (totalRaids < 30){
-        return 'Calibrating'
-    }
-
+function getRankLabel(totalScore) {
     if (totalScore < 15) return 'L-';
     if (totalScore < 17) return 'L';
     if (totalScore < 20) return 'L+';
