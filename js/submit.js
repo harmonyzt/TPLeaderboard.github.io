@@ -34,7 +34,7 @@ fileInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file && file.type === 'application/json') {
         progressBar.style.width = '0%';
-        statusText.textContent = 'Загрузка файла...';
+        statusText.textContent = 'Loading file...';
 
         // For reading
         const reader = new FileReader();
@@ -54,18 +54,19 @@ fileInput.addEventListener('change', (event) => {
             const deaths = findValueByKey(profile.characters.pmc.Stats.Eft.OverallCounters.Items, ['Deaths']);
             const totalRaids = findValueByKey(profile.characters.pmc.Stats.Eft.OverallCounters.Items, ['Sessions', 'Pmc']);
 
-            // Рассчитываем Survive Rate
+            // Survive Rate
             let surviveRate = 0;
             if (totalRaids > 0) {
                 surviveRate = ((totalRaids - deaths) / totalRaids) * 100;
                 surviveRate = surviveRate.toFixed(2);
             }
+
             // K/D Ratio
             const killToDeathRatio = deaths !== 0 ? (kills / deaths).toFixed(2) : kills.toFixed(2); // Если deaths = 0, возвращаем kills
 
             const averageLifeTimeSeconds = findValueByKey(profile.characters.pmc.Stats.Eft.OverallCounters.Items, ['LifeTime', 'Pmc']);
 
-            // MM:SS
+            // MM:SS Lifetime
             const averageLifeTimeFormatted = formatTime(averageLifeTimeSeconds);
 
             // Extracting data from JSON profile
@@ -103,7 +104,7 @@ fileInput.addEventListener('change', (event) => {
                     progressBar.style.width = '100%';
                 })
                 .catch((error) => {
-                    console.error('Ошибка:', error);
+                    console.error('Error:', error);
                     statusText.textContent = 'Error.';
                     progressBar.style.backgroundColor = '#ff0000';
                 });
