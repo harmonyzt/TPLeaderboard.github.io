@@ -202,10 +202,10 @@ function addColorIndicators(data) {
 // Ranking calculation (needed comments for this one)
 function calculateRanks(data) {
     data.forEach(player => {
-        const kdrScore = player.killToDeathRatio * 0.4; // 40% weight
-        const sdrScore = player.survivedToDiedRatio * 0.3; // 30% weight
-        const raidsScore = Math.log(player.totalRaids + 1) * 0.2; // 20% weight with smoothing
-        const pmcLevelScore = player.pmcLevel * 0.1; // 10% weight
+        const kdrScore = player.killToDeathRatio * 0.2; // 30% weight
+        const sdrScore = player.survivedToDiedRatio * 0.2; // 30% weight
+        const raidsScore = Math.log(player.totalRaids + 1) * 0.3; // 30% weight with smoothing
+        const pmcLevelScore = player.pmcLevel * 0.3; // 20% weight
 
         // Total score
         player.totalScore = kdrScore + sdrScore + raidsScore + pmcLevelScore;
