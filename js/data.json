@@ -8,7 +8,7 @@
             "survivedToDiedRatio": "47",
             "killToDeathRatio": "9.41",
             "averageLifeTime": "10:29",
-            "accountType": "",
+            "accountType": "standard",
             "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
@@ -20,7 +20,7 @@
             "survivedToDiedRatio": "53",
             "killToDeathRatio": "12.17",
             "averageLifeTime": "12:25",
-            "accountType": "",
+            "accountType": "standard",
             "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
@@ -32,7 +32,7 @@
             "survivedToDiedRatio": "0",
             "killToDeathRatio": "0",
             "averageLifeTime": "00:13",
-            "accountType": "",
+            "accountType": "standard",
             "isUsingTwitchPlayers": false,
             "sptVer": "3.11.1"
         },
@@ -44,7 +44,7 @@
             "survivedToDiedRatio": "55",
             "killToDeathRatio": "13.42",
             "averageLifeTime": "14:58",
-            "accountType": "",
+            "accountType": "standard",
             "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
@@ -56,7 +56,7 @@
             "survivedToDiedRatio": "58",
             "killToDeathRatio": "8.5",
             "averageLifeTime": "11:23",
-            "accountType": "Unheard",
+            "accountType": "unheard_edition",
             "isUsingTwitchPlayers": false,
             "sptVer": "3.10.5"
         },
@@ -68,7 +68,7 @@
             "survivedToDiedRatio": "58",
             "killToDeathRatio": "14.15",
             "averageLifeTime": "15:11",
-            "accountType": "",
+            "accountType": "standard",
             "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
@@ -80,7 +80,7 @@
             "survivedToDiedRatio": "47",
             "killToDeathRatio": "3.23",
             "averageLifeTime": "09:51",
-            "accountType": "Unheard",
+            "accountType": "unheard_edition",
             "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
@@ -92,7 +92,7 @@
             "survivedToDiedRatio": "60",
             "killToDeathRatio": "13.37",
             "averageLifeTime": "11:23",
-            "accountType": "",
+            "accountType": "standard",
             "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
@@ -104,7 +104,7 @@
             "survivedToDiedRatio": "37",
             "killToDeathRatio": "1",
             "averageLifeTime": "15:33",
-            "accountType": "",
+            "accountType": "standard",
             "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
@@ -116,7 +116,7 @@
             "survivedToDiedRatio": "40",
             "killToDeathRatio": "7.36",
             "averageLifeTime": "10:41",
-            "accountType": "",
+            "accountType": "standard",
             "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
@@ -128,7 +128,7 @@
             "survivedToDiedRatio": "80",
             "killToDeathRatio": "18",
             "averageLifeTime": "11:49",
-            "accountType": "",
+            "accountType": "standard",
             "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
@@ -140,7 +140,7 @@
             "survivedToDiedRatio": "60",
             "killToDeathRatio": "5",
             "averageLifeTime": "11:32",
-            "accountType": "",
+            "accountType": "standard",
             "isUsingTwitchPlayers": true,
             "sptVer": "3.10.5"
         },
@@ -152,7 +152,7 @@
             "survivedToDiedRatio": "56",
             "killToDeathRatio": "8.8",
             "averageLifeTime": "14:32",
-            "accountType": "",
+            "accountType": "standard",
             "isUsingTwitchPlayers": false,
             "sptVer": "3.5.5"
         }

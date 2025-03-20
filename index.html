@@ -97,6 +97,15 @@
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9ECEzK8q-nUwmxJzUw4QZ7n8Hek9q9odRXyGSzx3fa7C-wg/viewform?usp=dialog" class="main-button" id="submitStats">Submit Your Stats</a>
             <a id="infoButton" class="main-button">How It Works</a>
         </div>
+          <div class="profile-calculator">
+            <h2>SPT Profile Calculator</h2>
+            <div class="header-buttons">
+                <button class="main-button" id="uploadButton">Calculate your SPT profile</button>
+                <input type="file" id="fileInput" accept=".json" style="display: none;"></input>
+            </div>
+            <div id="profile-info" class="profile-info"></div>
+          </div>
+        <p id="status"></p>
         <div id="loadingNotification" class="animate animate__animated animate__fadeInUp" style="display: none;">Loading Players...</div>
         <table id="leaderboardTable" class="animate animate__animated animate__fadeIn">
             <thead>
@@ -117,7 +126,7 @@
             <tbody>
             </tbody>
         </table>
-        <script src=""></script>
+        <script src="/js/spt-calculator.js"></script>
     </body>
 
 </html>

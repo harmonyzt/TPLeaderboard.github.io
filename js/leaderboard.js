@@ -48,15 +48,46 @@ function displayLeaderboard(data) {
             nameClass = 'bronze-name';
         }
 
+        function formatLastPlayed(dateString) {
+            const [day, month, year] = dateString.split('.').map(Number);
+            const lastPlayedDate = new Date(year, month - 1, day);
+
+            const currentDate = new Date();
+        
+            currentDate.setHours(0, 0, 0, 0);
+            lastPlayedDate.setHours(0, 0, 0, 0);
+
+            const timeDifference = currentDate - lastPlayedDate;
+            const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        
+
+            if (daysDifference === 0) {
+                return 'just now';
+            } else if (daysDifference === 1) {
+                return '1d ago';
+            } else if (daysDifference < 30) {
+                return `${daysDifference}d ago`;
+            } else if (daysDifference < 365) {
+                const monthsDifference = Math.floor(daysDifference / 30);
+                return `${monthsDifference}mo ago`;
+            } else {
+                const yearsDifference = Math.floor(daysDifference / 365);
+                return `${yearsDifference}y ago`;
+            }
+        }
+
+        // Turning last game to ago
+        let lastGame = formatLastPlayed(player.lastPlayed)
+
         // EFT Account icons and colors
         let accountIcon = '';
         let accountColor = '';
         switch (player.accountType) {
-            case 'EOD':
+            case 'edge_of_darkness':
                 accountIcon = '<img src="media/EOD.png" alt="EOD" class="account-icon">';
                 accountColor = '#be8301';
                 break;
-            case 'Unheard':
+            case 'unheard_edition':
                 accountIcon = '<img src="media/Unheard.png" alt="Unheard" class="account-icon">';
                 accountColor = '#54d0e7';
                 break;
@@ -93,7 +124,7 @@ function displayLeaderboard(data) {
         row.innerHTML = `
             <td class="rank ${rankClass}">${player.rank} ${player.medal}</td>
             <td class="player-name ${nameClass}" style="color: ${accountColor}">${accountIcon} ${player.name}</td>
-            <td>${player.lastPlayed || 'N/A'}</td>
+            <td>${lastGame || 'N/A'}</td>
             <td>${player.pmcLevel}</td>
             <td>${player.totalRaids}</td>
             <td class="${player.survivedToDiedRatioClass}">${player.survivedToDiedRatio}%</td>
@@ -361,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'just now';
     }
 
-    // Load date
+    // Load date (yes I use two similar functions because fuck JS)
     fetch('js/last-updated.txt')
         .then(response => response.text())
         .then(data => {
