@@ -1,18 +1,17 @@
-<div class="header-buttons">
-<button id="uploadButton">Upload your SPT Profile</button>
-<input type="file" id="fileInput" accept=".json" style="display: none;">
-</div>
-<div class="progress-bar">
-<div class="progress"></div>
-</div>
-<p id="status"></p>
+//<div class="header-buttons">
+//<button id="uploadButton">Upload your SPT Profile</button>
+//<input type="file" id="fileInput" accept=".json" style="display: none;">
+//</input></div>
+//<div class="progress-bar">
+//<div class="progress"></div>
+//</div>
+//<p id="status"></p>
 
 // DOM
 const uploadButton = document.getElementById('uploadButton');
 const fileInput = document.getElementById('fileInput');
 const progressBar = document.querySelector('.progress');
 const statusText = document.getElementById('status');
-
 
 // Find keys in Items stats of EFT profile
 function findValueByKey(items, key) {
@@ -58,7 +57,7 @@ fileInput.addEventListener('change', (event) => {
         reader.onload = (e) => {
             const profile = JSON.parse(e.target.result);
 
-            // Extracting profile stuff
+            // Extracting data from JSON profile
             const kills = findValueByKey(profile.characters.pmc.Stats.Eft.OverallCounters.Items, ['Kills']);
             const deaths = findValueByKey(profile.characters.pmc.Stats.Eft.OverallCounters.Items, ['Deaths']);
             const totalRaids = findValueByKey(profile.characters.pmc.Stats.Eft.OverallCounters.Items, ['Sessions', 'Pmc']);
@@ -78,7 +77,7 @@ fileInput.addEventListener('change', (event) => {
             // MM:SS Lifetime
             const averageLifeTimeFormatted = formatTime(averageLifeTimeSeconds);
 
-            // Extracting data from JSON profile
+            // Assigning a new record of profile
             const requiredData = {
                 name: profile.characters.pmc.Info.Nickname,
                 lastPlayed: profile.characters.pmc.Stats.Eft.LastSessionDate,
