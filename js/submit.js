@@ -5,7 +5,7 @@ const progressBar = document.querySelector('.progress');
 const statusText = document.getElementById('status');
 
 
-// Функция для поиска значения по ключу в массиве Items
+// Find keys in Items stats of EFT profile
 function findValueByKey(items, key) {
     const item = items.find((item) => {
         return (
@@ -17,22 +17,19 @@ function findValueByKey(items, key) {
 }
 
 function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60); // Получаем минуты
-    const remainingSeconds = seconds % 60; // Получаем оставшиеся секунды
-
-    // Форматируем минуты и секунды с ведущим нулём, если нужно
+    const minutes = Math.floor(seconds / 60); 
+    const remainingSeconds = seconds % 60; 
     const formattedMinutes = String(minutes).padStart(2, '0');
     const formattedSeconds = String(remainingSeconds).padStart(2, '0');
 
-    return `${formattedMinutes}:${formattedSeconds}`; // Возвращаем время в формате MM:SS
+    return `${formattedMinutes}:${formattedSeconds}`; // MM:SS
 }
 
-// Открываем диалог выбора файла при нажатии на кнопку
+// Opening file upload
 uploadButton.addEventListener('click', () => {
-    fileInput.click(); // Программно кликаем на input type="file"
+    fileInput.click();
 });
 
-// Обработка выбора файла
 fileInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file && file.type === 'application/json') {
@@ -52,7 +49,7 @@ fileInput.addEventListener('change', (event) => {
         reader.onload = (e) => {
             const profile = JSON.parse(e.target.result);
 
-            // Извлекаем нужные данные из профиля
+            // Extracting profile stuff
             const kills = findValueByKey(profile.characters.pmc.Stats.Eft.OverallCounters.Items, ['Kills']);
             const deaths = findValueByKey(profile.characters.pmc.Stats.Eft.OverallCounters.Items, ['Deaths']);
             const totalRaids = findValueByKey(profile.characters.pmc.Stats.Eft.OverallCounters.Items, ['Sessions', 'Pmc']);
@@ -68,7 +65,7 @@ fileInput.addEventListener('change', (event) => {
 
             const averageLifeTimeSeconds = findValueByKey(profile.characters.pmc.Stats.Eft.OverallCounters.Items, ['LifeTime', 'Pmc']);
 
-            // Преобразуем секунды в формат MM:SS
+            // MM:SS
             const averageLifeTimeFormatted = formatTime(averageLifeTimeSeconds);
 
             // Extracting data from JSON profile
@@ -102,23 +99,23 @@ fileInput.addEventListener('change', (event) => {
                     });
                 })
                 .then(() => {
-                    statusText.textContent = 'Профиль успешно загружен и данные обновлены!';
+                    statusText.textContent = 'Succ!';
                     progressBar.style.width = '100%';
                 })
                 .catch((error) => {
                     console.error('Ошибка:', error);
-                    statusText.textContent = 'Произошла ошибка при загрузке или обновлении данных.';
+                    statusText.textContent = 'Error.';
                     progressBar.style.backgroundColor = '#ff0000';
                 });
         };
 
         reader.onerror = () => {
-            statusText.textContent = 'Ошибка при чтении файла.';
+            statusText.textContent = 'Error reading the file.';
             progressBar.style.backgroundColor = '#ff0000';
         };
 
         reader.readAsText(file);
     } else {
-        alert('Пожалуйста, выберите JSON-файл.');
+        alert('Please choose JSON SPT file.');
     }
 });
