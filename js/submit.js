@@ -1,3 +1,12 @@
+<div class="header-buttons">
+<button id="uploadButton">Upload your SPT Profile</button>
+<input type="file" id="fileInput" accept=".json" style="display: none;">
+</div>
+<div class="progress-bar">
+<div class="progress"></div>
+</div>
+<p id="status"></p>
+
 // DOM
 const uploadButton = document.getElementById('uploadButton');
 const fileInput = document.getElementById('fileInput');
