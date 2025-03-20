@@ -25,18 +25,6 @@
             "sptVer": "3.10.5"
         },
         {
-            "name": "freshman",
-            "lastPlayed": "16.03.2025",
-            "pmcLevel": "1",
-            "totalRaids": "1",
-            "survivedToDiedRatio": "0",
-            "killToDeathRatio": "0",
-            "averageLifeTime": "00:13",
-            "accountType": "",
-            "isUsingTwitchPlayers": false,
-            "sptVer": "3.11.1"
-        },
-        {
             "name": "nhui",
             "lastPlayed": "13.02.2025",
             "pmcLevel": "14",
@@ -150,7 +138,7 @@
             "pmcLevel": "55",
             "totalRaids": "564",
             "survivedToDiedRatio": "56",
-            "killToDeathRatio": "9.2",
+            "killToDeathRatio": "8.8",
             "averageLifeTime": "14:32",
             "accountType": "",
             "isUsingTwitchPlayers": false,
