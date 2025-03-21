@@ -342,22 +342,34 @@ function animateNumber(elementId, targetValue, decimals = 0) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const infoModal = document.getElementById('infoModal');
     const infoButton = document.getElementById('infoButton');
-    const modal = document.getElementById('infoModal');
-    const closeButton = document.querySelector('.close');
+    const calcModal = document.getElementById('calcModal');
+    const calcButton = document.getElementById('calcButton');
+    const closeButtons = document.querySelectorAll('.close');
 
-    if (infoButton && modal && closeButton) {
+    if (infoButton && infoModal && calcButton && calcModal && closeButtons.length) {
         infoButton.addEventListener('click', () => {
-            modal.style.display = 'block';
+            infoModal.style.display = 'block';
         });
 
-        closeButton.addEventListener('click', () => {
-            modal.style.display = 'none';
+        calcButton.addEventListener('click', () => {
+            calcModal.style.display = 'block';
+        });
+
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                infoModal.style.display = 'none';
+                calcModal.style.display = 'none';
+            });
         });
 
         window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                modal.style.display = 'none';
+            if (event.target === infoModal) {
+                infoModal.style.display = 'none';
+            }
+            if (event.target === calcModal) {
+                calcModal.style.display = 'none';
             }
         });
     } else {

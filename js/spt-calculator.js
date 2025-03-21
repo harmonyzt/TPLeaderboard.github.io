@@ -13,27 +13,13 @@ function formatTime(minutes) {
     return `${formattedMinutesStr}:${formattedSecondsStr}`;
 }
 
-function formatTimeAgoUnix(unixTimestamp) {
-    const currentTime = Math.floor(Date.now() / 1000);
-    const timeDifference = currentTime - unixTimestamp;
+function formatTimeToDate(unixTimestamp) {
+    const date = new Date(unixTimestamp * 1000);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear(); // Год
 
-    const intervals = [
-        { label: 'y', seconds: 31536000 },
-        { label: 'm', seconds: 2592000 },
-        { label: 'd', seconds: 86400 },
-        { label: 'h', seconds: 3600 },
-        { label: 'min', seconds: 60 },
-        { label: 'sec', seconds: 1 },
-    ];
-
-    for (const interval of intervals) {
-        const count = Math.floor(timeDifference / interval.seconds);
-        if (count >= 1) {
-            return `${count}${interval.label[0]} ago`;
-        }
-    }
-
-    return 'just now';
+    return `${day}.${month}.${year}`;
 }
 
 // Opening file upload window
@@ -78,7 +64,7 @@ fileInput.addEventListener('change', (event) => {
             const requiredData = {
                 id: profile.info.id,
                 name: profile.characters.pmc.Info.Nickname,
-                lastPlayed: formatTimeAgoUnix(profile.characters.pmc.Stats.Eft.LastSessionDate),
+                lastPlayed: formatTimeToDate(profile.characters.pmc.Stats.Eft.LastSessionDate),
                 pmcLevel: profile.characters.pmc.Info.Level,
                 totalRaids: totalRaids,
                 survivedToDiedRatio: surviveRate,

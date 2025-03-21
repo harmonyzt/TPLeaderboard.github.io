@@ -17,8 +17,10 @@
         <div id="infoModal" class="modal animate animate__animated animate__fadeIn">
             <div class="modal-content">
                 <span class="close">&times;</span>
+                <h2>Introduction</h2>
+                <p> </p>
                 <h2>How the Ranking System Works</h2>
-                <p> The ranking system is designed to provide a fair and balanced leaderboard by considering multiple factors.</p>
+                <p> The ranking system is designed to provide a fair and balanced leaderboard by considering multiple factors. </p>
                 <h3>1. Leaderboard Abreviaturas</h3>
                 <p> Before stepping forward, here's explanation of the abreviaturas this leaderboard uses </p>
                 <ul>
@@ -62,6 +64,27 @@
                 </ul>
             </div>
         </div>
+        <div id="calcModal" class="modal animate animate__animated animate__fadeIn">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                    <div class="header-buttons">
+                        <button class="main-button" id="uploadButton">Open your .json SPT Profile</button>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9ECEzK8q-nUwmxJzUw4QZ7n8Hek9q9odRXyGSzx3fa7C-wg/viewform?usp=dialog" class="main-button" id="submitStats">Submit Your Stats</a>
+                        <input type="file" id="fileInput" accept=".json" style="display: none;"></input>
+                    </div>
+                    <div id="profile-info" class="profile-info"></div>
+                  
+                <h2> How this works? </h2>
+                <p> This will calculate all your statistics of your SPT Profile which you can later submit to the leaderboard via the link inside this pop-up </p>
+                <h2> Where do I find my profile? </h2>
+                <p>
+                    To find your profile, simply open your SPT root game folder, go to folder named 'user' and then 'profiles'.
+                    If you have only one profile, you'll find a .json file inside which now you can now choose (click "Open your .json SPT Profile")
+                </p>
+                <h2> What if I have more than one profile? </h2>
+                <p> To find which exactly profile you wanna choose, you can open your SPT Server and SPT Launcher, log into your desired profile and see the ID under your nickname which will represent the name of .json file you wanna see. </p>
+            </div>
+        </div>
         <div class="stats-container">
             <h2>Overall Statistics</h2>
             <p class="update-info">Latest leaderboard update was <span id="highlight"></span></p>
@@ -95,16 +118,9 @@
         <div class="header-buttons">
             <a href="https://harmonyzt.github.io/twitchplayers.github.io/" class="main-button">To Main Page</a>
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9ECEzK8q-nUwmxJzUw4QZ7n8Hek9q9odRXyGSzx3fa7C-wg/viewform?usp=dialog" class="main-button" id="submitStats">Submit Your Stats</a>
-            <a id="infoButton" class="main-button">How It Works</a>
+            <a id="infoButton" class="main-button">How It Works?</a>
+            <a id="calcButton" class="main-button">Export SPT Profile Stats</a>
         </div>
-          <div class="profile-calculator">
-            <h2>SPT Profile Calculator</h2>
-            <div class="header-buttons">
-                <button class="main-button" id="uploadButton">Calculate your SPT profile</button>
-                <input type="file" id="fileInput" accept=".json" style="display: none;"></input>
-            </div>
-            <div id="profile-info" class="profile-info"></div>
-          </div>
         <p id="status"></p>
         <div id="loadingNotification" class="animate animate__animated animate__fadeInUp" style="display: none;">Loading Players...</div>
         <table id="leaderboardTable" class="animate animate__animated animate__fadeIn">

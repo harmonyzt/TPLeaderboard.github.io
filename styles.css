@@ -386,9 +386,9 @@ button:hover {
 }
 
 .profile-calculator {
-    max-width: 600px;
+    max-width: 300px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px;
     border: 1px solid #ff7ab1;
     border-radius: 10px;
     background-color: #552626;
