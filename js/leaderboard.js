@@ -248,9 +248,9 @@ function calculateRanks(data) {
 
         // If player is not using Twitch Players (with intent that it's gonna be easier) tune down his total score
         // Very hacky, but should work for now
-        if(!player.isUsingTwitchPlayers){
-            player.totalScore -= 5;
-        }
+        //if(!player.isUsingTwitchPlayers){
+        //    player.totalScore -= 1;
+        //}
     });
 
     // Sorting by skill score
