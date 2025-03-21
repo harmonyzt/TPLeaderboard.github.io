@@ -220,17 +220,41 @@ button:hover {
 /* Styling names */
 .player-name.gold-name {
     font-family: Arial, Helvetica, sans-serif;
-    background: radial-gradient(#ff109b, #8c48fa);
+    background: linear-gradient(170deg, #0f3d3e, #b963ff, #1a4f4f);
     background-clip: border-box;
     background-size: 300% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 600;
-    animation: goldanim 4s ease-in-out infinite;
+    animation: glowanim 1s ease-in-out infinite;
     font-size: 1.4rem;
 }
 
-@keyframes goldanim {
+@keyframes glowanim {
+    0% {
+        text-shadow: 0 0 1px #b963ffc5, 0 0 2px #b963ffbe, 0 0 2px #0f3d3ebb;
+    }
+    50% {
+        text-shadow: 0 0 2px #b963ff, 0 0 4px #b963ff, 0 0 4px #0f3d3e;
+    }
+    100% {
+        text-shadow: 0 0 1px #b963ffc5, 0 0 2px #b963ffbe, 0 0 2px #0f3d3ebb;
+    }
+}
+
+.player-name.silver-name {
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(170deg, #a1fffa, #b1d5ff, #74d3ff);
+    background-clip: border-box;
+    background-size: 300% auto;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    animation: silveranim 4s ease-in-out infinite;
+    font-weight: 600;
+    font-size: 1.3em;
+}
+
+@keyframes silveranim {
     0% {
         background-position: 0% 50%;
     }
@@ -242,18 +266,6 @@ button:hover {
     100% {
         background-position: 0% 50%;
     }
-}
-
-.player-name.silver-name {
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(170deg, #0f3d3e, #b963ff, #1a4f4f);
-    background-clip: border-box;
-    background-size: 300% auto;
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
-    animation: goldanim 4s ease-in-out infinite;
-    font-weight: 600;
-    font-size: 1.3em;
 }
 
 .player-name.bronze-name {
