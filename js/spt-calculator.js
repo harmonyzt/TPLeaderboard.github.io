@@ -17,7 +17,7 @@ function formatTimeToDate(unixTimestamp) {
     const date = new Date(unixTimestamp * 1000);
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear(); // Год
+    const year = date.getFullYear();
 
     return `${day}.${month}.${year}`;
 }
@@ -57,7 +57,8 @@ fileInput.addEventListener('change', (event) => {
             const LifeTimeMinutesAverage = LifeTimeMinutes / totalRaids;
             const averageLifeTimeFormatted = formatTime(LifeTimeMinutesAverage);
 
-            // If TP is installed
+
+
             const isModFound = findValueByKey(profile.spt.mods, "[SAIN] Twitch Players", true)
 
             // Assigning a new record of profile
@@ -72,7 +73,7 @@ fileInput.addEventListener('change', (event) => {
                 averageLifeTime: averageLifeTimeFormatted,
                 accountType: profile.characters.pmc.Info.GameVersion,
                 isUsingTwitchPlayers: isModFound,
-                sptVer: profile.spt.version,
+                sptVer: 1,
             };
 
             // Showing stats

@@ -155,6 +155,18 @@
             "accountType": "standard",
             "isUsingTwitchPlayers": false,
             "sptVer": "3.5.5"
+        },
+        {
+            "name": "Ha4ik",
+            "lastPlayed": "16.10.2023",
+            "pmcLevel": "19",
+            "totalRaids": "55",
+            "survivedToDiedRatio": "80",
+            "killToDeathRatio": "19.1",
+            "averageLifeTime": "9:24",
+            "accountType": "standard",
+            "isUsingTwitchPlayers": false,
+            "sptVer": "3.7.0"
         }
     ]
 }

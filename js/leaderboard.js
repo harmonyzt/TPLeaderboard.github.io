@@ -233,13 +233,13 @@ function addColorIndicators(data) {
 // Ranking calculation (needed comments for this one)
 function calculateRanks(data) {
     data.forEach(player => {
-        const kdrScore = player.killToDeathRatio * 0.2; // 30% weight
-        const sdrScore = player.survivedToDiedRatio * 0.2; // 30% weight
-        const raidsScore = Math.log(player.totalRaids + 1) * 0.3; // 30% weight with smoothing
-        const pmcLevelScore = player.pmcLevel * 0.3; // 20% weight
+        const kdrScore = player.killToDeathRatio * 0.2; // 20% weight
+        const sdrScore = player.survivedToDiedRatio * 0.2; // 20% weight
+        const raidsScore = player.totalRaids * 0.4; // 40% weight with smoothing
+        const pmcLevelScore = player.pmcLevel * 0.2; // 20% weight
 
         // Total score
-        player.totalScore = kdrScore + sdrScore + raidsScore + pmcLevelScore;
+        player.totalScore = kdrScore + sdrScore + Math.log(raidsScore) + pmcLevelScore;
 
         // Tune the player skill score down if he has less than 30 raids
         if (player.totalRaids < 30) {
@@ -248,9 +248,9 @@ function calculateRanks(data) {
 
         // If player is not using Twitch Players (with intent that it's gonna be easier) tune down his total score
         // Very hacky, but should work for now
-        //if(!player.isUsingTwitchPlayers){
-        //    player.totalScore -= 1;
-        //}
+        if(!player.isUsingTwitchPlayers){
+            player.totalScore -= 5;
+        }
     });
 
     // Sorting by skill score
