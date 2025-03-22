@@ -57,8 +57,6 @@ fileInput.addEventListener('change', (event) => {
             const LifeTimeMinutesAverage = LifeTimeMinutes / totalRaids;
             const averageLifeTimeFormatted = formatTime(LifeTimeMinutesAverage);
 
-
-
             const isModFound = findValueByKey(profile.spt.mods, "[SAIN] Twitch Players", true)
 
             // Assigning a new record of profile
@@ -73,7 +71,7 @@ fileInput.addEventListener('change', (event) => {
                 averageLifeTime: averageLifeTimeFormatted,
                 accountType: profile.characters.pmc.Info.GameVersion,
                 isUsingTwitchPlayers: isModFound,
-                sptVer: 1,
+                sptVer: profile.spt.version,
             };
 
             // Showing stats

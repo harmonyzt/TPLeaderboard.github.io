@@ -242,9 +242,7 @@ function calculateRanks(data) {
         player.totalScore = kdrScore + sdrScore + Math.log(raidsScore) + pmcLevelScore;
 
         // Tune the player skill score down if he has less than 30 raids
-        if (player.totalRaids < 30) {
-            player.totalScore = 0;
-        }
+
 
         // If player is not using Twitch Players (with intent that it's gonna be easier) tune down his total score
         // Very hacky, but should work for now
@@ -273,17 +271,17 @@ function calculateRanks(data) {
 
 function getRankLabel(totalScore) {
     if (totalScore < 15) return 'L-';
-    if (totalScore < 17) return 'L';
-    if (totalScore < 20) return 'L+';
-    if (totalScore < 23) return 'M-';
-    if (totalScore < 24) return 'M';
-    if (totalScore < 25) return 'M+';
-    if (totalScore < 30) return 'H-';
-    if (totalScore < 35) return 'H';
-    if (totalScore < 40) return 'H+';
-    if (totalScore < 60) return 'P-';
-    if (totalScore < 80) return 'P';
-    if (totalScore < 100) return 'P+';
+    if (totalScore < 16) return 'L';
+    if (totalScore < 17) return 'L+';
+    if (totalScore < 18) return 'M-';
+    if (totalScore < 19) return 'M';
+    if (totalScore < 20) return 'M+';
+    if (totalScore < 21) return 'H-';
+    if (totalScore < 23) return 'H';
+    if (totalScore < 24) return 'H+';
+    if (totalScore < 25) return 'P-';
+    if (totalScore < 27) return 'P';
+    if (totalScore < 30) return 'P+';
     return 'G';
 }
 
