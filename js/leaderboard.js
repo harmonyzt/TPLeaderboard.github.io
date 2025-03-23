@@ -369,6 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const calcButton = document.getElementById('calcButton');
     const closeButtons = document.querySelectorAll('.close');
 
+    // Terrible. I get filled with rage while looking at this.
     if (infoButton && infoModal && calcButton && calcModal && closeButtons.length) {
         infoButton.addEventListener('click', () => {
             infoModal.style.display = 'block';
@@ -424,13 +425,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'just now';
     }
 
-    // Load date (yes I use two similar functions because fuck JS)
+    // Load date from file and conert it to text (yes I use two similar functions because fuck JS)
     fetch('js/last-updated.txt')
         .then(response => response.text())
         .then(data => {
             const dateParts = data.split(/[ .:]/);
             const year = parseInt(dateParts[0], 10);
-            const month = parseInt(dateParts[1], 10) - 1; // JS is so stupid holy fuck
+            const month = parseInt(dateParts[1], 10) - 1; // stupid (js months starts from 0)
             const day = parseInt(dateParts[2], 10);
             const hour = parseInt(dateParts[3], 10);
             const minute = parseInt(dateParts[4], 10);
