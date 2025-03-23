@@ -29,8 +29,13 @@ h1 {
     /* Меньше размытие */
 }
 
-.old-version {
+.outdated-version {
     color: #f6c65d;
+    font-weight: bold;
+}
+
+.old-version {
+    color: #da6879;
     font-weight: bold;
 }
 
@@ -187,7 +192,7 @@ button:hover {
 }
 
 .average {
-    color: #f68d5d;
+    color: #f6d25d;
     font-weight: bold;
 }
 

@@ -48,19 +48,18 @@ function displayLeaderboard(data) {
             nameClass = 'bronze-name';
         }
 
+        // Format the date from user profile (Last Session)
         function formatLastPlayed(dateString) {
             const [day, month, year] = dateString.split('.').map(Number);
             const lastPlayedDate = new Date(year, month - 1, day);
-
             const currentDate = new Date();
         
             currentDate.setHours(0, 0, 0, 0);
             lastPlayedDate.setHours(0, 0, 0, 0);
-
+        
             const timeDifference = currentDate - lastPlayedDate;
             const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
         
-
             if (daysDifference === 0) {
                 return 'just now';
             } else if (daysDifference === 1) {
@@ -69,17 +68,23 @@ function displayLeaderboard(data) {
                 return `${daysDifference}d ago`;
             } else if (daysDifference < 365) {
                 const monthsDifference = Math.floor(daysDifference / 30);
-                return `${monthsDifference}mo ago`;
+                const remainingDays = daysDifference % 30;
+                return `${monthsDifference}mo${remainingDays > 0 ? ` ${remainingDays}d` : ''} ago`;
             } else {
                 const yearsDifference = Math.floor(daysDifference / 365);
-                return `${yearsDifference}y ago`;
+                const remainingDaysAfterYears = daysDifference % 365;
+                const monthsDifference = Math.floor(remainingDaysAfterYears / 30);
+        
+                let result = `${yearsDifference}y`;
+                if (monthsDifference > 0) result += ` ${monthsDifference}mo`;
+                return `${result} ago`;
             }
         }
 
         // Turning last game to ago
         let lastGame = formatLastPlayed(player.lastPlayed)
 
-        // EFT Account icons and colors
+        // EFT Account icons and colors handling
         let accountIcon = '';
         let accountColor = '';
         switch (player.accountType) {
@@ -104,21 +109,36 @@ function displayLeaderboard(data) {
         // Get skill
         const rankLabel = getRankLabel(player.totalScore);
 
-        // Compare SPT version of user
-        const sptVerClass = compareVersions(player.sptVer, '3.11.1') < 0 ? 'old-version' : 'current-version';
+        // Compare SPT version of the user
+        function getSptVerClass(playerVersion) {
+            const latestVersion = '3.11.1'; // Newest SPT ver
+            const outdatedVersion = '3.10.0'; // Outdated SPT
+        
+            if (compareVersions(playerVersion, latestVersion) >= 0) {
+                return 'current-version';
+            }
+
+            if (compareVersions(playerVersion, outdatedVersion) >= 0) {
+                return 'outdated-version';
+            }
+        
+            return 'old-version';
+        }
+        
+        // Recognize the version of SPT
         function compareVersions(version1, version2) {
             const v1 = version1.split('.').map(Number);
             const v2 = version2.split('.').map(Number);
-
+        
             for (let i = 0; i < Math.max(v1.length, v2.length); i++) {
                 const part1 = v1[i] || 0;
                 const part2 = v2[i] || 0;
-
+        
                 if (part1 > part2) return 1;  // version1 > version2
                 if (part1 < part2) return -1; // version1 < version2
             }
-
-            return 0;
+        
+            return 0; // version1 == version2
         }
 
         row.innerHTML = `
@@ -132,7 +152,7 @@ function displayLeaderboard(data) {
             <td class="${player.averageLifeTimeClass}">${player.averageLifeTime}</td>
             <td>${player.totalScore <= 0 ? 'Calibrating...' : player.totalScore.toFixed(2)} ${player.totalScore <= 0 ? '' : `(${rankLabel})`}</td>
             <td>${TPicon}</td>
-            <td class="${sptVerClass}">${player.sptVer}</td>
+            <td class="${getSptVerClass(player.sptVer)}">${player.sptVer}</td>
         `;
 
         tableBody.appendChild(row);
@@ -242,13 +262,16 @@ function calculateRanks(data) {
         player.totalScore = kdrScore + sdrScore + Math.log(raidsScore) + pmcLevelScore;
 
         // Tune the player skill score down if he has less than 30 raids
-
+        if (player.totalRaids <= 30) {
+            player.totalScore = 0;
+        }
 
         // If player is not using Twitch Players (with intent that it's gonna be easier) tune down his total score
         // Very hacky, but should work for now
-        if(!player.isUsingTwitchPlayers){
+        if (!player.isUsingTwitchPlayers) {
             player.totalScore -= 5;
         }
+
     });
 
     // Sorting by skill score
@@ -376,7 +399,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    // format time diff
     function formatTimeDifference(date) {
         const now = new Date();
         const diffInSeconds = Math.floor((now - date) / 1000); // Difference in seconds
