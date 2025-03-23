@@ -239,9 +239,11 @@ button:hover {
     0% {
         text-shadow: 0 0 1px #b963ffc5, 0 0 2px #b963ffbe, 0 0 2px #0f3d3ebb;
     }
+
     50% {
         text-shadow: 0 0 2px #b963ff, 0 0 4px #b963ff, 0 0 4px #0f3d3e;
     }
+
     100% {
         text-shadow: 0 0 1px #b963ffc5, 0 0 2px #b963ffbe, 0 0 2px #0f3d3ebb;
     }
@@ -409,17 +411,43 @@ button:hover {
     border: 1px solid #ff7ab1;
     border-radius: 10px;
     background-color: #552626;
-  }
+}
 
-  .profile-calculator h2 {
+.profile-calculator h2 {
     text-align: center;
-  }
-  
-  .profile-info {
+}
+
+.profile-info {
     margin-bottom: 20px;
-  }
-  
-  .profile-info p {
+}
+
+.profile-info p {
     margin: 10px 0;
     font-size: 16px;
-  }
+}
+
+#seasonAnnouncement {
+    background-color: #81313e91;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    max-width: 800px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    color: #f6c65d;
+    border: 2px solid #ff304f;
+}
+
+#seasonAnnouncement h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #f6c65d;
+}
+
+#seasonAnnouncement p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    color: #ffffff;
+}

@@ -61,7 +61,6 @@
                         <input type="file" id="fileInput" accept=".json" style="display: none;"></input>
                     </div>
                     <div id="profile-info" class="profile-info"></div>
-                  
                 <h2> How this works? </h2>
                 <p> This will calculate all your statistics of your SPT Profile which you can later submit to the leaderboard via the link inside this pop-up </p>
                 <h2> Where do I find my profile? </h2>
@@ -73,7 +72,12 @@
                 <p> To find which exactly profile you wanna choose, you can open your SPT Server and SPT Launcher, log into your desired profile and see the ID under your nickname which will represent the name of .json file you wanna see. </p>
             </div>
         </div>
-        <div class="stats-container">
+        <div id="seasonAnnouncement" class="animate animate__animated animate__fadeIn">
+            <h2>Season 1 is Coming Soon!</h2>
+            <p>The first season of the SPT Leaderboard is about to launch. Climb the ranks, outplay your opponents, and show them how it's done!</p>
+            <p>Just around the corner.</p>
+        </div>
+        <div class="stats-container animate animate__animated animate__fadeIn">
             <h2>Overall Statistics</h2>
             <p class="update-info">Latest leaderboard update was <span id="highlight"></span></p>
             <div class="stats-grid">
@@ -103,7 +107,7 @@
                 </div>
             </div>
         </div>
-        <div class="header-buttons">
+        <div class="header-buttons animate animate__animated animate__fadeIn">
             <a href="https://harmonyzt.github.io/twitchplayers.github.io/" class="main-button">To Main Page</a>
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9ECEzK8q-nUwmxJzUw4QZ7n8Hek9q9odRXyGSzx3fa7C-wg/viewform?usp=dialog" class="main-button" id="submitStats">Submit Your Stats</a>
             <a id="infoButton" class="main-button">How It Works?</a>

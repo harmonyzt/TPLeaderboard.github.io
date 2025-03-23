@@ -59,7 +59,7 @@ fileInput.addEventListener('change', (event) => {
 
             const isModFound = findValueByKey(profile.spt.mods, "[SAIN] Twitch Players", true)
 
-            // Assigning a new record of profile
+            // Assigning a new record
             const requiredData = {
                 id: profile.info.id,
                 name: profile.characters.pmc.Info.Nickname,
@@ -74,7 +74,7 @@ fileInput.addEventListener('change', (event) => {
                 sptVer: profile.spt.version,
             };
 
-            // Showing stats
+            // Displaying profile info to the user
             profileInfo.innerHTML = `
                 <p><strong>ID:</strong> ${requiredData.id}</p>
                 <p><strong>Name:</strong> ${requiredData.name}</p>
@@ -98,6 +98,7 @@ fileInput.addEventListener('change', (event) => {
 
 // Find keys in Items stats of EFT profile
 function findValueByKey(data, key, isModSearch = false) {
+    // If we looking for a specific mod in the profile
     if (isModSearch) {
         const mod = data.find((mod) => mod.name === key);
         return mod !== undefined;

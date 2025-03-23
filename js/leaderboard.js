@@ -48,18 +48,18 @@ function displayLeaderboard(data) {
             nameClass = 'bronze-name';
         }
 
-        // Format the date from user profile (Last Session)
+        // Format the date from user profile (Last Raid tab)
         function formatLastPlayed(dateString) {
             const [day, month, year] = dateString.split('.').map(Number);
             const lastPlayedDate = new Date(year, month - 1, day);
             const currentDate = new Date();
-        
+
             currentDate.setHours(0, 0, 0, 0);
             lastPlayedDate.setHours(0, 0, 0, 0);
-        
+
             const timeDifference = currentDate - lastPlayedDate;
             const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        
+
             if (daysDifference === 0) {
                 return 'just now';
             } else if (daysDifference === 1) {
@@ -74,8 +74,9 @@ function displayLeaderboard(data) {
                 const yearsDifference = Math.floor(daysDifference / 365);
                 const remainingDaysAfterYears = daysDifference % 365;
                 const monthsDifference = Math.floor(remainingDaysAfterYears / 30);
-        
+
                 let result = `${yearsDifference}y`;
+
                 if (monthsDifference > 0) result += ` ${monthsDifference}mo`;
                 return `${result} ago`;
             }
@@ -112,8 +113,8 @@ function displayLeaderboard(data) {
         // Compare SPT version of the user
         function getSptVerClass(playerVersion) {
             const latestVersion = '3.11.1'; // Newest SPT ver
-            const outdatedVersion = '3.10.0'; // Outdated SPT
-        
+            const outdatedVersion = '3.10'; // Outdated SPT
+
             if (compareVersions(playerVersion, latestVersion) >= 0) {
                 return 'current-version';
             }
@@ -121,23 +122,23 @@ function displayLeaderboard(data) {
             if (compareVersions(playerVersion, outdatedVersion) >= 0) {
                 return 'outdated-version';
             }
-        
+
             return 'old-version';
         }
-        
+
         // Recognize the version of SPT
         function compareVersions(version1, version2) {
             const v1 = version1.split('.').map(Number);
             const v2 = version2.split('.').map(Number);
-        
+
             for (let i = 0; i < Math.max(v1.length, v2.length); i++) {
                 const part1 = v1[i] || 0;
                 const part2 = v2[i] || 0;
-        
+
                 if (part1 > part2) return 1;  // version1 > version2
                 if (part1 < part2) return -1; // version1 < version2
             }
-        
+
             return 0; // version1 == version2
         }
 
