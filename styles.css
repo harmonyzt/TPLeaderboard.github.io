@@ -44,22 +44,26 @@ h1 {
     font-weight: bold;
 }
 
-#loadingNotification {
+/* Leaderboard notifications */
+#loadingNotification,
+#emptyLeaderboardNotification {
     position: fixed;
-    font-weight: 700;
-    font-family: "Open Sans", sans-serif;
-    text-transform: uppercase;
-    top: 70%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: rgba(163, 75, 75, 0.8);
     color: white;
     padding: 20px;
-    border-radius: 10px;
     z-index: 1000;
-    margin-top: 50px;
-    display: none;
+    font-weight: 700;
+    font-family: "Open Sans", sans-serif;
+    text-transform: uppercase;
+    text-align: center;
 }
+
 
 table {
     width: 100%;
@@ -138,6 +142,32 @@ td {
 
 td:nth-child(2) {
     font-weight: bold;
+}
+
+.season-selector {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.season-selector label {
+    font-size: 1.1rem;
+    color: #f6c65d;
+    margin-right: 10px;
+}
+
+.season-selector select {
+    padding: 8px 12px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #b91a34;
+    color: #f6c65d;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.season-selector select:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 button {
@@ -426,6 +456,7 @@ button:hover {
     font-size: 16px;
 }
 
+/* Announcement */
 #seasonAnnouncement {
     background-color: #81313e91;
     padding: 20px;
@@ -436,6 +467,8 @@ button:hover {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     color: #f6c65d;
     border: 2px solid #ff304f;
+    position: relative;
+    transition: all 0.5s ease;
 }
 
 #seasonAnnouncement h2 {
@@ -444,10 +477,35 @@ button:hover {
     text-transform: uppercase;
     letter-spacing: 2px;
     color: #f6c65d;
+    padding-right: 30px;
 }
 
 #seasonAnnouncement p {
     font-size: 1.2rem;
     margin: 10px 0;
     color: #ffffff;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 5px 10px;
+    line-height: 1;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-btn:hover {
+    background: rgba(255, 48, 79, 0.3);
 }

@@ -1,26 +1,84 @@
 // When data loaded
-document.addEventListener('DOMContentLoaded', loadLeaderboardData);
+document.addEventListener('DOMContentLoaded', detectSeasons);
 
 let leaderboardData = []; // For keeping data
 let sortDirection = {}; // Sort direction
+let seasons = []; // Storing seasons
 
-// Loading data.json
-async function loadLeaderboardData() {
+async function checkSeasonExists(seasonNumber) {
+    try {
+        const response = await fetch(`seasons/season${seasonNumber}.json`);
+        return response.ok;
+    } catch (error) {
+        return false;
+    }
+}
+
+// Detect available seasons
+async function detectSeasons() {
+    let seasonNumber = 0;
+    seasons = [];
+
+    while (await checkSeasonExists(seasonNumber)) {
+        seasons.push(seasonNumber);
+        seasonNumber++;
+    }
+
+    seasons.sort((a, b) => b - a);
+
+    populateSeasonDropdown();
+    if (seasons.length > 0) {
+        loadLeaderboardData(seasons[0]); // Load the latest season data
+    }
+}
+
+function populateSeasonDropdown() {
+    const seasonSelect = document.getElementById('seasonSelect');
+    seasonSelect.innerHTML = '';
+
+    seasons.forEach(season => {
+        const option = document.createElement('option');
+        option.value = season;
+        option.textContent = `Season ${season}`;
+        seasonSelect.appendChild(option);
+    });
+
+    // Reload leaderboard on season select
+    seasonSelect.addEventListener('change', (event) => {
+        const selectedSeason = event.target.value;
+        loadLeaderboardData(selectedSeason);
+    });
+}
+
+// Called upon season detection or change by detectSeasons() + populateSeasonDropdown()
+async function loadLeaderboardData(season) {
     const loadingNotification = document.getElementById('loadingNotification');
-    loadingNotification.style.display = 'block';
+    const emptyLeaderboardNotification = document.getElementById('emptyLeaderboardNotification');
+
+    emptyLeaderboardNotification.style.display = 'none';
 
     try {
-        const response = await fetch('js/data.json');
+        const response = await fetch(`seasons/season${season}.json`);
         if (!response.ok) {
             throw new Error('Failed to load leaderboard data');
         }
         const data = await response.json();
         leaderboardData = data.leaderboard;
-        addColorIndicators(leaderboardData);
-        calculateRanks(leaderboardData);
-        calculateOverallStats(leaderboardData);
-        displayLeaderboard(leaderboardData);
-        addSortListeners();
+
+        // Show the notification if the leaderboard is empty. Displaying numbers is hacky so force to calc nothing lmao
+        if (leaderboardData.length === 0 || (leaderboardData.length === 1 && Object.keys(leaderboardData[0]).length === 0)) {
+            emptyLeaderboardNotification.style.display = 'block';
+            displayLeaderboard(leaderboardData);
+            calculateOverallStats(leaderboardData);
+        } else {
+            // Proceed with normal leaderboard display logic
+            loadingNotification.style.display = 'block';
+            addColorIndicators(leaderboardData);
+            calculateRanks(leaderboardData);
+            calculateOverallStats(leaderboardData);
+            displayLeaderboard(leaderboardData);
+            addSortListeners();
+        }
     } catch (error) {
         console.error('Error loading leaderboard data:', error);
     } finally {
@@ -48,7 +106,7 @@ function displayLeaderboard(data) {
             nameClass = 'bronze-name';
         }
 
-        // Format the date from user profile (Last Raid tab)
+        // Format the date from user profile (Last Raid row)
         function formatLastPlayed(dateString) {
             const [day, month, year] = dateString.split('.').map(Number);
             const lastPlayedDate = new Date(year, month - 1, day);
@@ -82,7 +140,7 @@ function displayLeaderboard(data) {
             }
         }
 
-        // Turning last game to ago
+        // Turning last game to 'x days/years ago'
         let lastGame = formatLastPlayed(player.lastPlayed)
 
         // EFT Account icons and colors handling
@@ -113,7 +171,7 @@ function displayLeaderboard(data) {
         // Compare SPT version of the user
         function getSptVerClass(playerVersion) {
             const latestVersion = '3.11.1'; // Newest SPT ver
-            const outdatedVersion = '3.10'; // Outdated SPT
+            const outdatedVersion = '3.10'; // Outdated SPT ver. Everything below that version will be old versions
 
             if (compareVersions(playerVersion, latestVersion) >= 0) {
                 return 'current-version';
@@ -256,7 +314,7 @@ function calculateRanks(data) {
     data.forEach(player => {
         const kdrScore = player.killToDeathRatio * 0.2; // 20% weight
         const sdrScore = player.survivedToDiedRatio * 0.2; // 20% weight
-        const raidsScore = player.totalRaids * 0.4; // 40% weight with smoothing
+        const raidsScore = player.totalRaids * 0.4; // 40% weight
         const pmcLevelScore = player.pmcLevel * 0.2; // 20% weight
 
         // Total score
@@ -364,40 +422,46 @@ function animateNumber(elementId, targetValue, decimals = 0) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const infoModal = document.getElementById('infoModal');
-    const infoButton = document.getElementById('infoButton');
-    const calcModal = document.getElementById('calcModal');
-    const calcButton = document.getElementById('calcButton');
-    const closeButtons = document.querySelectorAll('.close');
+    const elements = {
+        infoModal: document.getElementById('infoModal'),
+        infoButton: document.getElementById('infoButton'),
+        calcModal: document.getElementById('calcModal'),
+        calcButton: document.getElementById('calcButton'),
+        closeButtons: document.querySelectorAll('.close')
+    };
 
-    // Terrible. I get filled with rage while looking at this.
-    if (infoButton && infoModal && calcButton && calcModal && closeButtons.length) {
-        infoButton.addEventListener('click', () => {
-            infoModal.style.display = 'block';
-        });
+    // Check if all elements exist
+    const allElementsExist = Object.values(elements).every(element =>
+        element && (element.length === undefined || element.length > 0)
+    );
 
-        calcButton.addEventListener('click', () => {
-            calcModal.style.display = 'block';
-        });
-
-        closeButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                infoModal.style.display = 'none';
-                calcModal.style.display = 'none';
-            });
-        });
-
-        window.addEventListener('click', (event) => {
-            if (event.target === infoModal) {
-                infoModal.style.display = 'none';
-            }
-            if (event.target === calcModal) {
-                calcModal.style.display = 'none';
-            }
-        });
-    } else {
-        console.error('Cant find elements for modal');
+    if (!allElementsExist) {
+        console.error('Cannot find elements for modal');
+        return;
     }
+
+    // Helper function to toggle modal visibility
+    const toggleModal = (modal, displayValue) => {
+        modal.style.display = displayValue;
+    };
+
+    // Event listeners for opening modals
+    elements.infoButton.addEventListener('click', () => toggleModal(elements.infoModal, 'block'));
+    elements.calcButton.addEventListener('click', () => toggleModal(elements.calcModal, 'block'));
+
+    // Event listeners for closing modals
+    elements.closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            toggleModal(elements.infoModal, 'none');
+            toggleModal(elements.calcModal, 'none');
+        });
+    });
+
+    // Close modals when clicking outside
+    window.addEventListener('click', (event) => {
+        if (event.target === elements.infoModal) toggleModal(elements.infoModal, 'none');
+        if (event.target === elements.calcModal) toggleModal(elements.calcModal, 'none');
+    });
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -426,7 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'just now';
     }
 
-    // Load date from file and conert it to text (yes I use two similar functions because fuck JS)
+    // Load date from file and convert it to text (yes I use two similar functions because fuck JS)
     fetch('js/last-updated.txt')
         .then(response => response.text())
         .then(data => {
@@ -444,4 +508,25 @@ document.addEventListener('DOMContentLoaded', () => {
             // Display
             document.getElementById('highlight').textContent = formattedDifference;
         }).catch(error => console.error('Error loading date:', error));
+});
+
+// Close modal function
+document.addEventListener('DOMContentLoaded', function () {
+    const announcement = document.getElementById('seasonAnnouncement');
+    const closeBtn = document.getElementById('closeAnnouncement');
+
+    if (localStorage.getItem('announcementClosed') === 'true') {
+        announcement.style.display = 'none';
+    }
+
+    closeBtn.addEventListener('click', function () {
+        announcement.style.display = 'none';
+        localStorage.setItem('announcementClosed', 'true');
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            closeBtn.click();
+        }
+    });
 });

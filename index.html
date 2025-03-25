@@ -73,7 +73,8 @@
             </div>
         </div>
         <div id="seasonAnnouncement" class="animate animate__animated animate__fadeIn">
-            <h2>Season 1 is Coming Soon!</h2>
+            <button id="closeAnnouncement" class="close-btn">×</button>
+            <h2>Season 1 is Starting Soon!</h2>
             <p>The first season of the SPT Leaderboard is about to launch. Climb the ranks, outplay your opponents, and show them how it's done!</p>
             <p>Just around the corner.</p>
         </div>
@@ -113,8 +114,12 @@
             <a id="infoButton" class="main-button">How It Works?</a>
             <a id="calcButton" class="main-button">Export SPT Profile Stats</a>
         </div>
+        <div class="season-selector">
+            <label for="seasonSelect">Season:</label>
+            <select id="seasonSelect">
+            </select>
+        </div>
         <p id="status"></p>
-        <div id="loadingNotification" class="animate animate__animated animate__fadeInUp" style="display: none;">Loading Players...</div>
         <table id="leaderboardTable" class="animate animate__animated animate__fadeIn">
             <thead>
                 <tr>
@@ -134,6 +139,10 @@
             <tbody>
             </tbody>
         </table>
+        <div class="notification-container">
+            <div id="loadingNotification" class="animate animate__animated animate__fadeInUp" style="display: none;">Loading Players...</div>
+            <div id="emptyLeaderboardNotification" class="animate animate__animated animate__fadeInUp" style="display: none;">Whoops! Looks like leaderboard is empty. Be the first one to submit your stats!</div>
+        </div>
         <script src="js/spt-calculator.js"></script>
     </body>
 
