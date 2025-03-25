@@ -56,6 +56,7 @@ async function loadLeaderboardData(season) {
     const emptyLeaderboardNotification = document.getElementById('emptyLeaderboardNotification');
 
     emptyLeaderboardNotification.style.display = 'none';
+    loadingNotification.style.display = 'block';
 
     try {
         const response = await fetch(`seasons/season${season}.json`);
@@ -72,7 +73,6 @@ async function loadLeaderboardData(season) {
             calculateOverallStats(leaderboardData);
         } else {
             // Proceed with normal leaderboard display logic
-            loadingNotification.style.display = 'block';
             addColorIndicators(leaderboardData);
             calculateRanks(leaderboardData);
             calculateOverallStats(leaderboardData);
