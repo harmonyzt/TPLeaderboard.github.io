@@ -167,6 +167,31 @@
             "accountType": "standard",
             "isUsingTwitchPlayers": false,
             "sptVer": "3.7.0"
+        },
+        {
+            "name": "sboy",
+            "lastPlayed": "09.03.2025",
+            "pmcLevel": "6",
+            "totalRaids": "4",
+            "survivedToDiedRatio": "100",
+            "killToDeathRatio": "32",
+            "averageLifeTime": "30:40",
+            "accountType": "standard",
+            "isUsingTwitchPlayers": true,
+            "sptVer": "3.10.5"
+        },
+        {
+            "name": "xXkenniiXx",
+            "lastPlayed": "29.03.2025",
+            "pmcLevel": "18",
+            "totalRaids": "68",
+            "survivedToDiedRatio": "42",
+            "killToDeathRatio": "5.08",
+            "averageLifeTime": "14:28",
+            "accountType": "standard",
+            "isUsingTwitchPlayers": false,
+            "sptVer": "3.11.1",
+            "fika": ""
         }
     ]
 }

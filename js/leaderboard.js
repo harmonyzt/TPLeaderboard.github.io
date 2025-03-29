@@ -320,16 +320,17 @@ function calculateRanks(data) {
         // Total score
         player.totalScore = kdrScore + sdrScore + Math.log(raidsScore) + pmcLevelScore;
 
-        // Tune the player skill score down if he has less than 30 raids
-        if (player.totalRaids <= 30) {
+        // Tune the player skill score down if he has less than 35 raids
+        if (player.totalRaids <= 35) {
             player.totalScore = 0;
         }
 
         // If player is not using Twitch Players (with intent that it's gonna be easier) tune down his total score
         // Very hacky, but should work for now
-        if (!player.isUsingTwitchPlayers) {
-            player.totalScore -= 5;
-        }
+        
+        //if (!player.isUsingTwitchPlayers) {
+        //    player.totalScore -= 5;
+        //}
 
     });
 
