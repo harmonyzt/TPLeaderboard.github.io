@@ -324,7 +324,8 @@ function calculateRanks(data) {
         const sdrScore = player.survivedToDiedRatio * 0.2; // 20% weight
         const raidsScore = player.totalRaids * 0.4; // 40% weight
         const pmcLevelScore = player.pmcLevel * 0.2; // 20% weight
-        const MIN_RAIDS = 35;  // Минимальное количество рейдов для полного рейтинга
+        
+        const MIN_RAIDS = 35; 
         const SOFT_CAP_RAIDS = 70;
 
         // Total score
