@@ -165,6 +165,13 @@ function displayLeaderboard(data) {
             TPicon = '❌';
         }
 
+        let fikaIcon = '';
+        if (player.fika) {
+            fikaIcon = '✅';
+        } else {
+            fikaIcon = '❌';
+        }
+
         // Get skill
         const rankLabel = getRankLabel(player.totalScore);
 
@@ -211,6 +218,7 @@ function displayLeaderboard(data) {
             <td class="${player.averageLifeTimeClass}">${player.averageLifeTime}</td>
             <td>${player.totalScore <= 0 ? 'Calibrating...' : player.totalScore.toFixed(2)} ${player.totalScore <= 0 ? '' : `(${rankLabel})`}</td>
             <td>${TPicon}</td>
+            <td>${fikaIcon}</td>
             <td class="${getSptVerClass(player.sptVer)}">${player.sptVer}</td>
         `;
 

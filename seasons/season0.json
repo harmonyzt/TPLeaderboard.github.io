@@ -10,7 +10,8 @@
             "averageLifeTime": "10:29",
             "accountType": "standard",
             "isUsingTwitchPlayers": true,
-            "sptVer": "3.10.5"
+            "sptVer": "3.10.5",
+            "fika": true
         },
         {
             "name": "LiveOrDie",
@@ -22,7 +23,8 @@
             "averageLifeTime": "12:25",
             "accountType": "standard",
             "isUsingTwitchPlayers": true,
-            "sptVer": "3.10.5"
+            "sptVer": "3.10.5",
+            "fika": true
         },
         {
             "name": "freshman",
@@ -34,7 +36,8 @@
             "averageLifeTime": "00:13",
             "accountType": "standard",
             "isUsingTwitchPlayers": false,
-            "sptVer": "3.11.1"
+            "sptVer": "3.11.1",
+            "fika": false
         },
         {
             "name": "nhui",
@@ -46,7 +49,8 @@
             "averageLifeTime": "14:58",
             "accountType": "standard",
             "isUsingTwitchPlayers": true,
-            "sptVer": "3.10.5"
+            "sptVer": "3.10.5",
+            "fika": true
         },
         {
             "name": "misery__",
@@ -70,7 +74,8 @@
             "averageLifeTime": "15:11",
             "accountType": "standard",
             "isUsingTwitchPlayers": true,
-            "sptVer": "3.10.5"
+            "sptVer": "3.10.5",
+            "fika": true
         },
         {
             "name": "BOSINN",
@@ -82,7 +87,8 @@
             "averageLifeTime": "09:51",
             "accountType": "unheard_edition",
             "isUsingTwitchPlayers": true,
-            "sptVer": "3.10.5"
+            "sptVer": "3.10.5",
+            "fika": true
         },
         {
             "name": "EvilArthas",
@@ -94,7 +100,8 @@
             "averageLifeTime": "11:23",
             "accountType": "standard",
             "isUsingTwitchPlayers": true,
-            "sptVer": "3.10.5"
+            "sptVer": "3.10.5",
+            "fika": true
         },
         {
             "name": "pro100oi_667",
@@ -106,7 +113,8 @@
             "averageLifeTime": "15:33",
             "accountType": "standard",
             "isUsingTwitchPlayers": true,
-            "sptVer": "3.10.5"
+            "sptVer": "3.10.5",
+            "fika": true
         },
         {
             "name": "Ahmed_Babajhon",
@@ -118,7 +126,8 @@
             "averageLifeTime": "10:41",
             "accountType": "standard",
             "isUsingTwitchPlayers": true,
-            "sptVer": "3.10.5"
+            "sptVer": "3.10.5",
+            "fika": true
         },
         {
             "name": "nissanGT",
@@ -130,7 +139,8 @@
             "averageLifeTime": "11:49",
             "accountType": "standard",
             "isUsingTwitchPlayers": true,
-            "sptVer": "3.10.5"
+            "sptVer": "3.10.5",
+            "fika": true
         },
         {
             "name": "weapon_smg1",
@@ -142,7 +152,8 @@
             "averageLifeTime": "11:32",
             "accountType": "standard",
             "isUsingTwitchPlayers": true,
-            "sptVer": "3.10.5"
+            "sptVer": "3.10.5",
+            "fika": true
         },
         {
             "name": "USSR_ENJOYER",
@@ -154,7 +165,8 @@
             "averageLifeTime": "14:32",
             "accountType": "standard",
             "isUsingTwitchPlayers": false,
-            "sptVer": "3.5.5"
+            "sptVer": "3.5.5",
+            "fika": false
         },
         {
             "name": "Ha4ik",
@@ -166,7 +178,8 @@
             "averageLifeTime": "9:24",
             "accountType": "standard",
             "isUsingTwitchPlayers": false,
-            "sptVer": "3.7.0"
+            "sptVer": "3.7.0",
+            "fika": false
         },
         {
             "name": "sboy",
@@ -178,7 +191,8 @@
             "averageLifeTime": "30:40",
             "accountType": "standard",
             "isUsingTwitchPlayers": true,
-            "sptVer": "3.10.5"
+            "sptVer": "3.10.5",
+            "fika": true
         },
         {
             "name": "xXkenniiXx",
@@ -191,7 +205,7 @@
             "accountType": "standard",
             "isUsingTwitchPlayers": false,
             "sptVer": "3.11.1",
-            "fika": ""
+            "fika": true
         }
     ]
 }
