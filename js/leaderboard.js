@@ -324,19 +324,27 @@ function calculateRanks(data) {
         const sdrScore = player.survivedToDiedRatio * 0.2; // 20% weight
         const raidsScore = player.totalRaids * 0.4; // 40% weight
         const pmcLevelScore = player.pmcLevel * 0.2; // 20% weight
+        const MIN_RAIDS = 35;  // Минимальное количество рейдов для полного рейтинга
+        const SOFT_CAP_RAIDS = 70;
 
         // Total score
         player.totalScore = kdrScore + sdrScore + Math.log(raidsScore) + pmcLevelScore;
 
         // Tune the player skill score down if he has less than 35 raids
-        if (player.totalRaids <= 35) {
-            player.totalScore = 0;
+        if (player.totalRaids <= MIN_RAIDS) {
+            player.totalScore *= 0.4;  // Setting rating lower by 70%
+        } else if (player.totalRaids < SOFT_CAP_RAIDS) {
+            const progress = (player.totalRaids - MIN_RAIDS) / (SOFT_CAP_RAIDS - MIN_RAIDS);
+            player.totalScore *= 0.3 + (0.7 * progress);
         }
 
         // If player is not using Twitch Players (with intent that it's gonna be easier) tune down his total score
-        // Very hacky, but should work for now
-        
         //if (!player.isUsingTwitchPlayers) {
+        //    player.totalScore -= 5;
+        //}
+
+        // If player is using Fika (with intent that it's gonna be easier) tune down his total score
+        //if (!player.fika) {
         //    player.totalScore -= 5;
         //}
 
@@ -361,8 +369,8 @@ function calculateRanks(data) {
 }
 
 function getRankLabel(totalScore) {
-    if (totalScore < 15) return 'L-';
-    if (totalScore < 16) return 'L';
+    if (totalScore < 5) return 'L-';
+    if (totalScore < 10) return 'L';
     if (totalScore < 17) return 'L+';
     if (totalScore < 18) return 'M-';
     if (totalScore < 19) return 'M';

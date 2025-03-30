@@ -206,6 +206,19 @@
             "isUsingTwitchPlayers": false,
             "sptVer": "3.11.1",
             "fika": true
+        },
+        {
+            "name": "daisling",
+            "lastPlayed": "30.03.2025",
+            "pmcLevel": "20",
+            "totalRaids": "23",
+            "survivedToDiedRatio": "73",
+            "killToDeathRatio": "27",
+            "averageLifeTime": "18:27",
+            "accountType": "edge_of_darkness",
+            "isUsingTwitchPlayers": false,
+            "sptVer": "3.11.1",
+            "fika": false
         }
     ]
 }
