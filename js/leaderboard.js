@@ -66,7 +66,7 @@ async function loadLeaderboardData(season) {
         const data = await response.json();
         leaderboardData = data.leaderboard;
 
-        // Show the notification if the leaderboard is empty. Displaying numbers is hacky so force to calc nothing lmao
+        // Show the notification if the leaderboard is empty. Displaying numbers is hacky so force to calculate nothing lmao
         if (leaderboardData.length === 0 || (leaderboardData.length === 1 && Object.keys(leaderboardData[0]).length === 0)) {
             emptyLeaderboardNotification.style.display = 'block';
             displayLeaderboard(leaderboardData);
@@ -177,7 +177,7 @@ function displayLeaderboard(data) {
 
         // Compare SPT version of the user
         function getSptVerClass(playerVersion) {
-            const latestVersion = '3.11.1'; // Newest SPT ver
+            const latestVersion = '3.11.2'; // Newest SPT ver
             const outdatedVersion = '3.10'; // Outdated SPT ver. Everything below that version will be old versions
 
             if (compareVersions(playerVersion, latestVersion) >= 0) {
@@ -324,8 +324,8 @@ function calculateRanks(data) {
         const sdrScore = player.survivedToDiedRatio * 0.2; // 20% weight
         const raidsScore = player.totalRaids * 0.4; // 40% weight
         const pmcLevelScore = player.pmcLevel * 0.2; // 20% weight
-        
-        const MIN_RAIDS = 35; 
+
+        const MIN_RAIDS = 35;
         const SOFT_CAP_RAIDS = 70;
 
         // Total score
@@ -345,7 +345,7 @@ function calculateRanks(data) {
         //}
 
         // If player is using Fika (with intent that it's gonna be easier) tune down his total score
-        //if (!player.fika) {
+        //if (player.fika) {
         //    player.totalScore -= 5;
         //}
 
