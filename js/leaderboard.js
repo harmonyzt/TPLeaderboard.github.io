@@ -567,7 +567,6 @@ async function loadPreviousSeasonWinners() {
         const data = await response.json();
         const previousSeasonData = data.leaderboard;
 
-        // Рассчитываем ранги и отображаем победителей
         calculateRanks(previousSeasonData);
         displayWinners(previousSeasonData);
     } catch (error) {
