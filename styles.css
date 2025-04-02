@@ -253,7 +253,7 @@ button:hover {
 }
 
 /* Styling names */
-.player-name.gold-name {
+.gold-name {
     font-family: Arial, Helvetica, sans-serif;
     background: linear-gradient(170deg, #0f3d3e, #b963ff, #1a4f4f);
     background-clip: border-box;
@@ -279,7 +279,7 @@ button:hover {
     }
 }
 
-.player-name.silver-name {
+.silver-name {
     font-family: Arial, Helvetica, sans-serif;
     background: linear-gradient(170deg, #a1fffa, #b1d5ff, #74d3ff);
     background-clip: border-box;
@@ -305,7 +305,7 @@ button:hover {
     }
 }
 
-.player-name.bronze-name {
+.bronze-name {
     color: #cd7f32;
     font-weight: bold;
     font-size: 1.15em;
@@ -508,4 +508,63 @@ button:hover {
 
 .close-btn:hover {
     background: rgba(255, 48, 79, 0.3);
+}
+
+.winners-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 15px;
+    margin: 20px;
+}
+
+.winner-card {
+    width: 300px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* first place */
+.winner-card:nth-child(2) {
+    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+}
+
+.winner-card:first-child,
+.winner-card:last-child {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(0.9);
+    opacity: 0.9;
+    padding: 10px 20px;
+}
+
+.winner-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.winner-rank {
+    color: gold;
+    margin: 5px 0;
+    font-weight: bold;
+}
+
+.winner-skill,
+.winner-stats {
+    margin: 5px 0;
+    font-size: 0.9em;
+    font-weight: bold;
+    color:#ffb4b4;
+}
+
+#winners h2 {
+    text-align: center;
 }

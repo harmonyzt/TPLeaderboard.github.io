@@ -16,7 +16,7 @@ async function checkSeasonExists(seasonNumber) {
 
 // Detect available seasons
 async function detectSeasons() {
-    let seasonNumber = 0;
+    let seasonNumber = 1;
     seasons = [];
 
     while (await checkSeasonExists(seasonNumber)) {
@@ -29,6 +29,7 @@ async function detectSeasons() {
     populateSeasonDropdown();
     if (seasons.length > 0) {
         loadLeaderboardData(seasons[0]); // Load the latest season data
+        loadPreviousSeasonWinners();
     }
 }
 
@@ -548,3 +549,68 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+// Loading previous season for leaders
+async function loadPreviousSeasonWinners() {
+    if (seasons.length < 2) {
+        console.log("Not enough seasons to show previous winners.");
+        return;
+    }
+
+    const previousSeason = seasons[seasons.length - 1];
+
+
+    try {
+        const response = await fetch(`seasons/season${previousSeason}.json`);
+        if (!response.ok) throw new Error('Failed to load previous season data');
+        
+        const data = await response.json();
+        const previousSeasonData = data.leaderboard;
+
+        // Рассчитываем ранги и отображаем победителей
+        calculateRanks(previousSeasonData);
+        displayWinners(previousSeasonData);
+    } catch (error) {
+        console.error('Error loading previous season:', error);
+    }
+}
+
+function displayWinners(data) {
+    const winnersTab = document.getElementById('winners');
+    
+    winnersTab.innerHTML = `
+        <h2>Previous Season Winners!</h2>
+    `;
+    
+    const top3Players = data.filter(player => player.rank <= 3);
+    const winnersContainer = document.createElement('div');
+    winnersContainer.className = 'winners-container';
+    
+    const orderedPlayers = [
+        top3Players.find(p => p.rank === 2),
+        top3Players.find(p => p.rank === 1),
+        top3Players.find(p => p.rank === 3)
+    ].filter(Boolean);
+    
+    orderedPlayers.forEach(player => {
+        winnersContainer.innerHTML += `
+            <div class="winner-card">
+                <p class="winner-name">${player.medal} ${player.name}</p>
+                <p class="winner-rank">${getRankText(player.rank)}</p>
+                <p class="winner-skill">SMI score: ${player.totalScore.toFixed(2)}</p>
+                <p class="winner-stats">Raids: ${player.totalRaids} | KDR: ${player.killToDeathRatio}</p>
+            </div>
+        `;
+    });
+    
+    winnersTab.appendChild(winnersContainer);
+}
+
+function getRankText(rank) {
+    switch(rank) {
+        case 1: return 'First place';
+        case 2: return 'Second place';
+        case 3: return 'Third place';
+        default: return '';
+    }
+}
