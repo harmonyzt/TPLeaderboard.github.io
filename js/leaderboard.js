@@ -559,7 +559,6 @@ async function loadPreviousSeasonWinners() {
 
     const previousSeason = seasons[seasons.length - 1];
 
-
     try {
         const response = await fetch(`seasons/season${previousSeason}.json`);
         if (!response.ok) throw new Error('Failed to load previous season data');
@@ -574,6 +573,7 @@ async function loadPreviousSeasonWinners() {
     }
 }
 
+// Display winners (from previous season)
 function displayWinners(data) {
     const winnersTab = document.getElementById('winners');
     

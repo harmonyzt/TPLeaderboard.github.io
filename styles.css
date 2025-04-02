@@ -26,7 +26,6 @@ h1 {
     text-transform: uppercase;
     letter-spacing: 2px;
     text-shadow: 0 0 1px #b91a34, 0 0 2px #b91a34, 0 0 3px #b91a34;
-    /* Меньше размытие */
 }
 
 .outdated-version {
