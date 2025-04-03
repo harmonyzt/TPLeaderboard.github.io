@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', detectSeasons);
 
 let leaderboardData = []; // For keeping data
+let allSeasonsData = []; // For keeping all players data
 let sortDirection = {}; // Sort direction
 let seasons = []; // Storing seasons
 
@@ -14,7 +15,7 @@ async function checkSeasonExists(seasonNumber) {
     }
 }
 
-// Detect available seasons
+// Detect available seasons (FIXME)
 async function detectSeasons() {
     let seasonNumber = 1;
     seasons = [];
@@ -27,9 +28,10 @@ async function detectSeasons() {
     seasons.sort((a, b) => b - a);
 
     populateSeasonDropdown();
-    if (seasons.length > 0) {
-        loadLeaderboardData(seasons[0]); // Load the latest season data
+    if (seasons.length > 1) {
         loadPreviousSeasonWinners();
+    } else {
+        loadLeaderboardData(seasons[0]); // Load the latest season data
     }
 }
 
@@ -37,6 +39,7 @@ function populateSeasonDropdown() {
     const seasonSelect = document.getElementById('seasonSelect');
     seasonSelect.innerHTML = '';
 
+    // Casual seasons
     seasons.forEach(season => {
         const option = document.createElement('option');
         option.value = season;
@@ -44,11 +47,85 @@ function populateSeasonDropdown() {
         seasonSelect.appendChild(option);
     });
 
-    // Reload leaderboard on season select
+    const allSeasonsOption = document.createElement('option');
+    allSeasonsOption.value = 'all';
+    allSeasonsOption.textContent = 'Global Leaderboard';
+    seasonSelect.appendChild(allSeasonsOption);
+
     seasonSelect.addEventListener('change', (event) => {
-        const selectedSeason = event.target.value;
-        loadLeaderboardData(selectedSeason);
+        const selectedValue = event.target.value;
+
+        if (selectedValue === 'all') {
+            loadAllSeasonsData();
+        } else {
+            loadLeaderboardData(selectedValue);
+        }
     });
+}
+
+// Called upon Global Leaderboard selection in drop-down menu populateSeasonDropdown()
+async function loadAllSeasonsData() {
+    const loadingNotification = document.getElementById('loadingNotification');
+    const emptyLeaderboardNotification = document.getElementById('emptyLeaderboardNotification');
+
+    emptyLeaderboardNotification.style.display = 'none';
+    loadingNotification.style.display = 'block';
+
+    try {
+        const uniquePlayers = {};
+
+        // Loop through all seasons data
+        for (const season of seasons) {
+            const response = await fetch(`seasons/season${season}.json`);
+            if (!response.ok) continue;
+
+            const data = await response.json();
+            if (data.leaderboard && data.leaderboard.length > 0) {
+                data.leaderboard.forEach(player => {
+                    // If we find a player with same name from two seasons (or more) choose most recent one
+                    if (!uniquePlayers[player.name] ||
+                        compareLastPlayed(player.lastPlayed, uniquePlayers[player.name].lastPlayed) > 0) {
+                        uniquePlayers[player.name] = {
+                            ...player,
+                            seasonsPlayed: uniquePlayers[player.name]
+                                ? [...uniquePlayers[player.name].seasonsPlayed, season]
+                                : [season]
+                        };
+                    }
+                });
+            }
+        }
+
+        // Turning everyone back into massive object (M-M-MASSIVE?)
+        allSeasonsCombinedData = Object.values(uniquePlayers);
+
+        if (allSeasonsCombinedData.length === 0) {
+            emptyLeaderboardNotification.style.display = 'block';
+        } else {
+            addColorIndicators(allSeasonsCombinedData);
+            calculateRanks(allSeasonsCombinedData);
+            calculateOverallStats(allSeasonsCombinedData);
+        }
+
+        displayLeaderboard(allSeasonsCombinedData);
+        addSortListeners();
+
+    } catch (error) {
+        console.error('Error loading all seasons data:', error);
+    } finally {
+        loadingNotification.style.display = 'none';
+    }
+}
+
+//"dd.mm.yyyy"
+function compareLastPlayed(dateStr1, dateStr2) {
+    const [d1, m1, y1] = dateStr1.split('.').map(Number);
+    const [d2, m2, y2] = dateStr2.split('.').map(Number);
+
+    const date1 = new Date(y1, m1 - 1, d1);
+    const date2 = new Date(y2, m2 - 1, d2);
+
+    return date1 - date2;
 }
 
 // Called upon season detection or change by detectSeasons() + populateSeasonDropdown()
@@ -70,8 +147,14 @@ async function loadLeaderboardData(season) {
         // Show the notification if the leaderboard is empty. Displaying numbers is hacky so force to calculate nothing lmao
         if (leaderboardData.length === 0 || (leaderboardData.length === 1 && Object.keys(leaderboardData[0]).length === 0)) {
             emptyLeaderboardNotification.style.display = 'block';
+            animateNumber('totalDeaths', 0);
+            animateNumber('totalDeathsFromTP', 0);
+            animateNumber('totalRaids', 0);
+            animateNumber('totalKills', 0);
+            animateNumber('averageKDR', 0, 2);
+            animateNumber('averageSurvival', 0, 2);
             displayLeaderboard(leaderboardData);
-            calculateOverallStats(leaderboardData);
+            return;
         } else {
             // Proceed with normal leaderboard display logic
             addColorIndicators(leaderboardData);
@@ -562,7 +645,7 @@ async function loadPreviousSeasonWinners() {
     try {
         const response = await fetch(`seasons/season${previousSeason}.json`);
         if (!response.ok) throw new Error('Failed to load previous season data');
-        
+
         const data = await response.json();
         const previousSeasonData = data.leaderboard;
 
@@ -576,21 +659,21 @@ async function loadPreviousSeasonWinners() {
 // Display winners (from previous season)
 function displayWinners(data) {
     const winnersTab = document.getElementById('winners');
-    
+
     winnersTab.innerHTML = `
-        <h2>Previous Season Winners!</h2>
+        <h2>Hall of Fame for our previous Champions!</h2>
     `;
-    
+
     const top3Players = data.filter(player => player.rank <= 3);
     const winnersContainer = document.createElement('div');
     winnersContainer.className = 'winners-container';
-    
+
     const orderedPlayers = [
         top3Players.find(p => p.rank === 2),
         top3Players.find(p => p.rank === 1),
         top3Players.find(p => p.rank === 3)
     ].filter(Boolean);
-    
+
     orderedPlayers.forEach(player => {
         winnersContainer.innerHTML += `
             <div class="winner-card">
@@ -601,12 +684,12 @@ function displayWinners(data) {
             </div>
         `;
     });
-    
+
     winnersTab.appendChild(winnersContainer);
 }
 
 function getRankText(rank) {
-    switch(rank) {
+    switch (rank) {
         case 1: return 'First place';
         case 2: return 'Second place';
         case 3: return 'Third place';

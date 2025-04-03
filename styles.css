@@ -599,6 +599,13 @@ button:hover, .main-button:hover {
     margin: 0 10px;
     position: relative;
     overflow: hidden;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: calc(var(--index) * 0.1s); /* Для последовательного появления */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* first place */

@@ -17,38 +17,72 @@
         <div id="infoModal" class="modal animate animate__animated animate__fadeIn">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <h2>How the Ranking System Works</h2>
-                <p> The ranking system is designed to provide a fair and balanced leaderboard by considering multiple factors. </p>
-                <h3>1. Leaderboard Abreviaturas</h3>
-                <p> Before stepping forward, here's explanation of the abreviaturas this leaderboard uses </p>
+                <h2>Ranking System Explained</h2>
+                <p>The leaderboard uses a weighted scoring system to calculate player performance across multiple metrics.</p>
+                
+                <h3>1. Leaderboard Terminology</h3>
                 <ul>
-                    <li><strong>KDR:</strong> Kills to Deaths ratio.</li>
-                    <li><strong>TP:</strong> Indicates if user is using Twitch Players mod and its SAIN preset.</li>
+                    <li><strong>KDR:</strong> Kill-to-Death Ratio (Kills ÷ Deaths)</li>
+                    <li><strong>TP:</strong> Twitch Players Mod status</li>
+                    <li><strong>FIKA:</strong> Fika COOP Mod status</li>
                 </ul>
-                <h3>2. Ranking Calculation</h3>
-                <p> Each player's rank is calculated using a weighted formula, meaning the higher the weight, the more it'll affect your statistics in the leaderboard: </p>
+
+                <h3>2. Season System</h3>
+                <p>Competitive cycles with unique leaderboards:</p>
                 <ul>
-                    <li><strong>Kill/Death Ratio:</strong> 20% weight.</li>
-                    <li><strong>Survived/Died Ratio:</strong> 20% weight.</li>
-                    <li><strong>Total Raids:</strong> 40% weight.</li>
-                    <li><strong>PMC Level:</strong> 20% weight. Higher-level players get a slight boost.</li>
-                    <li><strong>Calibration:</strong> To calibrate yourself properly in the leaderboard you must have at least 35 raids, otherwise your skill rating will be soft capped until you reach 75 raids. I.e you have 35 raids, your total skill rating will be cut by 70%. The more raids you have, the less soft cap will affect, until you reach 75 total raids.</li>
+                    <li><strong>Duration:</strong> 2-3 months per season</li>
+                    <li><strong>Reset:</strong> All stats reset when new SPT major version releases</li>
+                    <li><strong>Hall of Fame:</strong> Top 3 players from previous season are saved permanently</li>
+                    <li><strong>Data:</strong> Full season archives available in "Season" dropdown menu</li>
                 </ul>
-                <h3>3. Skill Level</h3>
-                <p> Based on the total score from ranking calculation, players are assigned a skill level: </p>
+
+                <h3>3. Scoring Formula</h3>
+                <p>Final score is calculated using these weighted factors:</p>
                 <ul>
-                    <li><strong>L- to L+:</strong> Low skill</li>
-                    <li><strong>M- to M+:</strong> Medium skill</li>
-                    <li><strong>H- to H+:</strong> High skill</li>
-                    <li><strong>P- to P+:</strong> Pro skill</li>
-                    <li><strong>G:</strong> Godlike skill</li>
+                    <li><strong>KDR:</strong> 20% weight</li>
+                    <li><strong>Survival Rate:</strong> 20% weight</li>
+                    <li><strong>Total Raids:</strong> 40% weight</li>
+                    <li><strong>PMC Level:</strong> 20% weight</li>
+                    <li><strong>Calibration:</strong> 
+                        <ul>
+                            <li>Minimum 35 raids required for ranking</li>
+                            <li>70% score penalty at 35 raids</li>
+                            <li>Penalty decreases linearly until 75 raids</li>
+                        </ul>
+                    </li>
                 </ul>
-                <h3>4. Sorting and Display</h3>
-                <p> The leaderboard can be sorted by any column (e.g., Rank, Name, KDR, SDR). Players are displayed with color-coded indicators for their statistics: </p>
+
+                <h3>4. Skill Tiers</h3>
+                <p>Players are classified into tiers based on final scores:</p>
                 <ul>
-                    <li><strong>Survived/Died Ratio:</strong> Bad (< 30%), Average (30%-54%), Good (55%-64%), Impressive (>= 65%).</li>
-                    <li><strong>Kill/Death Ratio:</strong> Bad (< 5), Average (5-11.99), Good (12-14.99), Impressive (>= 15).</li>
-                    <li><strong>Average Life Time:</strong> Bad (< 5 minutes), Average (5-14.99 minutes), Good (15-19.99 minutes), Impressive (>= 20 minutes).</li>
+                    <li><strong>L- to L+:</strong> Low (0-9.99)</li>
+                    <li><strong>M- to M+:</strong> Medium (10-14.99)</li>
+                    <li><strong>H- to H+:</strong> High (15-19.99)</li>
+                    <li><strong>P- to P+:</strong> Pro (20-24.99)</li>
+                    <li><strong>G:</strong> God (25+)</li>
+                </ul>
+
+                <h3>5. Visual Indicators</h3>
+                <p>Statistics are color-coded based on performance thresholds:</p>
+                <ul>
+                    <li><strong>Survival Rate:</strong>
+                        <span class="bad">Bad</span> (<30%),
+                        <span class="average">Average</span> (30-54%),
+                        <span class="good">Good</span> (55-64%),
+                        <span class="impressive">Impressive</span> (65%+)
+                    </li>
+                    <li><strong>KDR:</strong>
+                        <span class="bad">Poor</span> (<5),
+                        <span class="average">Standard</span> (5-11.99),
+                        <span class="good">Skilled</span> (12-14.99),
+                        <span class="impressive">Impressive</span> (15+)
+                    </li>
+                    <li><strong>Raid Duration:</strong>
+                        <span class="bad">Short</span> (<5m),
+                        <span class="average">Average</span> (5-14.99m),
+                        <span class="good">Long</span> (15-19.99m),
+                        <span class="impressive">Impressive</span> (20m+)
+                    </li>
                 </ul>
             </div>
         </div>
