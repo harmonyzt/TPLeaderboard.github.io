@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', detectSeasons);
 
 let leaderboardData = []; // For keeping data
-let allSeasonsData = []; // For keeping all players data
+let allSeasonsData = []; // For keeping ALL players data
 let sortDirection = {}; // Sort direction
 let seasons = []; // Storing seasons
 
@@ -15,7 +15,7 @@ async function checkSeasonExists(seasonNumber) {
     }
 }
 
-// Detect available seasons (FIXME)
+// Detect available seasons (DONTFIXME)
 async function detectSeasons() {
     let seasonNumber = 1;
     seasons = [];
@@ -145,6 +145,7 @@ async function loadLeaderboardData(season) {
         leaderboardData = data.leaderboard;
 
         // Show the notification if the leaderboard is empty. Displaying numbers is hacky so force to calculate nothing lmao
+        // 4/4/2025 - by the way, it gets fucked when there are no players in file. Too bad.
         if (leaderboardData.length === 0 || (leaderboardData.length === 1 && Object.keys(leaderboardData[0]).length === 0)) {
             emptyLeaderboardNotification.style.display = 'block';
             animateNumber('totalDeaths', 0);
@@ -191,6 +192,7 @@ function displayLeaderboard(data) {
         }
 
         // Format the date from user profile (Last Raid row)
+        // This will blow the shit out of the sane person. Oh well.
         function formatLastPlayed(dateString) {
             const [day, month, year] = dateString.split('.').map(Number);
             const lastPlayedDate = new Date(year, month - 1, day);
@@ -224,7 +226,7 @@ function displayLeaderboard(data) {
             }
         }
 
-        // Turning last game to 'x days/years ago'
+        // Turning last game into 'x days/years ago'
         let lastGame = formatLastPlayed(player.lastPlayed)
 
         // EFT Account icons and colors handling
@@ -417,7 +419,7 @@ function calculateRanks(data) {
 
         // Tune the player skill score down if he has less than 35 raids
         if (player.totalRaids <= MIN_RAIDS) {
-            player.totalScore *= 0.4;  // Setting rating lower by 70%
+            player.totalScore *= 0.3;  // Setting rating lower by 70%
         } else if (player.totalRaids < SOFT_CAP_RAIDS) {
             const progress = (player.totalRaids - MIN_RAIDS) / (SOFT_CAP_RAIDS - MIN_RAIDS);
             player.totalScore *= 0.3 + (0.7 * progress);
@@ -592,7 +594,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'just now';
     }
 
-    // Load date from file and convert it to text (yes I use two similar functions because fuck JS)
+    // Load date from file and convert it to text
+    // Yes, I use two similar functions for two similar reasons
     fetch('js/last-updated.txt')
         .then(response => response.text())
         .then(data => {
@@ -644,6 +647,8 @@ async function loadPreviousSeasonWinners() {
 
     try {
         const response = await fetch(`seasons/season${previousSeason}.json`);
+
+        // Throws us at season1 + 1. This is some serious SHIT
         if (!response.ok) throw new Error('Failed to load previous season data');
 
         const data = await response.json();

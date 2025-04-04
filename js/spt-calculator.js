@@ -97,6 +97,7 @@ fileInput.addEventListener('change', (event) => {
 });
 
 // Find keys in Items stats of EFT profile
+// SPT profiles forced me to give birth to this monstrosity
 function findValueByKey(data, key, isModSearch = false) {
     // If we looking for a specific mod in the profile
     if (isModSearch) {
