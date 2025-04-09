@@ -193,7 +193,7 @@ td:nth-child(2) {
 
 button, .main-button {
     background-color: var(--bg-dark-secondary);
-    color: var(--accent-teal);
+    color: var(--text-muted);
     border: 1px solid var(--accent-teal);
     padding: 10px 20px;
     border-radius: 5px;
@@ -201,6 +201,7 @@ button, .main-button {
     transition: all 0.3s ease;
     font-family: 'Inter', sans-serif;
     font-size: 1rem;
+    font-weight:bold;
     position: relative;
     overflow: hidden;
     text-decoration: none;
@@ -212,7 +213,7 @@ button:hover, .main-button:hover {
     background-color: rgba(100, 255, 218, 0.1);
     color: var(--text-light);
     border-color: var(--accent-blue);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
     box-shadow: 0 6px 12px rgba(30, 144, 255, 0.2);
 }
 

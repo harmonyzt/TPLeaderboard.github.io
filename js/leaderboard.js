@@ -15,11 +15,13 @@ async function checkSeasonExists(seasonNumber) {
     }
 }
 
-// Detect available seasons (DONTFIXME)
+// Detect available seasons
 async function detectSeasons() {
     let seasonNumber = 1;
     seasons = [];
 
+    //FIXME
+    // Throws 404 because this tries to access not existing next season file
     while (await checkSeasonExists(seasonNumber)) {
         seasons.push(seasonNumber);
         seasonNumber++;
