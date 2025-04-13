@@ -57,7 +57,9 @@ fileInput.addEventListener('change', (event) => {
             const LifeTimeMinutesAverage = LifeTimeMinutes / totalRaids;
             const averageLifeTimeFormatted = formatTime(LifeTimeMinutesAverage);
 
-            const isModFound = findValueByKey(profile.spt.mods, "[SAIN] Twitch Players", true)
+            const isTPFound = findValueByKey(profile.spt.mods, "[SAIN] Twitch Players", true)
+
+            const isFikaFound = findValueByKey(profile.spt.mods, "server", true)
 
             // Assigning a new record
             const requiredData = {
@@ -70,7 +72,8 @@ fileInput.addEventListener('change', (event) => {
                 killToDeathRatio: killToDeathRatio,
                 averageLifeTime: averageLifeTimeFormatted,
                 accountType: profile.characters.pmc.Info.GameVersion,
-                isUsingTwitchPlayers: isModFound,
+                isUsingTwitchPlayers: isTPFound,
+                isUsingFika: isFikaFound,
                 sptVer: profile.spt.version,
             };
 
@@ -86,6 +89,7 @@ fileInput.addEventListener('change', (event) => {
                 <p><strong>Average Life Time:</strong> ${requiredData.averageLifeTime}</p>
                 <p><strong>Account:</strong> ${requiredData.accountType}</p>
                 <p><strong>Using Twitch Players:</strong> ${requiredData.isUsingTwitchPlayers}</p>
+                <p><strong>Using Fika:</strong> ${requiredData.isUsingFika}</p>
                 <p><strong>SPT Version:</strong> ${requiredData.sptVer}</p>
             `;
         };

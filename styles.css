@@ -9,7 +9,6 @@
   
   body {
     font-family: 'Arial', sans-serif;
-    background: var(--bg-dark);
     background: linear-gradient(
       180deg, 
       var(--bg-dark) 0%, 
@@ -485,6 +484,16 @@ button:hover, .main-button:hover {
     }
 }
 
+.modal img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    border-radius: 6px;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+/* Profile Calculator Modal */
 .profile-calculator {
     max-width: 300px;
     margin: 0 auto;
@@ -503,7 +512,7 @@ button:hover, .main-button:hover {
 }
 
 .profile-info p {
-    margin: 10px 0;
+    margin: 0;
     font-size: 16px;
 }
 
