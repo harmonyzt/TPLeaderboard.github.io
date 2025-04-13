@@ -246,12 +246,12 @@ function displayLeaderboard(data) {
         }
 
         // If using Twitch Players
-        let TPicon = '';
-        if (player.isUsingTwitchPlayers) {
-            TPicon = '✅';
-        } else {
-            TPicon = '❌';
-        }
+        //let TPicon = '';
+        //if (player.isUsingTwitchPlayers) {
+        //    TPicon = '✅';
+        //} else {
+        //    TPicon = '❌';
+        //}
 
         let fikaIcon = '';
         if (player.fika) {
@@ -305,7 +305,6 @@ function displayLeaderboard(data) {
             <td class="${player.killToDeathRatioClass}">${player.killToDeathRatio}</td>
             <td class="${player.averageLifeTimeClass}">${player.averageLifeTime}</td>
             <td>${player.totalScore <= 0 ? 'Calibrating...' : player.totalScore.toFixed(2)} ${player.totalScore <= 0 ? '' : `(${rankLabel})`}</td>
-            <td>${TPicon}</td>
             <td>${fikaIcon}</td>
             <td class="${getSptVerClass(player.sptVer)}">${player.sptVer}</td>
         `;
@@ -500,7 +499,7 @@ function calculateOverallStats(data) {
 
     // Update all stats
     animateNumber('totalDeaths', totalDeaths);
-    animateNumber('totalDeathsFromTP', totalDeathsFromTwitchPlayers);
+    //animateNumber('totalDeathsFromTP', totalDeathsFromTwitchPlayers);
     animateNumber('totalRaids', totalRaids);
     animateNumber('totalKills', Math.round(totalKills));
     animateNumber('averageKDR', averageKDR, 2);
