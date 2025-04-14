@@ -7,10 +7,32 @@ let sortDirection = {}; // Sort direction
 let seasons = []; // Storing seasons
 
 async function checkSeasonExists(seasonNumber) {
+
+    if (typeof seasonNumber !== 'number' || seasonNumber <= 0) {
+        console.error('Invalid season number:', seasonNumber);
+        return false;
+    }
+
     try {
-        const response = await fetch(`https://visuals.nullcore.net/hidden/season${seasonNumber}.json`);
-        return response.ok;
+        const url = `https://visuals.nullcore.net/hidden/season${seasonNumber}.json?t=${Date.now()}`;
+        
+        const response = await fetch(url, {
+            method: 'HEAD',
+            mode: 'cors',
+            cache: 'no-store',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) return false;
+        
+
+        const contentType = response.headers.get('content-type');
+        return contentType && contentType.includes('application/json');
+        
     } catch (error) {
+        console.error(`Error checking season ${seasonNumber}:`, error);
         return false;
     }
 }
@@ -139,6 +161,7 @@ async function loadLeaderboardData(season) {
     emptyLeaderboardNotification.style.display = 'none';
     loadingNotification.style.display = 'block';
 
+    // empty leaderboard
     leaderboardData = [];
 
     try {
@@ -177,7 +200,7 @@ async function loadLeaderboardData(season) {
     }
 }
 
-function displayLeaderboard(data) {
+async function displayLeaderboard(data) {
     const tableBody = document.querySelector('#leaderboardTable tbody');
     tableBody.innerHTML = '';
 
@@ -269,7 +292,7 @@ function displayLeaderboard(data) {
 
         // Compare SPT version of the user
         function getSptVerClass(playerVersion) {
-            const latestVersion = '3.11.2'; // Newest SPT ver
+            const latestVersion = '3.11.3'; // Newest SPT ver
             const outdatedVersion = '3.10'; // Outdated SPT ver. Everything below that version will be old versions
 
             if (compareVersions(playerVersion, latestVersion) >= 0) {
