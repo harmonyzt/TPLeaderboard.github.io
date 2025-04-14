@@ -30,12 +30,13 @@ async function detectSeasons() {
     seasons.sort((a, b) => b - a);
 
     populateSeasonDropdown();
-
-    loadPreviousSeasonWinners();
-    loadLeaderboardData(seasons[0]); // Load the latest season data
-
+    
+    if (seasons.length > 1) {
+        loadPreviousSeasonWinners();
+    } else {
+        loadLeaderboardData(seasons[0]); // Load the latest season data
+    }
 }
-
 
 async function populateSeasonDropdown() {
     const seasonSelect = document.getElementById('seasonSelect');
@@ -138,12 +139,15 @@ async function loadLeaderboardData(season) {
     emptyLeaderboardNotification.style.display = 'none';
     loadingNotification.style.display = 'block';
 
+    leaderboardData = [];
+
     try {
         const response = await fetch(`https://visuals.nullcore.net/hidden/season${season}.json`);
         if (!response.ok) {
             throw new Error('Failed to load leaderboard data');
         }
         const data = await response.json();
+
         leaderboardData = data.leaderboard;
 
         // Show the notification if the leaderboard is empty. Displaying numbers is hacky so force to calculate nothing lmao
