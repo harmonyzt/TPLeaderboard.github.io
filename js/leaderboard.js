@@ -317,7 +317,7 @@ async function displayLeaderboard(data) {
         tableBody.appendChild(row);
     });
 
-    return true
+    return { status: 'success', data: leaderboardData };
 }
 
 function addSortListeners() {
