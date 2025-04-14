@@ -37,7 +37,7 @@ async function detectSeasons() {
     }
 }
 
-function populateSeasonDropdown() {
+async function populateSeasonDropdown() {
     const seasonSelect = document.getElementById('seasonSelect');
     seasonSelect.innerHTML = '';
 
