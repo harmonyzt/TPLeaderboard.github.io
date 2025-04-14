@@ -78,7 +78,7 @@ async function loadAllSeasonsData() {
 
         // Loop through all seasons data
         for (const season of seasons) {
-            const response = await fetch(`seasons/season${season}.json`);
+            const response = await fetch(`https://visuals.nullcore.net/hidden/season${season}.json`);
             if (!response.ok) continue;
 
             const data = await response.json();
@@ -139,7 +139,7 @@ async function loadLeaderboardData(season) {
     loadingNotification.style.display = 'block';
 
     try {
-        const response = await fetch(`seasons/season${season}.json`);
+        const response = await fetch(`https://visuals.nullcore.net/hidden/season${season}.json`);
         if (!response.ok) {
             throw new Error('Failed to load leaderboard data');
         }
