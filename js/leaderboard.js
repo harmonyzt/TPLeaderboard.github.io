@@ -650,7 +650,7 @@ async function loadPreviousSeasonWinners() {
     const previousSeason = seasons[seasons.length - 1];
 
     try {
-        const response = await fetch(`seasons/season${previousSeason}.json`);
+        const response = await fetch(`https://visuals.nullcore.net/hidden/season${previousSeason}.json`);
 
         // Throws us at season1 + 1. This is some serious SHIT
         if (!response.ok) throw new Error('Failed to load previous season data');
