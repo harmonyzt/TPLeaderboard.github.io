@@ -7,32 +7,10 @@ let sortDirection = {}; // Sort direction
 let seasons = []; // Storing seasons
 
 async function checkSeasonExists(seasonNumber) {
-
-    if (typeof seasonNumber !== 'number' || seasonNumber <= 0) {
-        console.error('Invalid season number:', seasonNumber);
-        return false;
-    }
-
     try {
-        const url = `https://visuals.nullcore.net/hidden/season${seasonNumber}.json`;
-        
-        const response = await fetch(url, {
-            method: 'HEAD',
-            mode: 'cors',
-            cache: 'no-store',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) return false;
-        
-
-        const contentType = response.headers.get('content-type');
-        return contentType && contentType.includes('application/json');
-        
+        const response = await fetch(`https://visuals.nullcore.net/hidden/season${seasonNumber}.json`);
+        return response.ok;
     } catch (error) {
-        console.error(`Error checking season ${seasonNumber}:`, error);
         return false;
     }
 }
