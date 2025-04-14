@@ -219,6 +219,18 @@
             "isUsingTwitchPlayers": false,
             "sptVer": "3.11.1",
             "fika": false
+        },
+        {
+            "name": "Jop",
+            "lastPlayed": "13.04.2025",
+            "pmcLevel": "9",
+            "totalRaids": "3",
+            "survivedToDiedRatio": "100",
+            "killToDeathRatio": "9",
+            "averageLifeTime": "4:27",
+            "accountType": "standard",
+            "sptVer": "3.11.2",
+            "fika": false
         }
     ]
 }
