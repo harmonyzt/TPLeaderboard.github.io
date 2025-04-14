@@ -713,8 +713,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const welcomePopup = document.getElementById('welcomePopup');
 
     if (localStorage.getItem('welcomePopupClosed') === 'true') {
-        //welcomePopup.style.display = 'none';
-        welcomePopup.style.display = 'flex';
+        welcomePopup.style.display = 'none';
     } else if (localStorage.getItem('welcomePopupClosed') === 'false') {
         welcomePopup.style.display = 'flex';
         setTimeout(() => {
@@ -731,8 +730,7 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem('welcomePopupClosed', 'true');
 
         setTimeout(() => {
-            //welcomePopup.style.display = 'none';
-            welcomePopup.style.display = 'flex';
+            welcomePopup.style.display = 'none';
         }, 300);
     });
 });
