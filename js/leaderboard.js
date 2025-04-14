@@ -33,9 +33,9 @@ async function detectSeasons() {
     
     if (seasons.length > 1) {
         loadPreviousSeasonWinners();
-    } else {
-        loadLeaderboardData(seasons[0]); // Load the latest season data
     }
+    
+    loadLeaderboardData(seasons[0]); // Load the latest season data
 }
 
 async function populateSeasonDropdown() {
