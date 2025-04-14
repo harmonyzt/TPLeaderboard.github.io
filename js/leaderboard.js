@@ -155,7 +155,7 @@ async function loadLeaderboardData(season) {
         if (leaderboardData.length === 0 || (leaderboardData.length === 1 && Object.keys(leaderboardData[0]).length === 0)) {
             emptyLeaderboardNotification.style.display = 'block';
             animateNumber('totalDeaths', 0);
-            animateNumber('totalDeathsFromTP', 0);
+            //animateNumber('totalDeathsFromTP', 0);
             animateNumber('totalRaids', 0);
             animateNumber('totalKills', 0);
             animateNumber('averageKDR', 0, 2);
