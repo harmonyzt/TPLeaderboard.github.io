@@ -316,6 +316,8 @@ async function displayLeaderboard(data) {
 
         tableBody.appendChild(row);
     });
+
+    return true
 }
 
 function addSortListeners() {
