@@ -30,12 +30,12 @@ async function detectSeasons() {
     seasons.sort((a, b) => b - a);
 
     populateSeasonDropdown();
-    if (seasons.length > 1) {
-        loadPreviousSeasonWinners();
-    } else {
-        loadLeaderboardData(seasons[0]); // Load the latest season data
-    }
+
+    loadPreviousSeasonWinners();
+    loadLeaderboardData(seasons[0]); // Load the latest season data
+
 }
+
 
 async function populateSeasonDropdown() {
     const seasonSelect = document.getElementById('seasonSelect');
