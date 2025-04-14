@@ -14,7 +14,7 @@ async function checkSeasonExists(seasonNumber) {
     }
 
     try {
-        const url = `https://visuals.nullcore.net/hidden/season${seasonNumber}.json}`;
+        const url = `https://visuals.nullcore.net/hidden/season${seasonNumber}.json`;
         
         const response = await fetch(url, {
             method: 'HEAD',
