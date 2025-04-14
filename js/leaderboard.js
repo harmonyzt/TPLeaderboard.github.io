@@ -8,7 +8,7 @@ let seasons = []; // Storing seasons
 
 async function checkSeasonExists(seasonNumber) {
     try {
-        const response = await fetch(`seasons/season${seasonNumber}.json`);
+        const response = await fetch(`https://visuals.nullcore.net/hidden/season${seasonNumber}.json`);
         return response.ok;
     } catch (error) {
         return false;
