@@ -228,7 +228,7 @@ function displayLeaderboard(data) {
             }
         }
 
-        // Turning last game into 'x days/years ago'
+        // Turning last game into 'x days/weeks ago'
         let lastGame = formatLastPlayed(player.lastPlayed)
 
         // EFT Account icons and colors handling
@@ -479,15 +479,16 @@ function calculateOverallStats(data) {
     let totalKills = 0;
     let totalKDR = 0;
     let totalSurvival = 0;
-    let totalDeathsFromTwitchPlayers = 0;
+
+    //let totalDeathsFromTwitchPlayers = 0;
 
     data.forEach(player => {
-        if (player.isUsingTwitchPlayers) {
-            totalDeaths += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
-            totalDeathsFromTwitchPlayers += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
-        } else {
-            totalDeaths += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
-        }
+        //if (player.isUsingTwitchPlayers) {
+        //    totalDeaths += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
+        //    totalDeathsFromTwitchPlayers += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
+        //} else {
+        totalDeaths += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
+        //}
         totalRaids += parseInt(player.totalRaids);
         totalKills += parseFloat(player.killToDeathRatio) * Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
         totalKDR += parseFloat(player.killToDeathRatio);
@@ -532,40 +533,42 @@ document.addEventListener('DOMContentLoaded', () => {
         infoButton: document.getElementById('infoButton'),
         calcModal: document.getElementById('calcModal'),
         calcButton: document.getElementById('calcButton'),
-        closeButtons: document.querySelectorAll('.close')
+        closeButtons: document.querySelectorAll('.close'),
+        modals: document.querySelectorAll('.modal')
     };
 
-    // Check if all elements exist
-    const allElementsExist = Object.values(elements).every(element =>
-        element && (element.length === undefined || element.length > 0)
-    );
-
-    if (!allElementsExist) {
-        console.error('Cannot find elements for modal');
-        return;
-    }
-
-    // Helper function to toggle modal visibility
-    const toggleModal = (modal, displayValue) => {
-        modal.style.display = displayValue;
+    const toggleModal = (modal, show) => {
+        if (show) {
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modal.style.visibility = 'visible';
+            }, 10);
+        } else {
+            modal.style.opacity = '0';
+            modal.style.visibility = 'hidden';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
     };
 
-    // Event listeners for opening modals
-    elements.infoButton.addEventListener('click', () => toggleModal(elements.infoModal, 'block'));
-    elements.calcButton.addEventListener('click', () => toggleModal(elements.calcModal, 'block'));
+    // Event listeners
+    elements.infoButton.addEventListener('click', () => toggleModal(elements.infoModal, true));
+    elements.calcButton.addEventListener('click', () => toggleModal(elements.calcModal, true));
 
-    // Event listeners for closing modals
+    // Close modal if close button was clicked
     elements.closeButtons.forEach(button => {
         button.addEventListener('click', () => {
-            toggleModal(elements.infoModal, 'none');
-            toggleModal(elements.calcModal, 'none');
+            toggleModal(elements.infoModal, false);
+            toggleModal(elements.calcModal, false);
         });
     });
 
-    // Close modals when clicking outside
+    // Close modal if user clicked outside of it
     window.addEventListener('click', (event) => {
-        if (event.target === elements.infoModal) toggleModal(elements.infoModal, 'none');
-        if (event.target === elements.calcModal) toggleModal(elements.calcModal, 'none');
+        if (event.target === elements.infoModal) toggleModal(elements.infoModal, false);
+        if (event.target === elements.calcModal) toggleModal(elements.calcModal, false);
     });
 });
 
@@ -694,6 +697,7 @@ function displayWinners(data) {
     winnersTab.appendChild(winnersContainer);
 }
 
+// Get ranks for leaders of previous season
 function getRankText(rank) {
     switch (rank) {
         case 1: return 'First place';
@@ -702,3 +706,31 @@ function getRankText(rank) {
         default: return '';
     }
 }
+
+// Welcome screen
+document.addEventListener('DOMContentLoaded', function () {
+    const continueBtn = document.getElementById('continueBtn');
+    const welcomePopup = document.getElementById('welcomePopup');
+
+    if (localStorage.getItem('welcomePopupClosed') === 'true') {
+        welcomePopup.style.display = 'none';
+    } else if (localStorage.getItem('welcomePopupClosed') === 'false') {
+        welcomePopup.style.display = 'flex';
+        setTimeout(() => {
+            welcomePopup.style.opacity = '1';
+            welcomePopup.style.transform = 'translateY(0)';
+        }, 10);
+    }
+
+    continueBtn.addEventListener('click', function () {
+        welcomePopup.style.opacity = '0';
+        welcomePopup.style.transform = 'translateY(-20px)';
+        welcomePopup.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+
+        localStorage.setItem('welcomePopupClosed', 'true');
+
+        setTimeout(() => {
+            welcomePopup.style.display = 'none';
+        }, 300);
+    });
+});

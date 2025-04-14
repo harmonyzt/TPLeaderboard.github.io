@@ -58,7 +58,6 @@ fileInput.addEventListener('change', (event) => {
             const averageLifeTimeFormatted = formatTime(LifeTimeMinutesAverage);
 
             const isTPFound = findValueByKey(profile.spt.mods, "[SAIN] Twitch Players", true)
-
             const isFikaFound = findValueByKey(profile.spt.mods, "server", true)
 
             // Assigning a new record

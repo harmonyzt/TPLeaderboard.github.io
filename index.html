@@ -14,7 +14,20 @@
 
     <body>
         <h1>SPT Leaderboard</h1>
-        <div id="infoModal" class="modal animate animate__animated animate__fadeIn">
+        <div id="welcomePopup">
+            <div class="popup-container">
+                <div class="popup-content">
+                    <h1 class="animate__animated animate__fadeInDown">Welcome to SPT Leaderboard!</h1>
+                    <p class="animate__animated animate__fadeInUp">Track, progress and compare your Single Player Tarkov profile with other players, or your friends!</p>
+                    <p class="animate__animated animate__fadeInUp">Leaderboard updates are as fast as they can be when you upload your SPT Profile. See how you rank against the community and set new personal records in your SPT experience!</p>
+                    <button class="animate__animated animate__fadeInUp" id="continueBtn">Continue to Leaderboard</button>
+                </div>
+                <div class="popup-image animate__animated animate__fadeInUp">
+                    <img class="" src="media/leaderboard_preview.png" alt="SPT Leaderboard Preview">
+                </div>
+            </div>
+        </div>
+        <div id="infoModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <h2>Ranking System Explained</h2>
@@ -86,7 +99,7 @@
                 </ul>
             </div>
         </div>
-        <div id="calcModal" class="modal animate animate__animated animate__fadeIn">
+        <div id="calcModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
                     <div class="header-buttons">
