@@ -800,7 +800,7 @@ function openProfile(playerId) {
         return;
     }
 
-    const isPublic = player.publicProfile === true;
+    const isPublic = player.publicProfile === "true";
 
     // Privated profile
     if (!isPublic) {
