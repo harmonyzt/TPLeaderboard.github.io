@@ -800,7 +800,7 @@ function openProfile(playerId) {
         return;
     }
 
-    const isPublic = player.publicProfile === "true";
+    const isPublic = player.publicProfile === true;
 
     // Privated profile
     if (!isPublic) {
@@ -873,8 +873,8 @@ function showPublicProfile(container, player) {
 
             ${player.longestShot ? `
               <div class="player-stat-row">
-                <span class="stat-label">Successful Raids in a Row:</span>
-                <span class="profile-stat-value">${player.longestShot}</span>
+                <span class="stat-label">Longest Shot:</span>
+                <span class="profile-stat-value">${player.longestShot.toLocaleString()} meters</span>
               </div>
             ` : ''}
           </div>
