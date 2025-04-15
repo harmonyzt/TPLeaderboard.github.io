@@ -123,13 +123,29 @@ async function loadAllSeasonsData() {
     }
 }
 
-//"dd.mm.yyyy"
+// Unix
 function compareLastPlayed(dateStr1, dateStr2) {
-    const [d1, m1, y1] = dateStr1.split('.').map(Number);
-    const [d2, m2, y2] = dateStr2.split('.').map(Number);
+    const parseDate = (dateStr) => {
+        if (/^\d+$/.test(dateStr)) {
+            return new Date(parseInt(dateStr) * 1000);
+        }
+        
+        // if "dd.mm.yyyy"
+        if (/^\d{1,2}\.\d{1,2}\.\d{4}$/.test(dateStr)) {
+            const [d, m, y] = dateStr.split('.').map(Number);
+            return new Date(y, m - 1, d);
+        }
+        
+        // Для неизвестных форматов
+        return null;
+    };
 
-    const date1 = new Date(y1, m1 - 1, d1);
-    const date2 = new Date(y2, m2 - 1, d2);
+    const date1 = parseDate(dateStr1);
+    const date2 = parseDate(dateStr2);
+
+    if (!date1 || !date2) {
+        return "Unknown";
+    }
 
     return date1 - date2;
 }
@@ -849,6 +865,13 @@ function showPublicProfile(container, player) {
             ` : ''}
             
             ${player.currentWinstreak ? `
+              <div class="player-stat-row">
+                <span class="stat-label">Successful Raids in a Row:</span>
+                <span class="profile-stat-value">${player.currentWinstreak}</span>
+              </div>
+            ` : ''}
+
+            ${player.longestShot ? `
               <div class="player-stat-row">
                 <span class="stat-label">Successful Raids in a Row:</span>
                 <span class="profile-stat-value">${player.currentWinstreak}</span>
