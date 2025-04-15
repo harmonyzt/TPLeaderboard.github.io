@@ -142,9 +142,6 @@ async function loadLeaderboardData(season) {
     emptyLeaderboardNotification.style.display = 'none';
     loadingNotification.style.display = 'block';
 
-    // empty leaderboard
-    leaderboardData = [];
-
     try {
         const response = await fetch(`https://visuals.nullcore.net/hidden/season${season}.json`);
         if (!response.ok) {
@@ -152,7 +149,7 @@ async function loadLeaderboardData(season) {
         }
         const data = await response.json();
 
-        leaderboardData = data.leaderboard;
+        leaderboardData = data.leaderboard || [];
 
         // Show the notification if the leaderboard is empty. Displaying numbers is hacky so force to calculate nothing lmao
         // 4/4/2025 - by the way, it gets fucked when there are no players in file. Too bad.
@@ -162,6 +159,7 @@ async function loadLeaderboardData(season) {
             //animateNumber('totalDeathsFromTP', 0);
             animateNumber('totalRaids', 0);
             animateNumber('totalKills', 0);
+            animateNumber('totalDamage', 0);
             animateNumber('averageKDR', 0, 2);
             animateNumber('averageSurvival', 0, 2);
             displayLeaderboard(leaderboardData);
@@ -201,39 +199,43 @@ async function displayLeaderboard(data) {
             nameClass = 'bronze-name';
         }
 
-        // Format the date from user profile (Last Raid row)
-        // This will blow the shit out of the sane person. Oh well.
-        function formatLastPlayed(dateString) {
-            const [day, month, year] = dateString.split('.').map(Number);
-            const lastPlayedDate = new Date(year, month - 1, day);
-            const currentDate = new Date();
-
-            currentDate.setHours(0, 0, 0, 0);
-            lastPlayedDate.setHours(0, 0, 0, 0);
-
-            const timeDifference = currentDate - lastPlayedDate;
-            const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
-            if (daysDifference === 0) {
-                return 'just now';
-            } else if (daysDifference === 1) {
-                return '1d ago';
-            } else if (daysDifference < 30) {
-                return `${daysDifference}d ago`;
-            } else if (daysDifference < 365) {
-                const monthsDifference = Math.floor(daysDifference / 30);
-                const remainingDays = daysDifference % 30;
-                return `${monthsDifference}mo${remainingDays > 0 ? ` ${remainingDays}d` : ''} ago`;
-            } else {
-                const yearsDifference = Math.floor(daysDifference / 365);
-                const remainingDaysAfterYears = daysDifference % 365;
-                const monthsDifference = Math.floor(remainingDaysAfterYears / 30);
-
-                let result = `${yearsDifference}y`;
-
-                if (monthsDifference > 0) result += ` ${monthsDifference}mo`;
-                return `${result} ago`;
+        // Format the date from user profile (Last Raid row in Unix now)
+        function formatLastPlayed(unixTimestamp) {
+            if (typeof unixTimestamp !== 'number' || unixTimestamp <= 0) {
+                return 'Unknown';
             }
+        
+            const date = new Date(unixTimestamp * 1000);
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - date) / 1000);
+            const diffInMinutes = Math.floor(diffInSeconds / 60)
+
+            if (diffInMinutes < 60) {
+                return 'In raid <div id="blink"></div>';
+            }
+            
+            const diffInHours = Math.floor(diffInMinutes / 60);
+            if (diffInHours < 24) {
+                return `${diffInHours}h ago`;
+            }
+            
+            const diffInDays = Math.floor(diffInHours / 24);
+            if (diffInDays === 1) {
+                return '1d ago';
+            }
+            if (diffInDays < 30) {
+                return `${diffInDays}d ago`;
+            }
+            
+            const diffInMonths = Math.floor(diffInDays / 30);
+            const remainingDays = diffInDays % 30;
+            if (diffInMonths < 12) {
+                return `${diffInMonths}mo${remainingDays > 0 ? ` ${remainingDays}d` : ''} ago`;
+            }
+            
+            const diffInYears = Math.floor(diffInMonths / 12);
+            const remainingMonths = diffInMonths % 12;
+            return `${diffInYears}y${remainingMonths > 0 ? ` ${remainingMonths}mo` : ''} ago`;
         }
 
         // Turning last game into 'x days/weeks ago'
@@ -305,7 +307,7 @@ async function displayLeaderboard(data) {
 
         row.innerHTML = `
             <td class="rank ${rankClass}">${player.rank} ${player.medal}</td>
-            <td class="player-name ${nameClass}" style="color: ${accountColor}">${accountIcon} ${player.name}</td>
+            <td class="player-name ${nameClass}" style="color: ${accountColor}" data-player-id="${player.id || '0'}"> ${accountIcon} ${player.name}</td>
             <td>${lastGame || 'N/A'}</td>
             <td>${player.pmcLevel}</td>
             <td>${player.totalRaids}</td>
@@ -318,6 +320,13 @@ async function displayLeaderboard(data) {
         `;
 
         tableBody.appendChild(row);
+    });
+
+    // Clickity for names in leaderboard
+    document.querySelectorAll('.player-name').forEach(element => {
+        element.addEventListener('click', () => {
+            openProfile(element.dataset.playerId);
+        });
     });
 
     return { status: 'success', data: leaderboardData };
@@ -489,6 +498,7 @@ function calculateOverallStats(data) {
     let totalKills = 0;
     let totalKDR = 0;
     let totalSurvival = 0;
+    let totalDamage = 0;
 
     //let totalDeathsFromTwitchPlayers = 0;
 
@@ -503,6 +513,10 @@ function calculateOverallStats(data) {
         totalKills += parseFloat(player.killToDeathRatio) * Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
         totalKDR += parseFloat(player.killToDeathRatio);
         totalSurvival += parseFloat(player.survivedToDiedRatio);
+
+        if(player.publicProfile === "true"){
+            totalDamage += player.damage;
+        }
     });
 
     const averageKDR = (totalKDR / data.length).toFixed(2);
@@ -513,6 +527,7 @@ function calculateOverallStats(data) {
     //animateNumber('totalDeathsFromTP', totalDeathsFromTwitchPlayers);
     animateNumber('totalRaids', totalRaids);
     animateNumber('totalKills', Math.round(totalKills));
+    animateNumber('totalDamage', totalDamage);
     animateNumber('averageKDR', averageKDR, 2);
     animateNumber('averageSurvival', averageSurvival, 2);
 }
@@ -524,7 +539,7 @@ function animateNumber(elementId, targetValue, decimals = 0) {
 
     const countUp = new CountUp(element, targetValue, {
         startVal: 0,
-        duration: 2,
+        duration: 5,
         decimalPlaces: decimals,
         separator: ',',
         suffix: suffix
@@ -621,7 +636,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const minute = parseInt(dateParts[4], 10);
 
             const lastUpdatedDate = new Date(year, month, day, hour, minute);
-
             const formattedDifference = formatTimeDifference(lastUpdatedDate);
 
             // Display
@@ -680,7 +694,7 @@ function displayWinners(data) {
     const winnersTab = document.getElementById('winners');
 
     winnersTab.innerHTML = `
-        <h2>Hall of Fame for our previous Champions!</h2>
+        <h2>Hall of Fame for our previous Cha       mpions!</h2>
     `;
 
     const top3Players = data.filter(player => player.rank <= 3);
@@ -744,3 +758,119 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 300);
     });
 });
+
+function openProfile(playerId) {
+    const modal = document.getElementById('playerProfileModal');
+    const modalContent = document.getElementById('modalPlayerInfo');
+
+    modalContent.innerHTML = '';
+
+    // If no id data-player-id="0" (shouldn't be happening)
+    if (!playerId || playerId === '0') {
+        showPrivateProfile(modalContent, "Unknown Player");
+        modal.style.display = 'block';
+        setupModalCloseHandlers(modal);
+        return;
+    }
+
+    // Finding Player in data
+    const player = leaderboardData.find(p => p.id === playerId);
+
+    // Couldn't find
+    if (!player) {
+        showPrivateProfile(modalContent, "Player Not Found");
+        modal.style.display = 'block';
+        setupModalCloseHandlers(modal);
+        return;
+    }
+
+    const isPublic = player.publicProfile === "true";
+
+    // Privated profile
+    if (!isPublic) {
+        showPrivateProfile(modalContent, player);
+        modal.style.display = 'block';
+        setupModalCloseHandlers(modal);
+        return;
+    }
+
+    // Showing public profile
+    showPublicProfile(modalContent, player);
+    modal.style.display = 'block';
+    setupModalCloseHandlers(modal);
+}
+
+// Private profile HTML
+function showPrivateProfile(container, playerName) {
+    container.innerHTML = `
+      <h3 class="player-profile-header">${playerName}</h3>
+      <div class="private-profile-message">
+        <div class="lock-icon">🔒</div>
+        <p>This profile is private</p>
+        <p class="small-text">This player has restricted access to his additional stats</p>
+      </div>
+    `;
+}
+
+// Public profile
+function showPublicProfile(container, player) {
+    const regDate = player.registrationDate
+        ? new Date(player.registrationDate * 1000).toLocaleDateString('en-EN', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        })
+        : 'Unknown';
+
+    // Определяем изображение фракции
+    const factionImages = {
+        'Bear': 'url(media/Bear.png)',
+        'Usec': 'url(media/Usec.png)',
+    };
+
+    const factionBG = factionImages[player.faction] || '';
+
+    container.innerHTML = `
+      <div class="profile-background" style="background-image: ${factionBG}">
+        <div class="profile-content-overlay">
+          <h3 class="player-profile-header">${player.name}</h3>
+          <div class="player-stats-container">
+            
+            <div class="player-stat-row">
+              <span class="stat-label">Registered:</span>
+              <span class="profile-stat-value">${regDate}</span>
+            </div>
+            
+            ${player.damage ? `
+              <div class="player-stat-row">
+                <span class="stat-label">Overall Damage:</span>
+                <span class="profile-stat-value">${player.damage.toLocaleString()}</span>
+              </div>
+            ` : ''}
+            
+            ${player.currentWinstreak ? `
+              <div class="player-stat-row">
+                <span class="stat-label">Successful Raids in a Row:</span>
+                <span class="profile-stat-value">${player.currentWinstreak}</span>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+}
+
+// Close modals on click or out of bounds click
+function setupModalCloseHandlers(modal) {
+    const closeBtn = modal.querySelector('.profile-close-btn');
+    if (closeBtn) {
+        closeBtn.onclick = () => modal.style.display = 'none';
+    }
+
+    window.addEventListener('click', function closeModal(e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            window.removeEventListener('click', closeModal);
+        }
+    });
+}
