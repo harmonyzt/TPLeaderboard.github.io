@@ -76,7 +76,7 @@ h1 {
     left: 50%;
     transform: translateX(-50%);
     width: 60%;
-    min-width: 900px;
+    min-width: 600px;
     max-width: 1200px;
     background-color: var(--bg-dark-secondary);
     padding: 10px 25px;
