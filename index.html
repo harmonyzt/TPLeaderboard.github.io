@@ -13,7 +13,23 @@
     </head>
 
     <body>
-        <h1>SPT Leaderboard</h1>
+        <nav class="navbar animate__animated animate__fadeIn">
+            <a href="#">
+                <img src="media/TP.png" alt="SPT Leaderboard Logo" class="navbar-logo">
+            </a>
+            <div class="navbar-links">
+                <a id="infoButton" class="navbar-link">How it works</a>
+                <a id="calcButton" class="navbar-link">Submit SPT Profile</a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9ECEzK8q-nUwmxJzUw4QZ7n8Hek9q9odRXyGSzx3fa7C-wg/viewform?usp=dialog" class="navbar-link">Submit SPT Profile (Screenshot)</a>
+            </div>
+
+            <div class="season-selector">
+                <label for="seasonSelect">Season:</label>
+                <select id="seasonSelect">
+                </select>
+            </div>
+        </nav>
+        <h1 style="margin-top: 80px;" class="animate__animated animate__fadeInDown">SPT Leaderboard</h1>
         <div id="welcomePopup">
             <div class="popup-container">
                 <div class="popup-content">
@@ -165,17 +181,6 @@
             </div>
         </div>
         <div id="winners" class="animate animate__animated animate__fadeIn">
-        </div>
-        <div class="header-buttons animate animate__animated animate__fadeIn">
-            <a href="https://harmonyzt.github.io/twitchplayers.github.io/" class="main-button">To Main Page</a>
-            <a id="calcButton" class="main-button">Submit Stats via Profile</a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9ECEzK8q-nUwmxJzUw4QZ7n8Hek9q9odRXyGSzx3fa7C-wg/viewform?usp=dialog" class="main-button" id="submitStats">Submit Stats via Screenshot</a>
-            <a id="infoButton" class="main-button">How It Works?</a>
-        </div>
-        <div class="season-selector">
-            <label for="seasonSelect">Season:</label>
-            <select id="seasonSelect">
-            </select>
         </div>
         <p id="status"></p>
         <table id="leaderboardTable" class="animate animate__animated animate__fadeIn">

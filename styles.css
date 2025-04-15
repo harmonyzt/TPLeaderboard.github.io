@@ -70,6 +70,83 @@ h1 {
     box-shadow: 0 -4px 12px rgba(100, 255, 218, 0.1);
 }
 
+.navbar {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1200px;
+    background-color: var(--bg-dark-secondary);
+    padding: 10px 25px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-weight: 700;
+    z-index: 5;
+}
+
+.navbar-logo {
+    height: 40px;
+    width: auto;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 20px;
+}
+
+.navbar-link {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.3s;
+    font-size: 0.9rem;
+    padding: 15px 0;
+}
+
+.navbar-link:hover {
+    color: var(--accent-teal);
+}
+
+.season-selector {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.season-selector label {
+    font-size: 0.9rem;
+    color: var(--accent-teal);
+    margin-right: 10px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.season-selector select {
+    padding: 6px 10px;
+    border-radius: 5px;
+    background-color: rgba(10, 25, 47, 0.7);
+    border: 1px solid var(--accent-teal);
+    color: var(--text-light);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.season-selector select:hover {
+    background-color: rgba(23, 42, 69, 0.8);
+    border-color: var(--accent-blue);
+}
+
+.season-selector select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.3);
+}
+
 table {
     width: 100%;
     max-width: 1500px;
@@ -150,44 +227,6 @@ td:nth-child(2) {
     font-weight: bold;
 }
 
-.season-selector {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.season-selector label {
-    font-size: 1.1rem;
-    color: var(--accent-teal);
-    margin-right: 10px;
-    font-family: 'Inter', sans-serif;
-    letter-spacing: 0.5px;
-}
-
-.season-selector select {
-    padding: 8px 12px;
-    border-radius: 5px;
-    background-color: rgba(10, 25, 47, 0.7);
-    border: 1px solid var(--accent-teal);
-    color: var(--text-light);
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
-    position: relative;
-}
-
-.season-selector select:hover {
-    background-color: rgba(23, 42, 69, 0.8);
-    border-color: var(--accent-blue);
-}
-
-.season-selector select:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.3);
-}
-
 button,
 .main-button {
     background-color: var(--bg-dark-secondary);
@@ -215,13 +254,6 @@ button:hover,
     border-color: var(--accent-blue);
     transform: translateY(-1px);
     box-shadow: 0 6px 12px rgba(30, 144, 255, 0.2);
-}
-
-.header-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 40px;
 }
 
 .main-button:active {
