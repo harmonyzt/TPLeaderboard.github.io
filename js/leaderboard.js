@@ -864,12 +864,10 @@ function showPublicProfile(container, player) {
               </div>
             ` : ''}
             
-            ${player.currentWinstreak ? `
               <div class="player-stat-row">
                 <span class="stat-label">Successful Raids in a Row:</span>
                 <span class="profile-stat-value">${player.currentWinstreak}</span>
               </div>
-            ` : ''}
 
             ${player.longestShot ? `
               <div class="player-stat-row">
