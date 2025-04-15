@@ -21,7 +21,7 @@ async function detectSeasons() {
     seasons = [];
 
     //FIXME
-    // Throws 404 because this tries to access not existing next season file
+    // Throws 404 because it tries to access not existing next season file
     while (await checkSeasonExists(seasonNumber)) {
         seasons.push(seasonNumber);
         seasonNumber++;
@@ -30,12 +30,14 @@ async function detectSeasons() {
     seasons.sort((a, b) => b - a);
 
     populateSeasonDropdown();
-    
+
+    // Determine previous winners if we have latest leaderboard
     if (seasons.length > 1) {
         loadPreviousSeasonWinners();
     }
-    
-    loadLeaderboardData(seasons[0]); // Load the latest season data
+
+    // Load the latest season data
+    loadLeaderboardData(seasons[0]);
 }
 
 async function populateSeasonDropdown() {
@@ -50,6 +52,7 @@ async function populateSeasonDropdown() {
         seasonSelect.appendChild(option);
     });
 
+    // All seasons
     const allSeasonsOption = document.createElement('option');
     allSeasonsOption.value = 'all';
     allSeasonsOption.textContent = 'Global Leaderboard';
