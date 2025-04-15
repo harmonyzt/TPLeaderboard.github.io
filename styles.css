@@ -905,8 +905,8 @@ button:hover,
     display: none;
     position: fixed;
     z-index: 1050;
-    left: 5%;
-    top: 10%;
+    left: 20%;
+    top: 45%;
     width: 40%;
     height: 100%;
 }

@@ -694,7 +694,7 @@ function displayWinners(data) {
     const winnersTab = document.getElementById('winners');
 
     winnersTab.innerHTML = `
-        <h2>Hall of Fame for our previous Cha       mpions!</h2>
+        <h2>Hall of Fame for our previous Champions!</h2>
     `;
 
     const top3Players = data.filter(player => player.rank <= 3);
