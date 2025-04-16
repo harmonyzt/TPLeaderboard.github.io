@@ -280,7 +280,7 @@ async function displayLeaderboard(data) {
         //}
 
         let fikaIcon = '';
-        if (player.fika) {
+        if (player.fika === "true") {
             fikaIcon = '✅';
         } else {
             fikaIcon = '❌';
