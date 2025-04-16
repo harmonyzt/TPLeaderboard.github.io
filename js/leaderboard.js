@@ -818,7 +818,7 @@ function showPrivateProfile(container, player) {
       <div class="private-profile-message">
         <div class="lock-icon">🔒</div>
         <p>This profile is private</p>
-        <p class="small-text">This player has restricted access to his additional stats</p>
+        <p class="small-text">This player has restricted access to additional stats</p>
       </div>
     `;
 }
