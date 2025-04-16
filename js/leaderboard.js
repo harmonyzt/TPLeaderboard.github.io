@@ -572,8 +572,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const elements = {
         infoModal: document.getElementById('infoModal'),
         infoButton: document.getElementById('infoButton'),
-        calcModal: document.getElementById('calcModal'),
-        calcButton: document.getElementById('calcButton'),
         closeButtons: document.querySelectorAll('.close'),
         modals: document.querySelectorAll('.modal')
     };
@@ -596,20 +594,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event listeners
     elements.infoButton.addEventListener('click', () => toggleModal(elements.infoModal, true));
-    elements.calcButton.addEventListener('click', () => toggleModal(elements.calcModal, true));
 
     // Close modal if close button was clicked
     elements.closeButtons.forEach(button => {
         button.addEventListener('click', () => {
             toggleModal(elements.infoModal, false);
-            toggleModal(elements.calcModal, false);
         });
     });
 
     // Close modal if user clicked outside of it
     window.addEventListener('click', (event) => {
         if (event.target === elements.infoModal) toggleModal(elements.infoModal, false);
-        if (event.target === elements.calcModal) toggleModal(elements.calcModal, false);
     });
 });
 
@@ -864,10 +859,10 @@ function showPublicProfile(container, player) {
               </div>
             ` : ''}
             
-              <div class="player-stat-row">
+            <div class="player-stat-row">
                 <span class="stat-label">Successful Raids in a Row:</span>
                 <span class="profile-stat-value">${player.currentWinstreak}</span>
-              </div>
+            </div>
 
             ${player.longestShot ? `
               <div class="player-stat-row">
