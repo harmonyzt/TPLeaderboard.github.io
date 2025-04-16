@@ -608,72 +608,72 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    function formatTimeDifference(date) {
-        const now = new Date();
-        const diffInSeconds = Math.floor((now - date) / 1000); // Difference in seconds
-
-        const intervals = {
-            year: 31536000,
-            month: 2592000,
-            week: 604800,
-            day: 86400,
-            hour: 3600,
-            minute: 60,
-            second: 1,
-        };
-
-        // Find interval
-        for (const [unit, seconds] of Object.entries(intervals)) {
-            const interval = Math.floor(diffInSeconds / seconds);
-            if (interval >= 1) {
-                return `${interval} ${unit}${interval === 1 ? '' : 's'} ago`;
-            }
-        }
-
-        return 'just now';
-    }
+//document.addEventListener('DOMContentLoaded', () => {
+//    function formatTimeDifference(date) {
+//        const now = new Date();
+//        const diffInSeconds = Math.floor((now - date) / 1000); // Difference in seconds
+//
+//        const intervals = {
+//            year: 31536000,
+//            month: 2592000,
+//            week: 604800,
+//            day: 86400,
+//            hour: 3600,
+//            minute: 60,
+//            second: 1,
+//        };
+//
+//        // Find interval
+//        for (const [unit, seconds] of Object.entries(intervals)) {
+//            const interval = Math.floor(diffInSeconds / seconds);
+//            if (interval >= 1) {
+//                return `${interval} ${unit}${interval === 1 ? '' : 's'} ago`;
+//            }
+//        }
+//
+//        return 'just now';
+//        }
 
     // Load date from file and convert it to text
     // Yes, I use two similar functions for two similar reasons
-    fetch('js/last-updated.txt')
-        .then(response => response.text())
-        .then(data => {
-            const dateParts = data.split(/[ .:]/);
-            const year = parseInt(dateParts[0], 10);
-            const month = parseInt(dateParts[1], 10) - 1; // stupid (js months starts from 0)
-            const day = parseInt(dateParts[2], 10);
-            const hour = parseInt(dateParts[3], 10);
-            const minute = parseInt(dateParts[4], 10);
-
-            const lastUpdatedDate = new Date(year, month, day, hour, minute);
-            const formattedDifference = formatTimeDifference(lastUpdatedDate);
-
+    //fetch('js/last-updated.txt')
+    //    .then(response => response.text())
+    //    .then(data => {
+    //        const dateParts = data.split(/[ .:]/);
+    //        const year = parseInt(dateParts[0], 10);
+    //        const month = parseInt(dateParts[1], 10) - 1; // stupid (js months starts from 0)
+    //        const day = parseInt(dateParts[2], 10);
+    //        const hour = parseInt(dateParts[3], 10);
+    //        const minute = parseInt(dateParts[4], 10);
+//
+    //        const lastUpdatedDate = new Date(year, month, day, hour, minute);
+    //        const formattedDifference = formatTimeDifference(lastUpdatedDate);
+//
             // Display
-            document.getElementById('highlight').textContent = formattedDifference;
-        }).catch(error => console.error('Error loading date:', error));
-});
+    //        document.getElementById('highlight').textContent = formattedDifference;
+    //    }).catch(error => console.error('Error loading date:', error));
+//});
 
-// Close modal function
-document.addEventListener('DOMContentLoaded', function () {
-    const announcement = document.getElementById('seasonAnnouncement');
-    const closeBtn = document.getElementById('closeAnnouncement');
-
-    if (localStorage.getItem('announcementClosed') === 'true') {
-        announcement.style.display = 'none';
-    }
-
-    closeBtn.addEventListener('click', function () {
-        announcement.style.display = 'none';
-        localStorage.setItem('announcementClosed', 'true');
-    });
-
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            closeBtn.click();
-        }
-    });
-});
+// Close announcement modal function
+//document.addEventListener('DOMContentLoaded', function () {
+//    const announcement = document.getElementById('seasonAnnouncement');
+//   const closeBtn = document.getElementById('closeAnnouncement');
+//
+//    if (localStorage.getItem('announcementClosed') === 'true') {
+//        announcement.style.display = 'none';
+//    }
+//
+//    closeBtn.addEventListener('click', function () {
+//        announcement.style.display = 'none';
+//        localStorage.setItem('announcementClosed', 'true');
+//    });
+//
+//    document.addEventListener('keydown', function (e) {
+//        if (e.key === 'Escape') {
+//            closeBtn.click();
+//        }
+//    });
+//});
 
 // Loading previous season for leaders
 async function loadPreviousSeasonWinners() {
