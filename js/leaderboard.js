@@ -812,9 +812,9 @@ function openProfile(playerId) {
 }
 
 // Private profile HTML
-function showPrivateProfile(container, playerName) {
+function showPrivateProfile(container, player) {
     container.innerHTML = `
-      <h3 class="player-profile-header">${playerName}</h3>
+      <h3 class="player-profile-header">${player.name}</h3>
       <div class="private-profile-message">
         <div class="lock-icon">🔒</div>
         <p>This profile is private</p>
