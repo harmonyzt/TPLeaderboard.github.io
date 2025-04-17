@@ -460,6 +460,11 @@ function calculateRanks(data) {
             player.totalScore *= 0.3 + (0.7 * progress);
         }
 
+        if(player.disqualified === "true"){
+            player.totalScore = 0;
+            player.damage = 0;
+        }
+
         // If player is not using Twitch Players (with intent that it's gonna be easier) tune down his total score
         //if (!player.isUsingTwitchPlayers) {
         //    player.totalScore -= 5;
@@ -522,15 +527,16 @@ function calculateOverallStats(data) {
         //    totalDeaths += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
         //    totalDeathsFromTwitchPlayers += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
         //} else {
-        totalDeaths += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
-        //}
-        totalRaids += parseInt(player.totalRaids);
-        totalKills += parseFloat(player.killToDeathRatio) * Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
-        totalKDR += parseFloat(player.killToDeathRatio);
-        totalSurvival += parseFloat(player.survivedToDiedRatio);
-
-        if (player.publicProfile === "true") {
-            totalDamage += player.damage;
+        if(player.disqualified !== "true"){
+            totalDeaths += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
+            totalRaids += parseInt(player.totalRaids);
+            totalKills += parseFloat(player.killToDeathRatio) * Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
+            totalKDR += parseFloat(player.killToDeathRatio);
+            totalSurvival += parseFloat(player.survivedToDiedRatio);
+    
+            if (player.publicProfile === "true") {
+                totalDamage += player.damage;
+            }
         }
     });
 
