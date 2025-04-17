@@ -452,7 +452,7 @@ function calculateRanks(data) {
         // Total score
         player.totalScore = kdrScore + sdrScore + Math.log(raidsScore) + pmcLevelScore;
 
-        // Tune the player skill score down if he has less than 35 raids
+        // Tune the player skill score down if he has less than 50 raids
         if (player.totalRaids <= MIN_RAIDS) {
             player.totalScore *= 0.3;  // Setting rating lower by 70%
         } else if (player.totalRaids < SOFT_CAP_RAIDS) {
@@ -460,6 +460,7 @@ function calculateRanks(data) {
             player.totalScore *= 0.3 + (0.7 * progress);
         }
 
+        // Disquilify Player
         if(player.disqualified === "true"){
             player.totalScore = 0;
             player.damage = 0;
@@ -811,6 +812,12 @@ function openProfile(playerId) {
         return;
     }
 
+    if(player.disqualified === "true"){
+        modal.style.display = 'block';
+        showDisqualProfile(modalContent, player)
+        return;
+    }
+
     // Showing public profile
     showPublicProfile(modalContent, player);
     modal.style.display = 'block';
@@ -825,6 +832,18 @@ function showPrivateProfile(container, player) {
         <div class="lock-icon">🔒</div>
         <p>This profile is private</p>
         <p class="small-text">This player has restricted access to additional stats</p>
+      </div>
+    `;
+}
+
+// Disqualified profile HTML
+function showDisqualProfile(container, player) {
+    container.innerHTML = `
+      <h3 class="player-profile-header">${player.name}</h3>
+      <div class="private-profile-message">
+        <div class="lock-icon">👻</div>
+        <p>This user is banned</p>
+        <p class="small-text">This player has been disqualified from leaderboard</p>
       </div>
     `;
 }
