@@ -136,7 +136,6 @@ function compareLastPlayed(dateStr1, dateStr2) {
             return new Date(y, m - 1, d);
         }
         
-        // Для неизвестных форматов
         return null;
     };
 
@@ -168,7 +167,7 @@ async function loadLeaderboardData(season) {
         leaderboardData = data.leaderboard || [];
 
         // Show the notification if the leaderboard is empty. Displaying numbers is hacky so force to calculate nothing lmao
-        // 4/4/2025 - by the way, it gets fucked when there are no players in file. Too bad.
+        // 4/4/2025 - by the way, it gets fucked when there are no players in file.. Too bad.
         if (leaderboardData.length === 0 || (leaderboardData.length === 1 && Object.keys(leaderboardData[0]).length === 0)) {
             emptyLeaderboardNotification.style.display = 'block';
             animateNumber('totalDeaths', 0);
@@ -444,11 +443,11 @@ function calculateRanks(data) {
     data.forEach(player => {
         const kdrScore = player.killToDeathRatio * 0.2; // 20% weight
         const sdrScore = player.survivedToDiedRatio * 0.2; // 20% weight
-        const raidsScore = player.totalRaids * 0.4; // 40% weight
-        const pmcLevelScore = player.pmcLevel * 0.2; // 20% weight
+        const raidsScore = player.totalRaids * 0.5; // 50% weight
+        const pmcLevelScore = player.pmcLevel * 0.1; // 10% weight
 
-        const MIN_RAIDS = 35;
-        const SOFT_CAP_RAIDS = 70;
+        const MIN_RAIDS = 50;
+        const SOFT_CAP_RAIDS = 100;
 
         // Total score
         player.totalScore = kdrScore + sdrScore + Math.log(raidsScore) + pmcLevelScore;
@@ -503,7 +502,7 @@ function getRankLabel(totalScore) {
     if (totalScore < 24) return 'H+';
     if (totalScore < 25) return 'P-';
     if (totalScore < 27) return 'P';
-    if (totalScore < 30) return 'P+';
+    if (totalScore < 32) return 'P+';
     return 'G';
 }
 
