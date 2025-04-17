@@ -270,7 +270,7 @@ async function displayLeaderboard(data) {
                     accountColor = '#54d0e7';
                     break;
             }
-        } else if(player) {
+        } else {
             accountIcon = '';
             accountColor = '#787878';
         }
