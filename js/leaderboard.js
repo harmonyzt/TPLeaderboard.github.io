@@ -20,7 +20,7 @@ async function detectSeasons() {
     let seasonNumber = 1;
     seasons = [];
 
-    //FIXME
+    // FIXME
     // Throws 404 because it tries to access not existing next season file
     while (await checkSeasonExists(seasonNumber)) {
         seasons.push(seasonNumber);
@@ -129,13 +129,13 @@ function compareLastPlayed(dateStr1, dateStr2) {
         if (/^\d+$/.test(dateStr)) {
             return new Date(parseInt(dateStr) * 1000);
         }
-        
+
         // if "dd.mm.yyyy"
         if (/^\d{1,2}\.\d{1,2}\.\d{4}$/.test(dateStr)) {
             const [d, m, y] = dateStr.split('.').map(Number);
             return new Date(y, m - 1, d);
         }
-        
+
         return null;
     };
 
@@ -219,7 +219,7 @@ async function displayLeaderboard(data) {
             if (typeof unixTimestamp !== 'number' || unixTimestamp <= 0) {
                 return 'Unknown';
             }
-        
+
             const date = new Date(unixTimestamp * 1000);
             const now = new Date();
             const diffInSeconds = Math.floor((now - date) / 1000);
@@ -228,12 +228,12 @@ async function displayLeaderboard(data) {
             if (diffInMinutes < 60) {
                 return 'In raid <div id="blink"></div>';
             }
-            
+
             const diffInHours = Math.floor(diffInMinutes / 60);
             if (diffInHours < 24) {
                 return `${diffInHours}h ago`;
             }
-            
+
             const diffInDays = Math.floor(diffInHours / 24);
             if (diffInDays === 1) {
                 return '1d ago';
@@ -241,13 +241,13 @@ async function displayLeaderboard(data) {
             if (diffInDays < 30) {
                 return `${diffInDays}d ago`;
             }
-            
+
             const diffInMonths = Math.floor(diffInDays / 30);
             const remainingDays = diffInDays % 30;
             if (diffInMonths < 12) {
                 return `${diffInMonths}mo${remainingDays > 0 ? ` ${remainingDays}d` : ''} ago`;
             }
-            
+
             const diffInYears = Math.floor(diffInMonths / 12);
             const remainingMonths = diffInMonths % 12;
             return `${diffInYears}y${remainingMonths > 0 ? ` ${remainingMonths}mo` : ''} ago`;
@@ -529,7 +529,7 @@ function calculateOverallStats(data) {
         totalKDR += parseFloat(player.killToDeathRatio);
         totalSurvival += parseFloat(player.survivedToDiedRatio);
 
-        if(player.publicProfile === "true"){
+        if (player.publicProfile === "true") {
             totalDamage += player.damage;
         }
     });
@@ -633,26 +633,27 @@ document.addEventListener('DOMContentLoaded', () => {
 //        return 'just now';
 //        }
 
-    // Load date from file and convert it to text
-    // Yes, I use two similar functions for two similar reasons
-    //fetch('js/last-updated.txt')
-    //    .then(response => response.text())
-    //    .then(data => {
-    //        const dateParts = data.split(/[ .:]/);
-    //        const year = parseInt(dateParts[0], 10);
-    //        const month = parseInt(dateParts[1], 10) - 1; // stupid (js months starts from 0)
-    //        const day = parseInt(dateParts[2], 10);
-    //        const hour = parseInt(dateParts[3], 10);
-    //        const minute = parseInt(dateParts[4], 10);
+// Load date from file and convert it to text
+// Yes, I use two similar functions for two similar reasons
+//fetch('js/last-updated.txt')
+//    .then(response => response.text())
+//    .then(data => {
+//        const dateParts = data.split(/[ .:]/);
+//        const year = parseInt(dateParts[0], 10);
+//        const month = parseInt(dateParts[1], 10) - 1; // stupid (js months starts from 0)
+//        const day = parseInt(dateParts[2], 10);
+//        const hour = parseInt(dateParts[3], 10);
+//        const minute = parseInt(dateParts[4], 10);
 //
-    //        const lastUpdatedDate = new Date(year, month, day, hour, minute);
-    //        const formattedDifference = formatTimeDifference(lastUpdatedDate);
+//        const lastUpdatedDate = new Date(year, month, day, hour, minute);
+//        const formattedDifference = formatTimeDifference(lastUpdatedDate);
 //
-            // Display
-    //        document.getElementById('highlight').textContent = formattedDifference;
-    //    }).catch(error => console.error('Error loading date:', error));
+// Display
+//        document.getElementById('highlight').textContent = formattedDifference;
+//    }).catch(error => console.error('Error loading date:', error));
 //});
 
+// This is used for announcement if needed
 // Close announcement modal function
 //document.addEventListener('DOMContentLoaded', function () {
 //    const announcement = document.getElementById('seasonAnnouncement');
@@ -704,7 +705,7 @@ function displayWinners(data) {
     const winnersTab = document.getElementById('winners');
 
     winnersTab.innerHTML = `
-        <h2>Hall of Fame for our previous Champions!</h2>
+        <h2>Our previous season Champions!</h2>
     `;
 
     const top3Players = data.filter(player => player.rank <= 3);
@@ -832,7 +833,6 @@ function showPublicProfile(container, player) {
         })
         : 'Unknown';
 
-    // Определяем изображение фракции
     const factionImages = {
         'Bear': 'url(media/Bear.png)',
         'Usec': 'url(media/Usec.png)',
@@ -840,6 +840,8 @@ function showPublicProfile(container, player) {
 
     const factionBG = factionImages[player.faction] || '';
 
+    // TODO: More data to add
+    // Fav weapon + prestige
     container.innerHTML = `
       <div class="profile-background" style="background-image: ${factionBG}">
         <div class="profile-content-overlay">
