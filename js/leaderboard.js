@@ -203,16 +203,16 @@ async function displayLeaderboard(data) {
 
         let rankClass = '';
         let nameClass = '';
-        if (player.rank === 1) {
-            rankClass = 'gold';
-            nameClass = 'gold-name';
-        } else if (player.rank === 2) {
-            rankClass = 'silver';
-            nameClass = 'silver-name';
-        } else if (player.rank === 3) {
-            rankClass = 'bronze';
-            nameClass = 'bronze-name';
-        }
+            if (player.rank === 1) {
+                rankClass = 'gold';
+                nameClass = 'gold-name';
+            } else if (player.rank === 2) {
+                rankClass = 'silver';
+                nameClass = 'silver-name';
+            } else if (player.rank === 3) {
+                rankClass = 'bronze';
+                nameClass = 'bronze-name';
+            }
 
         // Format the date from user profile (Last Raid row in Unix now)
         function formatLastPlayed(unixTimestamp) {
@@ -259,15 +259,20 @@ async function displayLeaderboard(data) {
         // EFT Account icons and colors handling
         let accountIcon = '';
         let accountColor = '';
-        switch (player.accountType) {
-            case 'edge_of_darkness':
-                accountIcon = '<img src="media/EOD.png" alt="EOD" class="account-icon">';
-                accountColor = '#be8301';
-                break;
-            case 'unheard_edition':
-                accountIcon = '<img src="media/Unheard.png" alt="Unheard" class="account-icon">';
-                accountColor = '#54d0e7';
-                break;
+        if(player.disqualified === "false") {
+            switch (player.accountType) {
+                case 'edge_of_darkness':
+                    accountIcon = '<img src="media/EOD.png" alt="EOD" class="account-icon">';
+                    accountColor = '#be8301';
+                    break;
+                case 'unheard_edition':
+                    accountIcon = '<img src="media/Unheard.png" alt="Unheard" class="account-icon">';
+                    accountColor = '#54d0e7';
+                    break;
+            }
+        } else {
+            accountIcon = '';
+            accountColor = '#787878';
         }
 
         // If using Twitch Players
@@ -804,17 +809,18 @@ function openProfile(playerId) {
 
     const isPublic = player.publicProfile === "true";
 
+    // If disqualified
+    if(player.disqualified === "true"){
+        modal.style.display = 'block';
+        showDisqualProfile(modalContent, player)
+        return;
+    }
+
     // Privated profile
     if (!isPublic) {
         showPrivateProfile(modalContent, player);
         modal.style.display = 'block';
         setupModalCloseHandlers(modal);
-        return;
-    }
-
-    if(player.disqualified === "true"){
-        modal.style.display = 'block';
-        showDisqualProfile(modalContent, player)
         return;
     }
 
