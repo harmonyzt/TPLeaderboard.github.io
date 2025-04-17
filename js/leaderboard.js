@@ -259,7 +259,7 @@ async function displayLeaderboard(data) {
         // EFT Account icons and colors handling
         let accountIcon = '';
         let accountColor = '';
-        if(player.disqualified === "false" || player?.disqualified) {
+        if(player.disqualified === "false") {
             switch (player.accountType) {
                 case 'edge_of_darkness':
                     accountIcon = '<img src="media/EOD.png" alt="EOD" class="account-icon">';
