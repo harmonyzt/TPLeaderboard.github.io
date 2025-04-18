@@ -851,7 +851,7 @@ function showDisqualProfile(container, player) {
       <h3 class="player-profile-header">${player.name}</h3>
       <div class="private-profile-message">
         <div class="lock-icon">👻</div>
-        <p>This user is banned</p>
+        <p>This player is banned</p>
         <p class="small-text">This player has been disqualified from leaderboard</p>
       </div>
     `;
