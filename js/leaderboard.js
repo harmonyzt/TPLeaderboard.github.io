@@ -469,6 +469,9 @@ function calculateRanks(data) {
         if(player.disqualified === "true"){
             player.totalScore = 0;
             player.damage = 0;
+            player.killToDeathRatio = 0;
+            player.survivedToDiedRatio = 0;
+            player.publicProfile = "false";
         }
 
         // If player is not using Twitch Players (with intent that it's gonna be easier) tune down his total score
