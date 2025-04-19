@@ -8,7 +8,7 @@ let seasons = []; // Storing seasons
 
 async function checkSeasonExists(seasonNumber) {
     try {
-        const response = await fetch(`https://visuals.nullcore.net/hidden/season${seasonNumber}.json`);
+        const response = await fetch(`/season/season${seasonNumber}.json`);
         return response.ok;
     } catch (error) {
         return false;
@@ -82,7 +82,7 @@ async function loadAllSeasonsData() {
 
         // Loop through all seasons data
         for (const season of seasons) {
-            const response = await fetch(`https://visuals.nullcore.net/hidden/season${season}.json`);
+            const response = await fetch(`/season/season${season}.json`);
             if (!response.ok) continue;
 
             const data = await response.json();
@@ -158,12 +158,11 @@ async function loadLeaderboardData(season) {
     loadingNotification.style.display = 'block';
 
     try {
-        const response = await fetch(`https://visuals.nullcore.net/hidden/season${season}.json`);
+        const response = await fetch(`/season/season${season}.json`);
         if (!response.ok) {
             throw new Error('Failed to load leaderboard data');
         }
         const data = await response.json();
-
         leaderboardData = data.leaderboard || [];
 
         // Show the notification if the leaderboard is empty. Displaying numbers is hacky so force to calculate nothing lmao
@@ -563,13 +562,14 @@ function calculateOverallStats(data) {
 }
 
 // Simple number animation (CountUp.js)
+let countTimer = 2;
 function animateNumber(elementId, targetValue, decimals = 0) {
     const element = document.getElementById(elementId);
     const suffix = elementId === 'averageSurvival' ? '%' : '';
 
     const countUp = new CountUp(element, targetValue, {
         startVal: 0,
-        duration: 5,
+        duration: countTimer+=0.3,
         decimalPlaces: decimals,
         separator: ',',
         suffix: suffix
@@ -750,7 +750,7 @@ function displayWinners(data) {
 // Get ranks for leaders of previous season
 function getRankText(rank) {
     switch (rank) {
-        case 1: return 'First place';
+        case 1: return '👑 First place 👑';
         case 2: return 'Second place';
         case 3: return 'Third place';
         default: return '';
@@ -836,24 +836,28 @@ function openProfile(playerId) {
 // Private profile HTML
 function showPrivateProfile(container, player) {
     container.innerHTML = `
+    <div class="profile-content-overlay">
       <h3 class="player-profile-header">${player.name}</h3>
       <div class="private-profile-message">
         <div class="lock-icon">🔒</div>
         <p>This profile is private</p>
         <p class="small-text">This player has restricted access to additional stats</p>
       </div>
+    </div>
     `;
 }
 
 // Disqualified profile HTML
 function showDisqualProfile(container, player) {
     container.innerHTML = `
+    <div class="profile-content-overlay">
       <h3 class="player-profile-header">${player.name}</h3>
       <div class="private-profile-message">
         <div class="lock-icon">👻</div>
         <p>This player is banned</p>
         <p class="small-text">This player has been disqualified from leaderboard</p>
       </div>
+    </div
     `;
 }
 
@@ -874,41 +878,59 @@ function showPublicProfile(container, player) {
 
     const factionBG = factionImages[player.faction] || '';
 
-    // TODO: More data to add
-    // Fav weapon + prestige
-    container.innerHTML = `
-      <div class="profile-background" style="background-image: ${factionBG}">
-        <div class="profile-content-overlay">
-          <h3 class="player-profile-header">${player.name}</h3>
-          <div class="player-stats-container">
-            
-            <div class="player-stat-row">
-              <span class="stat-label">Registered:</span>
-              <span class="profile-stat-value">${regDate}</span>
-            </div>
-            
-            ${player.damage ? `
+    // Prestige
+    const prestigeImg = player.prestige === 1 || player.prestige === 2
+        ? `<img src="media/prestige${player.prestige}.png" class="prestige-icon" alt="Prestige ${player.prestige}">`
+        : '';
+
+    // About me
+    const aboutText = player.about && player.about.length <= 40
+        ? `<div class="player-about">- ${player.about}</div>`
+        : '';
+
+    // Tab Styles
+    if (player.tabStyle === "EFT") {
+
+    } else {
+        container.innerHTML = `
+        <div class="profile-background" style="background-image: ${factionBG}">
+          <div class="profile-content-overlay">
+            <h3 class="player-profile-header">
+              ${prestigeImg}
+              ${player.name}
+              ${aboutText}
+            </h3>
+            <div class="player-stats-container">
+  
               <div class="player-stat-row">
-                <span class="stat-label">Overall Damage:</span>
-                <span class="profile-stat-value">${player.damage.toLocaleString()}</span>
+                <span class="stat-label">Registered:</span>
+                <span class="profile-stat-value">${regDate}</span>
               </div>
-            ` : ''}
-            
-            <div class="player-stat-row">
+  
+              ${player.damage ? `
+                <div class="player-stat-row">
+                  <span class="stat-label">Overall Damage:</span>
+                  <span class="profile-stat-value">${player.damage.toLocaleString()}</span>
+                </div>
+              ` : ''}
+  
+              <div class="player-stat-row">
                 <span class="stat-label">Successful Raids in a Row:</span>
                 <span class="profile-stat-value">${player.currentWinstreak}</span>
-            </div>
-
-            ${player.longestShot ? `
-              <div class="player-stat-row">
-                <span class="stat-label">Longest Shot:</span>
-                <span class="profile-stat-value">${player.longestShot.toLocaleString()} meters</span>
               </div>
-            ` : ''}
+  
+              ${player.longestShot ? `
+                <div class="player-stat-row">
+                  <span class="stat-label">Longest Shot:</span>
+                  <span class="profile-stat-value">${player.longestShot.toLocaleString()} meters</span>
+                </div>
+              ` : ''}
+            </div>
           </div>
         </div>
-      </div>
-    `;
+      `;
+    }
+
 }
 
 // Close modals on click or out of bounds click
