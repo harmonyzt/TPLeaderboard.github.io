@@ -8,7 +8,7 @@ let seasons = []; // Storing seasons
 
 async function checkSeasonExists(seasonNumber) {
     try {
-        const response = await fetch(`/season/season${seasonNumber}.json`);
+        const response = await fetch(`https://visuals.nullcore.net/hidden/season${seasonNumber}.json`);
         return response.ok;
     } catch (error) {
         return false;
@@ -82,7 +82,7 @@ async function loadAllSeasonsData() {
 
         // Loop through all seasons data
         for (const season of seasons) {
-            const response = await fetch(`/season/season${season}.json`);
+            const response = await fetch(`https://visuals.nullcore.net/hidden/season${season}.json`);
             if (!response.ok) continue;
 
             const data = await response.json();
@@ -158,7 +158,7 @@ async function loadLeaderboardData(season) {
     loadingNotification.style.display = 'block';
 
     try {
-        const response = await fetch(`/season/season${season}.json`);
+        const response = await fetch(`https://visuals.nullcore.net/hidden/season${season}.json`);
         if (!response.ok) {
             throw new Error('Failed to load leaderboard data');
         }
@@ -890,7 +890,7 @@ function showPublicProfile(container, player) {
 
     // Tab Styles
     if (player.tabStyle === "EFT") {
-
+        //New Style
     } else {
         container.innerHTML = `
         <div class="profile-background" style="background-image: ${factionBG}">
@@ -900,8 +900,14 @@ function showPublicProfile(container, player) {
               ${player.name}
               ${aboutText}
             </h3>
-            <div class="player-stats-container">
-  
+            
+            <div class="profile-tabs">
+              <button class="profile-tab active" data-tab="pmc">PMC</button>
+              <button class="profile-tab" data-tab="scav">SCAV</button>
+              <button class="profile-tab" data-tab="lastraid">Last Raid</button>
+            </div>
+            
+            <div class="player-stats-container" id="pmc-stats">
               <div class="player-stat-row">
                 <span class="stat-label">Registered:</span>
                 <span class="profile-stat-value">${regDate}</span>
@@ -926,11 +932,73 @@ function showPublicProfile(container, player) {
                 </div>
               ` : ''}
             </div>
+            
+            <!-- SCAV Profile -->
+            <div class="player-stats-container hidden" id="scav-stats">
+              <div class="player-stat-row">
+                <span class="stat-label">SCAV K/D:</span>
+                <span class="profile-stat-value">${player.scavKd || 'N/A'}</span>
+              </div>
+              
+              <div class="player-stat-row">
+                <span class="stat-label">SCAV Raids:</span>
+                <span class="profile-stat-value">${player.scavRaids || 0}</span>
+              </div>
+              
+              <div class="player-stat-row">
+                <span class="stat-label">SCAV Survives:</span>
+                <span class="profile-stat-value">${player.scavSurvives || 0}</span>
+              </div>
+              
+              <div class="player-stat-row">
+                <span class="stat-label">SCAV Extract Rate:</span>
+                <span class="profile-stat-value">${player.scavExtractRate ? player.scavExtractRate + '%' : 'N/A'}</span>
+              </div>
+            </div>
+            
+            <!-- Last Raid -->
+            <div class="player-stats-container hidden" id="lastraid-stats">
+              <div class="player-stat-row">
+                <span class="stat-label">Last Raid Map:</span>
+                <span class="profile-stat-value">${player.lastRaidMap || 'Unknown'}</span>
+              </div>
+              
+              <div class="player-stat-row">
+                <span class="stat-label">Last Raid Result:</span>
+                <span class="profile-stat-value">${player.lastRaidResult || 'Unknown'}</span>
+              </div>
+              
+              <div class="player-stat-row">
+                <span class="stat-label">Kills:</span>
+                <span class="profile-stat-value">${player.lastRaidKills || 0}</span>
+              </div>
+              
+              <div class="player-stat-row">
+                <span class="stat-label">Survived:</span>
+                <span class="profile-stat-value">${player.lastRaidSurvived ? 'Yes' : 'No'}</span>
+              </div>
+            </div>
           </div>
         </div>
       `;
+      
+      const tabs = container.querySelectorAll('.profile-tab');
+      tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+              tabs.forEach(t => t.classList.remove('active'));
+              tab.classList.add('active');
+              
+              // Hide all tabs
+              document.getElementById('pmc-stats').classList.add('hidden');
+              document.getElementById('scav-stats').classList.add('hidden');
+              document.getElementById('lastraid-stats').classList.add('hidden');
+              
+              // Show clicked tab
+              const tabName = tab.getAttribute('data-tab');
+              document.getElementById(`${tabName}-stats`).classList.remove('hidden');
+          });
+      });
     }
-
 }
 
 // Close modals on click or out of bounds click
