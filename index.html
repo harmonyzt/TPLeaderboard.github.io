@@ -9,6 +9,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
         <script src="https://betterdiscord.app/js/vendor/countUp.min.js?v=DBxeQBHNMaYkRvB8uPOLm07cbQj54TDexlykb-Dcg28"></script>
         <script src="js/leaderboard.js"></script>
+        <script src="js/funFact.js"></script>
+        <script src="js/searchBar.js"></script>
         <title>SPT Leaderboard</title>
     </head>
 
@@ -20,7 +22,9 @@
             <div class="navbar-links">
                 <a id="infoButton" class="navbar-link">How it works</a>
             </div>
-
+            <div class="navbar-links">
+                <a id="openBookmarks()" class="navbar-link">Bookmarks</a>
+            </div>
             <div class="season-selector">
                 <label for="seasonSelect">Season:</label>
                 <select id="seasonSelect">
@@ -129,9 +133,7 @@
         -->
         <div class="stats-container animate animate__animated animate__fadeIn">
             <h2>Overall Statistics</h2>
-            <!-- Not used for now
-            <p class="update-info">Latest leaderboard check was <span id="highlight"></span></p>
-            -->
+            <p class="update-info">Random quote: <span id="highlight"></span></p>
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-value" id="totalDeaths">0</div>
@@ -168,6 +170,10 @@
         <div id="winners" class="animate animate__animated animate__fadeIn">
         </div>
         <p id="status"></p>
+        <div class="search-container">
+            <input type="text" id="playerSearch" placeholder="Find player..." />
+            <button id="clearSearch">Clear</button>
+        </div>
         <table id="leaderboardTable" class="animate animate__animated animate__fadeIn">
             <thead>
                 <tr>
@@ -182,9 +188,9 @@
                     <th data-sort="totalScore">Skill</th>
                     <!--
                         <th>TP</th>
+                        <th>Fika</th>
                     -->
-                    <th>Fika</th>
-                    <th>SPT Version</th>
+                    <th>SPT</th>
                 </tr>
             </thead>
             <tbody>

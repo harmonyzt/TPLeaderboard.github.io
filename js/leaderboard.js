@@ -2,13 +2,18 @@
 document.addEventListener('DOMContentLoaded', detectSeasons);
 
 let leaderboardData = []; // For keeping data
-let allSeasonsData = []; // For keeping ALL players data
+let allSeasonsData = []; // For keeping last season data
+let allSeasonsDataReady = []; // For keeping ALL players data
 let sortDirection = {}; // Sort direction
 let seasons = []; // Storing seasons
 
+//  https://visuals.nullcore.net/hidden/season
+let seasonPath = "/season/season"
+let seasonPathEnd = ".json"
+
 async function checkSeasonExists(seasonNumber) {
     try {
-        const response = await fetch(`https://visuals.nullcore.net/hidden/season${seasonNumber}.json`);
+        const response = await fetch(`${seasonPath}${seasonNumber}${seasonPathEnd}`);
         return response.ok;
     } catch (error) {
         return false;
@@ -74,6 +79,7 @@ async function loadAllSeasonsData() {
     const loadingNotification = document.getElementById('loadingNotification');
     const emptyLeaderboardNotification = document.getElementById('emptyLeaderboardNotification');
 
+    console.log('[DEBUG] Starting to load all seasons data...');
     emptyLeaderboardNotification.style.display = 'none';
     loadingNotification.style.display = 'block';
 
@@ -81,33 +87,72 @@ async function loadAllSeasonsData() {
         const uniquePlayers = {};
 
         // Loop through all seasons data
+        console.log(`[DEBUG] Processing ${seasons.length} seasons...`);
         for (const season of seasons) {
-            const response = await fetch(`https://visuals.nullcore.net/hidden/season${season}.json`);
-            if (!response.ok) continue;
+            console.log(`[DEBUG] Processing season: ${season}`);
+            const response = await fetch(`${seasonPath}${season}${seasonPathEnd}`);
+            if (!response.ok) {
+                console.warn(`[DEBUG] Failed to fetch data for season ${season}, skipping...`);
+                continue;
+            }
 
             const data = await response.json();
+            console.log(`[DEBUG] Season ${season} loaded, players: ${data.leaderboard?.length || 0}`);
+
             if (data.leaderboard && data.leaderboard.length > 0) {
-                data.leaderboard.forEach(player => {
-                    // If we find a player with same name from two seasons (or more) choose most recent one
-                    if (!uniquePlayers[player.name] ||
-                        compareLastPlayed(player.lastPlayed, uniquePlayers[player.name].lastPlayed) > 0) {
-                        uniquePlayers[player.name] = {
+                data.leaderboard.forEach((player, index) => {
+                    // Use player's ID as the key instead of name
+                    const playerKey = player.id || player.name; // fallback to name if id doesn't exist
+                    console.log(`[DEBUG] Processing player ${index + 1}/${data.leaderboard.length}: ${playerKey}`);
+
+                    if (!uniquePlayers[playerKey]) {
+                        console.log(`[DEBUG] New player detected: ${playerKey}, season: ${season}`);
+                        // New player - hasn't played in previous seasons
+                        uniquePlayers[playerKey] = {
                             ...player,
-                            seasonsPlayed: uniquePlayers[player.name]
-                                ? [...uniquePlayers[player.name].seasonsPlayed, season]
-                                : [season]
+                            seasonsPlayed: [season],
+                            seasonsCount: 1
                         };
+                    } else {
+                        console.log(`[DEBUG] Existing player: ${playerKey}`);
+                        // Existing player - update if this season is more recent
+                        if (compareLastPlayed(player.lastPlayed, uniquePlayers[playerKey].lastPlayed) > 0) {
+                            console.log(`[DEBUG] Updating player data with more recent season: ${season}`);
+                            // Update player data but keep seasons info
+                            const { seasonsPlayed, seasonsCount, ...rest } = uniquePlayers[playerKey];
+                            uniquePlayers[playerKey] = {
+                                ...player,
+                                seasonsPlayed: seasonsPlayed.includes(season) ? seasonsPlayed : [...seasonsPlayed, season],
+                                seasonsCount: seasonsPlayed.includes(season) ? seasonsCount : seasonsCount + 1
+                            };
+                        } else if (!uniquePlayers[playerKey].seasonsPlayed.includes(season)) {
+                            console.log(`[DEBUG] Adding new season ${season} to existing player`);
+                            // Season not in list yet - add it
+                            uniquePlayers[playerKey].seasonsPlayed.push(season);
+                            uniquePlayers[playerKey].seasonsCount += 1;
+                        } else {
+                            console.log(`[DEBUG] Season ${season} already recorded for this player`);
+                        }
                     }
+
+                    console.log(`[DEBUG] Current state for ${playerKey}:`, {
+                        seasons: uniquePlayers[playerKey].seasonsPlayed,
+                        count: uniquePlayers[playerKey].seasonsCount,
+                        lastPlayed: uniquePlayers[playerKey].lastPlayed
+                    });
                 });
             }
         }
 
-        // Turning everyone back into massive object (M-M-MASSIVE?)
+        // Convert to array
         allSeasonsCombinedData = Object.values(uniquePlayers);
+        console.log('[DEBUG] Final player data:', allSeasonsCombinedData);
 
         if (allSeasonsCombinedData.length === 0) {
+            console.warn('[DEBUG] No player data found after processing all seasons');
             emptyLeaderboardNotification.style.display = 'block';
         } else {
+            console.log(`[DEBUG] Processed ${allSeasonsCombinedData.length} unique players`);
             addColorIndicators(allSeasonsCombinedData);
             calculateRanks(allSeasonsCombinedData);
             calculateOverallStats(allSeasonsCombinedData);
@@ -115,14 +160,13 @@ async function loadAllSeasonsData() {
 
         displayLeaderboard(allSeasonsCombinedData);
         addSortListeners();
-
     } catch (error) {
-        console.error('Error loading all seasons data:', error);
+        console.error('[DEBUG] Error loading all seasons data:', error);
     } finally {
+        console.log('[DEBUG] Finished loading all seasons data');
         loadingNotification.style.display = 'none';
     }
 }
-
 // Unix
 function compareLastPlayed(dateStr1, dateStr2) {
     const parseDate = (dateStr) => {
@@ -158,10 +202,12 @@ async function loadLeaderboardData(season) {
     loadingNotification.style.display = 'block';
 
     try {
-        const response = await fetch(`https://visuals.nullcore.net/hidden/season${season}.json`);
+        const response = await fetch(`${seasonPath}${season}${seasonPathEnd}`);
+
         if (!response.ok) {
             throw new Error('Failed to load leaderboard data');
         }
+
         const data = await response.json();
         leaderboardData = data.leaderboard || [];
 
@@ -202,16 +248,16 @@ async function displayLeaderboard(data) {
 
         let rankClass = '';
         let nameClass = '';
-            if (player.rank === 1) {
-                rankClass = 'gold';
-                nameClass = 'gold-name';
-            } else if (player.rank === 2) {
-                rankClass = 'silver';
-                nameClass = 'silver-name';
-            } else if (player.rank === 3) {
-                rankClass = 'bronze';
-                nameClass = 'bronze-name';
-            }
+        if (player.rank === 1) {
+            rankClass = 'gold';
+            nameClass = 'gold-name';
+        } else if (player.rank === 2) {
+            rankClass = 'silver';
+            nameClass = 'silver-name';
+        } else if (player.rank === 3) {
+            rankClass = 'bronze';
+            nameClass = 'bronze-name';
+        }
 
         // Format the date from user profile (Last Raid row in Unix now)
         function formatLastPlayed(unixTimestamp) {
@@ -255,10 +301,16 @@ async function displayLeaderboard(data) {
         // Turning last game into 'x days/weeks ago'
         let lastGame = formatLastPlayed(player.lastPlayed)
 
+        if (lastGame === "In raid") {
+            player.isOnline = true;
+        } else {
+            player.isOnline = false;
+        }
+
         // EFT Account icons and colors handling
         let accountIcon = '';
         let accountColor = '';
-        if(player.disqualified === "false") {
+        if (player.disqualified === "false") {
             switch (player.accountType) {
                 case 'edge_of_darkness':
                     accountIcon = '<img src="media/EOD.png" alt="EOD" class="account-icon">';
@@ -282,51 +334,24 @@ async function displayLeaderboard(data) {
         //    TPicon = '❌';
         //}
 
-        let fikaIcon = '';
-        if (player.fika === "true") {
-            fikaIcon = '✅';
-        } else {
-            fikaIcon = '❌';
-        }
+        //let fikaIcon = '';
+        //if (player.fika === "true") {
+        //    fikaIcon = '✅';
+        //} else {
+        //    fikaIcon = '❌';
+        //}
+
+        // Prestige
+        const prestigeImg = player.prestige === 1 || player.prestige === 2
+            ? `<img src="media/prestige${player.prestige}.png" style="width: 30px; height: 30px" class="prestige-icon" alt="Prestige ${player.prestige}">`
+            : '';
 
         // Get skill
         const rankLabel = getRankLabel(player.totalScore);
 
-        // Compare SPT version of the user
-        function getSptVerClass(playerVersion) {
-            const latestVersion = '3.11.3'; // Newest SPT ver
-            const outdatedVersion = '3.10'; // Outdated SPT ver. Everything below that version will be old versions
-
-            if (compareVersions(playerVersion, latestVersion) >= 0) {
-                return 'current-version';
-            }
-
-            if (compareVersions(playerVersion, outdatedVersion) >= 0) {
-                return 'outdated-version';
-            }
-
-            return 'old-version';
-        }
-
-        // Recognize the version of SPT
-        function compareVersions(version1, version2) {
-            const v1 = version1.split('.').map(Number);
-            const v2 = version2.split('.').map(Number);
-
-            for (let i = 0; i < Math.max(v1.length, v2.length); i++) {
-                const part1 = v1[i] || 0;
-                const part2 = v2[i] || 0;
-
-                if (part1 > part2) return 1;  // version1 > version2
-                if (part1 < part2) return -1; // version1 < version2
-            }
-
-            return 0; // version1 == version2
-        }
-
         row.innerHTML = `
             <td class="rank ${rankClass}">${player.rank} ${player.medal}</td>
-            <td class="player-name ${nameClass}" style="color: ${accountColor}" data-player-id="${player.id || '0'}"> ${accountIcon} ${player.name}</td>
+            <td class="player-name ${nameClass}" style="color: ${accountColor}" data-player-id="${player.id || '0'}"> ${accountIcon} ${player.name} ${prestigeImg}</td>
             <td>${lastGame || 'N/A'}</td>
             <td>${player.pmcLevel}</td>
             <td>${player.totalRaids}</td>
@@ -334,8 +359,7 @@ async function displayLeaderboard(data) {
             <td class="${player.killToDeathRatioClass}">${player.killToDeathRatio}</td>
             <td class="${player.averageLifeTimeClass}">${player.averageLifeTime}</td>
             <td>${player.totalScore <= 0 ? 'Calibrating...' : player.totalScore.toFixed(2)} ${player.totalScore <= 0 ? '' : `(${rankLabel})`}</td>
-            <td>${fikaIcon}</td>
-            <td class="${getSptVerClass(player.sptVer)}">${player.sptVer}</td>
+            <td>${player.sptVer}</td>
         `;
 
         tableBody.appendChild(row);
@@ -465,7 +489,7 @@ function calculateRanks(data) {
         }
 
         // Disquilify Player
-        if(player.disqualified === "true"){
+        if (player.disqualified === "true") {
             player.totalScore = 0;
             player.damage = 0;
             player.killToDeathRatio = 0;
@@ -535,13 +559,13 @@ function calculateOverallStats(data) {
         //    totalDeaths += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
         //    totalDeathsFromTwitchPlayers += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
         //} else {
-        if(player.disqualified !== "true"){
+        if (player.disqualified == "false") {
             totalDeaths += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
             totalRaids += parseInt(player.totalRaids);
             totalKills += parseFloat(player.killToDeathRatio) * Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
             totalKDR += parseFloat(player.killToDeathRatio);
             totalSurvival += parseFloat(player.survivedToDiedRatio);
-    
+
             if (player.publicProfile === "true") {
                 totalDamage += player.damage;
             }
@@ -569,7 +593,7 @@ function animateNumber(elementId, targetValue, decimals = 0) {
 
     const countUp = new CountUp(element, targetValue, {
         startVal: 0,
-        duration: countTimer+=0.3,
+        duration: countTimer += 0.3,
         decimalPlaces: decimals,
         separator: ',',
         suffix: suffix
@@ -622,52 +646,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-//document.addEventListener('DOMContentLoaded', () => {
-//    function formatTimeDifference(date) {
-//        const now = new Date();
-//        const diffInSeconds = Math.floor((now - date) / 1000); // Difference in seconds
-//
-//        const intervals = {
-//            year: 31536000,
-//            month: 2592000,
-//            week: 604800,
-//            day: 86400,
-//            hour: 3600,
-//            minute: 60,
-//            second: 1,
-//        };
-//
-//        // Find interval
-//        for (const [unit, seconds] of Object.entries(intervals)) {
-//            const interval = Math.floor(diffInSeconds / seconds);
-//            if (interval >= 1) {
-//                return `${interval} ${unit}${interval === 1 ? '' : 's'} ago`;
-//            }
-//        }
-//
-//        return 'just now';
-//        }
-
-// Load date from file and convert it to text
-// Yes, I use two similar functions for two similar reasons
-//fetch('js/last-updated.txt')
-//    .then(response => response.text())
-//    .then(data => {
-//        const dateParts = data.split(/[ .:]/);
-//        const year = parseInt(dateParts[0], 10);
-//        const month = parseInt(dateParts[1], 10) - 1; // stupid (js months starts from 0)
-//        const day = parseInt(dateParts[2], 10);
-//        const hour = parseInt(dateParts[3], 10);
-//        const minute = parseInt(dateParts[4], 10);
-//
-//        const lastUpdatedDate = new Date(year, month, day, hour, minute);
-//        const formattedDifference = formatTimeDifference(lastUpdatedDate);
-//
-// Display
-//        document.getElementById('highlight').textContent = formattedDifference;
-//    }).catch(error => console.error('Error loading date:', error));
-//});
-
 // This is used for announcement if needed
 // Close announcement modal function
 //document.addEventListener('DOMContentLoaded', function () {
@@ -700,7 +678,7 @@ async function loadPreviousSeasonWinners() {
     const previousSeason = seasons[seasons.length - 1];
 
     try {
-        const response = await fetch(`https://visuals.nullcore.net/hidden/season${previousSeason}.json`);
+        const response = await fetch(`${seasonPath}${previousSeason}${seasonPathEnd}`);
 
         // Throws us at season1 + 1. This is some serious SHIT
         if (!response.ok) throw new Error('Failed to load previous season data');
@@ -813,7 +791,7 @@ function openProfile(playerId) {
     const isPublic = player.publicProfile === "true";
 
     // If disqualified
-    if(player.disqualified === "true"){
+    if (player.disqualified === "true") {
         modal.style.display = 'block';
         showDisqualProfile(modalContent, player)
         return;
@@ -855,7 +833,7 @@ function showDisqualProfile(container, player) {
       <div class="private-profile-message">
         <div class="lock-icon">👻</div>
         <p>This player is banned</p>
-        <p class="small-text">This player has been disqualified from leaderboard</p>
+        <p class="small-text">This player has been disqualified | banned from leaderboard</p>
       </div>
     </div
     `;
@@ -884,20 +862,20 @@ function showPublicProfile(container, player) {
         : '';
 
     // About me
-    const aboutText = player.about && player.about.length <= 40
-        ? `<div class="player-about">- ${player.about}</div>`
-        : '';
+    const aboutText = player.about && player.about.length <= 50
+        ? `<div class="player-about">${player.about}</div>`
+        : '<div class="player-about">Hey there! I am using SPT Leaderboard :)</div>';
 
     // Tab Styles
     if (player.tabStyle === "EFT") {
-        //New Style
+
     } else {
         container.innerHTML = `
         <div class="profile-background" style="background-image: ${factionBG}">
           <div class="profile-content-overlay">
             <h3 class="player-profile-header">
               ${prestigeImg}
-              ${player.name}
+              ${player.name}${player.isOnline ? `<div id="blink" style="background-color:rgb(106, 255, 163); margin-left: 5px"></div>` : `<div id="blink" style="background-color:rgb(121, 121, 121); animation: none; margin-left: 5px"></div>`}
               ${aboutText}
             </h3>
             
@@ -905,29 +883,29 @@ function showPublicProfile(container, player) {
               <button class="profile-tab active" data-tab="pmc">PMC</button>
               <button class="profile-tab" data-tab="scav">SCAV</button>
               <button class="profile-tab" data-tab="lastraid">Last Raid</button>
-            </div>
+              </div>
             
             <div class="player-stats-container" id="pmc-stats">
               <div class="player-stat-row">
-                <span class="stat-label">Registered:</span>
+                <span class="profile-stat-label">Registered:</span>
                 <span class="profile-stat-value">${regDate}</span>
               </div>
   
               ${player.damage ? `
                 <div class="player-stat-row">
-                  <span class="stat-label">Overall Damage:</span>
+                  <span class="profile-stat-label">Overall Damage:</span>
                   <span class="profile-stat-value">${player.damage.toLocaleString()}</span>
                 </div>
               ` : ''}
   
               <div class="player-stat-row">
-                <span class="stat-label">Successful Raids in a Row:</span>
+                <span class="profile-stat-label">Successful Raids in a Row:</span>
                 <span class="profile-stat-value">${player.currentWinstreak}</span>
               </div>
   
               ${player.longestShot ? `
                 <div class="player-stat-row">
-                  <span class="stat-label">Longest Shot:</span>
+                  <span class="profile-stat-label">Longest Shot:</span>
                   <span class="profile-stat-value">${player.longestShot.toLocaleString()} meters</span>
                 </div>
               ` : ''}
@@ -936,68 +914,68 @@ function showPublicProfile(container, player) {
             <!-- SCAV Profile -->
             <div class="player-stats-container hidden" id="scav-stats">
               <div class="player-stat-row">
-                <span class="stat-label">SCAV K/D:</span>
-                <span class="profile-stat-value">${player.scavKd || 'N/A'}</span>
+                <span class="profile-stat-label">SCAV Level:</span>
+                <span class="profile-stat-value">${player.scavLevel || 'N/A'}</span>
               </div>
               
               <div class="player-stat-row">
-                <span class="stat-label">SCAV Raids:</span>
+                <span class="profile-stat-label">SCAV Raids:</span>
                 <span class="profile-stat-value">${player.scavRaids || 0}</span>
               </div>
               
               <div class="player-stat-row">
-                <span class="stat-label">SCAV Survives:</span>
+                <span class="profile-stat-label">SCAV Survives:</span>
                 <span class="profile-stat-value">${player.scavSurvives || 0}</span>
               </div>
               
               <div class="player-stat-row">
-                <span class="stat-label">SCAV Extract Rate:</span>
-                <span class="profile-stat-value">${player.scavExtractRate ? player.scavExtractRate + '%' : 'N/A'}</span>
+                <span class="profile-stat-label">SCAV Survival Rate:</span>
+                <span class="profile-stat-value">${player.scavSurvRate ? player.scavSurvRate + '%' : 'N/A'}</span>
               </div>
             </div>
             
             <!-- Last Raid -->
             <div class="player-stats-container hidden" id="lastraid-stats">
               <div class="player-stat-row">
-                <span class="stat-label">Last Raid Map:</span>
+                <span class="profile-stat-label">Kills:</span>
+                <span class="profile-stat-value">${player.lastRaidKills || 0}</span>
+              </div>
+
+              <div class="player-stat-row">
+                <span class="profile-stat-label">Damage:</span>
+                <span class="profile-stat-value">${player.lastRaidDamage || 'Unknown'}</span>
+              </div>
+
+              <div class="player-stat-row">
+                <span class="profile-stat-label">Last Raid Map:</span>
                 <span class="profile-stat-value">${player.lastRaidMap || 'Unknown'}</span>
               </div>
               
               <div class="player-stat-row">
-                <span class="stat-label">Last Raid Result:</span>
-                <span class="profile-stat-value">${player.lastRaidResult || 'Unknown'}</span>
-              </div>
-              
-              <div class="player-stat-row">
-                <span class="stat-label">Kills:</span>
-                <span class="profile-stat-value">${player.lastRaidKills || 0}</span>
-              </div>
-              
-              <div class="player-stat-row">
-                <span class="stat-label">Survived:</span>
+                <span class="profile-stat-label">Survived:</span>
                 <span class="profile-stat-value">${player.lastRaidSurvived ? 'Yes' : 'No'}</span>
               </div>
             </div>
           </div>
         </div>
       `;
-      
-      const tabs = container.querySelectorAll('.profile-tab');
-      tabs.forEach(tab => {
-          tab.addEventListener('click', () => {
-              tabs.forEach(t => t.classList.remove('active'));
-              tab.classList.add('active');
-              
-              // Hide all tabs
-              document.getElementById('pmc-stats').classList.add('hidden');
-              document.getElementById('scav-stats').classList.add('hidden');
-              document.getElementById('lastraid-stats').classList.add('hidden');
-              
-              // Show clicked tab
-              const tabName = tab.getAttribute('data-tab');
-              document.getElementById(`${tabName}-stats`).classList.remove('hidden');
-          });
-      });
+
+        const tabs = container.querySelectorAll('.profile-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Hide all tabs
+                document.getElementById('pmc-stats').classList.add('hidden');
+                document.getElementById('scav-stats').classList.add('hidden');
+                document.getElementById('lastraid-stats').classList.add('hidden');
+
+                // Show clicked tab
+                const tabName = tab.getAttribute('data-tab');
+                document.getElementById(`${tabName}-stats`).classList.remove('hidden');
+            });
+        });
     }
 }
 

@@ -148,6 +148,35 @@ h1 {
     box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.3);
 }
 
+.search-container {
+    margin: 20px 0;
+    gap: 10px;
+    max-width: 600px;
+    margin-left: 200px;
+}
+
+#playerSearch {
+    flex-grow: 1;
+    padding: 12px 16px;
+    font-size: 16px;
+    background-color: var(--bg-dark-secondary);
+    border: 1px solid var(--text-muted);
+    border-radius: 10px;
+    color: var(--text-light);
+    transition: all 0.3s ease;
+}
+
+#playerSearch:focus {
+    outline: none;
+    border-color: var(--accent-teal);
+    box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.2);
+}
+
+#playerSearch::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
 table {
     width: 100%;
     max-width: 1500px;
@@ -236,9 +265,17 @@ td {
 }
 
 @keyframes blink {
-    0% { opacity: 1; }
-    50% { opacity: 0.3; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 
@@ -433,7 +470,7 @@ button:hover,
 }
 
 .stat-value {
-    font-size: 2.5rem;
+    font-size: 2.3rem;
     font-weight: bold;
     color: var(--accent-teal);
     margin-bottom: 10px;
@@ -885,7 +922,7 @@ button:hover,
     position: fixed;
     z-index: 5;
     left: 30%;
-    top: 45%;
+    top: 30%;
     background: #1e1e2d;
     margin: 5% auto;
     padding: 25px;
@@ -945,7 +982,7 @@ button:hover,
     background: rgba(50, 50, 70, 0.8);
 }
 
-.stat-label {
+.profile-stat-label {
     color: #b0b0c0;
     font-weight: 600;
     font-size: 0.95em;
