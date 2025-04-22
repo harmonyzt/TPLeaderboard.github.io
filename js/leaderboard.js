@@ -365,7 +365,7 @@ async function displayLeaderboard(data) {
         tableBody.appendChild(row);
     });
 
-    // Clickity for names in leaderboard
+    // Clickity for names in leaderboard (profiles)
     document.querySelectorAll('.player-name').forEach(element => {
         element.addEventListener('click', () => {
             openProfile(element.dataset.playerId);
