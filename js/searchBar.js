@@ -46,17 +46,15 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(searchPlayers, 100);
     }
 
-    // Поиск с задержкой 300мс
     let searchTimeout;
     searchInput.addEventListener('input', function () {
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => {
             setCookie('playerSearch', this.value, 7);
             searchPlayers();
-        }, 300);
+        }, 200);
     });
 
-    // Очистка поиска
     clearButton.addEventListener('click', function () {
         searchInput.value = '';
         setCookie('playerSearch', '', -1);
