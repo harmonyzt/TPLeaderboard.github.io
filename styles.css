@@ -553,56 +553,81 @@ button:hover,
 }
 
 /* Announcement */
-#seasonAnnouncement {
-    background: rgba(10, 25, 47, 0.7);
-    padding: 25px;
-    border-radius: 12px;
-    margin: 25px auto;
-    max-width: 800px;
+#updateAnnouncement {
+    background: rgba(10, 25, 47, 0.85);
+    border-radius: 16px;
+    margin: 15px auto;
+    max-width: 850px;
     text-align: center;
     box-shadow:
-        0 4px 15px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(100, 255, 218, 0.3);
+        0 6px 20px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(100, 255, 218, 0.4);
     color: var(--accent-teal);
     border: 2px solid var(--accent-teal);
     position: relative;
     transition: all 0.5s ease;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
     overflow: hidden;
 }
 
-
-@keyframes gradientFlow {
-    0% {
-        background-position: 0% center;
-    }
-
-    50% {
-        background-position: 100% center;
-    }
-
-    100% {
-        background-position: 0% center;
-    }
+#updateAnnouncement::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(180deg, var(--accent-teal), rgba(100, 255, 218, 0.3));
 }
 
-
-#seasonAnnouncement h2 {
-    font-size: 2rem;
-    margin-bottom: 15px;
+#updateAnnouncement h2 {
+    font-size: 1.8rem;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--accent-teal);
-    padding-right: 30px;
-    font-weight: 700;
-    text-shadow: 0 0 8px rgba(100, 255, 218, 0.3);
+    letter-spacing: 3px;
+    font-weight: 800;
+    text-shadow: 0 0 12px rgba(100, 255, 218, 0.5);
 }
 
-#seasonAnnouncement p {
+#updateAnnouncement ul {
+    text-align: left;
+    margin: 25px auto;
+    max-width: 700px;
+    padding-left: 20px;
+    list-style-type: none;
+}
+
+#updateAnnouncement li {
     font-size: 1.2rem;
-    margin: 15px 0;
     color: var(--text-light);
-    line-height: 1.6;
+    line-height: 1.3;
+    position: relative;
+    padding-left: 30px;
+}
+
+#updateAnnouncement li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--accent-teal);
+    font-size: 1.4rem;
+    line-height: 1.5;
+}
+
+#updateAnnouncement p {
+    font-size: 1.3rem;
+    margin: 30px 50px;
+    color: var(--text-light);
+    line-height: 1.7;
+}
+
+.update-signature {
+    margin-top: 25px;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(100, 255, 218, 0.7);
+    text-align: right;
+    padding-right: 20px;
+    position: relative;
 }
 
 .close-btn {
@@ -630,6 +655,7 @@ button:hover,
     color: var(--accent-blue);
 }
 
+/* Previous winners */
 .winners-container {
     display: flex;
     justify-content: center;
