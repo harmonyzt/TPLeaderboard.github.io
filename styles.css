@@ -568,18 +568,6 @@ button:hover,
     animation: fadeIn 0.3s ease;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .modal img {
     max-width: 100%;
     height: auto;
@@ -938,12 +926,11 @@ button:hover,
 
 .profile-modal-container {
     position: relative;
-    width: 85%;
-    max-width: 800px;
-    max-height: 85vh;
+    width: 100%;
+    max-width: 850px;
     z-index: 1001;
     margin: 0 auto;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .profile-modal-content {
@@ -953,11 +940,6 @@ button:hover,
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
     border: 1px solid #3a3a4a;
     padding: 25px;
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 20px;
-    overflow-y: auto;
-    max-height: 85vh;
 }
 
 .profile-close-btn {
@@ -987,19 +969,9 @@ button:hover,
 }
 
 /* Player Info */
-.player-info-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 15px;
-    background: rgba(40, 40, 55, 0.6);
-    border-radius: 8px;
-    border: 1px solid #3a3a4a;
-}
-
 .player-avatar {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     border: 2px solid #84d2ff;
     margin-bottom: 15px;
@@ -1023,6 +995,7 @@ button:hover,
     font-weight: 500;
 }
 
+/* Online Status */
 .player-status {
     display: flex;
     align-items: center;
@@ -1046,7 +1019,7 @@ button:hover,
 }
 
 .profile-player-name {
-    font-size: 1.4em;
+    font-size: 1.2em;
     color: #84d2ff;
     margin-bottom: 8px;
     text-align: center;
@@ -1091,87 +1064,6 @@ button:hover,
 }
 
 /* Stats */
-.stats-section {
-    display: flex;
-    flex-direction: column;
-}
-
-.player-profile-header {
-    color: #84d2ff;
-    margin: 10px 0 15px 0;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #3a3a4a;
-    font-size: 1.4em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.profile-tabs {
-    display: flex;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #3a3a4a;
-}
-
-.profile-tab {
-    background: none;
-    border: none;
-    padding: 8px 15px;
-    margin-right: 3px;
-    cursor: pointer;
-    color: #b0b0c0;
-    font-weight: 600;
-    font-size: 0.95em;
-    border-radius: 4px 4px 0 0;
-    transition: all 0.2s;
-}
-
-.profile-tab:hover {
-    background: rgba(50, 50, 70, 0.5);
-    color: #ffffff;
-}
-
-.profile-tab.active {
-    background: rgba(70, 70, 90, 0.7);
-    color: #84d2ff;
-    border-bottom: 2px solid #84d2ff;
-}
-
-.player-stats-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 12px;
-    margin-top: 15px;
-}
-
-.player-stat-block {
-    background: rgba(40, 40, 55, 0.6);
-    border-radius: 8px;
-    padding: 12px;
-    border: 1px solid #3a3a4a;
-    transition: all 0.2s;
-    text-align: center;
-}
-
-.player-stat-block:hover {
-    background: rgba(50, 50, 70, 0.8);
-    transform: translateY(-2px);
-}
-
-.stat-block-value {
-    color: #b6cfff;
-    font-weight: bold;
-    font-size: 1.4em;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.stat-block-label {
-    color: #b0b0c0;
-    font-size: 0.85em;
-    display: block;
-}
-
 .prestige-icon {
     width: 32px;
     height: 32px;
@@ -1180,46 +1072,6 @@ button:hover,
 
 .profile-modal-content {
     animation: profileModalFade 0.25s ease-out forwards;
-}
-
-@media (max-width: 600px) {
-    .profile-modal-content {
-        grid-template-columns: 1fr;
-    }
-    
-    .player-info-section {
-        padding: 15px 10px;
-    }
-    
-    .player-avatar {
-        width: 80px;
-        height: 80px;
-    }
-    
-    .profile-tabs {
-        flex-wrap: wrap;
-    }
-    
-    .profile-tab {
-        padding: 6px 10px;
-        font-size: 0.85em;
-    }
-}
-
-/* Last Raid */
-.last-raid-special {
-    grid-column: span 2;
-    margin-top: 20px;
-    padding: 20px;
-    background: rgba(40, 40, 55, 0.8);
-    border-radius: 10px;
-    border: 1px solid #3a3a4a;
-}
-
-.last-raid-title {
-    color: #84d2ff;
-    margin-bottom: 15px;
-    font-size: 1.4em;
 }
 
 /* Animations */
@@ -1235,13 +1087,6 @@ button:hover,
 }
 
 /* Private Profile Styles */
-.fake-stats-blurred {
-    filter: blur(5px);
-    opacity: 0.4;
-    pointer-events: none;
-    user-select: none;
-}
-
 .private-profile-overlay {
     position: absolute;
     top: 0;
@@ -1265,16 +1110,14 @@ button:hover,
     animation: fadeIn 0.3s ease-out;
 }
 
-.private-profile-content h3 {
-    color: #84d2ff;
-    margin: 15px 0 10px;
-    font-size: 1.5em;
-}
-
 .private-profile-content p {
     color: #b0b0c0;
     margin-bottom: 20px;
     line-height: 1.5;
+}
+
+.banned {
+    filter: blur(5px);
 }
 
 .lock-icon {
@@ -1295,47 +1138,10 @@ button:hover,
     font-size: 0.85em;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Background */
-.profile-background {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 10px;
-    position: relative;
-    overflow: hidden;
-    grid-column: span 2;
-}
-
-.profile-content-overlay {
-    background: rgba(30, 30, 45, 0.9);
-    padding: 30px;
-    min-height: 100%;
-}
-
 .prestige-icon {
     width: 50px;
     height: 50px;
     vertical-align: middle;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .profile-modal-content {
-        grid-template-columns: 1fr;
-    }
-    
-    .player-stats-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .last-raid-special {
-        grid-column: span 1;
-    }
 }
 
 .hidden {
@@ -1353,4 +1159,118 @@ button:hover,
 .last-raid-summary .player-profile-header {
     margin-top: 0;
     margin-bottom: 15px;
+}
+
+.profile-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.profile-main-card {
+    grid-column: 1 / span 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: rgba(40, 40, 55, 0.6);
+    border-radius: 10px;
+    border: 1px solid #3a3a4a;
+    text-align: center;
+}
+
+.last-raid-feed {
+    background: rgba(40, 40, 55, 0.6);
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid #3a3a4a;
+}
+
+.stats-blocks {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.stat-block {
+    background: rgba(40, 40, 55, 0.6);
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid #3a3a4a;
+}
+
+.pmc-block {
+    border-top: 3px solid #84d2ff;
+}
+
+.scav-block {
+    border-top: 3px solid #ff9e64;
+}
+
+.scav {
+    color: #ff9e64 !important;
+}
+
+.section-title {
+    color: #84d2ff;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    border-bottom: 1px solid #3a3a4a;
+    padding-bottom: 8px;
+}
+
+.raid-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.raid-stat-block {
+    background: rgba(30, 30, 45, 0.8);
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(58, 58, 74, 0.5);
+}
+
+.profile-stat-label {
+    color: #b0b0c0;
+    font-size: 0.9em;
+}
+
+.profile-stat-value {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.survived {
+    color: #6affa3;
+}
+
+.died {
+    color: #ff6a6a;
+}
+
+@media (max-width: 768px) {
+    .profile-grid-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-main-card {
+        grid-column: 1;
+    }
+    
+    .raid-stats-grid {
+        grid-template-columns: 1fr;
+    }
 }
