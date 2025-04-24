@@ -15,7 +15,7 @@ body {
     color: var(--text-light);
     margin: 0;
     padding: 20px;
-    min-height: 100vh;
+    min-width: 900px;
 }
 
 h1 {
@@ -916,146 +916,195 @@ button:hover,
 /* SPT profiles */
 .profile-modal {
     display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+
+.profile-modal-container {
+    position: relative;
+    width: 85%;
+    max-width: 800px;
+    max-height: 85vh;
+    z-index: 1001;
+    margin: 0 auto;
+    margin-top: 20px;
 }
 
 .profile-modal-content {
-    position: fixed;
-    z-index: 5;
-    left: 30%;
-    top: 30%;
+    position: relative;
     background: #1e1e2d;
-    margin: 5% auto;
-    padding: 25px;
-    width: 90%;
-    max-width: 500px;
-    border-radius: 8px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
     border: 1px solid #3a3a4a;
+    padding: 25px;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 20px;
+    overflow-y: auto;
+    max-height: 85vh;
 }
 
 .profile-close-btn {
     color: #b8b8b8;
     position: absolute;
-    right: 20px;
+    right: 15px;
     top: 15px;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.2s;
+    z-index: 1002;
+    background: rgba(30, 30, 45, 0.7);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    line-height: 1;
 }
 
 .profile-close-btn:hover {
     color: #ffffff;
+    background: rgba(70, 70, 90, 0.7);
     transform: scale(1.1);
 }
 
-#modalPlayerInfo {
-    padding: 10px 5px;
+/* Player Info */
+.player-info-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    background: rgba(40, 40, 55, 0.6);
+    border-radius: 8px;
+    border: 1px solid #3a3a4a;
+}
+
+.player-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid #84d2ff;
+    margin-bottom: 15px;
+    object-fit: cover;
+}
+
+.player-reg-date {
+    margin: 10px 0;
+    padding: 8px 12px;
+    background: rgba(40, 40, 55, 0.6);
+    border-radius: 6px;
+    font-size: 0.85em;
+    color: #b0b0c0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #3a3a4a;
+}
+
+.reg-date-text {
+    font-weight: 500;
+}
+
+.player-status {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-online {
+    background-color: rgb(106, 255, 163);
+    box-shadow: 0 0 8px rgb(106, 255, 163);
+}
+
+.status-offline {
+    background-color: rgb(121, 121, 121);
+}
+
+.profile-player-name {
+    font-size: 1.4em;
+    color: #84d2ff;
+    margin-bottom: 8px;
+    text-align: center;
+    word-break: break-word;
+}
+
+.player-about {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #b0b0c0;
+    text-align: center;
+    margin-bottom: 15px;
+    padding: 8px;
+    background: rgba(30, 30, 45, 0.7);
+    border-radius: 5px;
+    width: 100%;
+}
+
+.badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.badge {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgba(60, 60, 80, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #3a3a4a;
+    transition: transform 0.2s;
+    font-size: 0.9em;
+}
+
+.badge:hover {
+    transform: scale(1.1);
+}
+
+/* Stats */
+.stats-section {
+    display: flex;
+    flex-direction: column;
 }
 
 .player-profile-header {
     color: #84d2ff;
-    margin: 0 0 15px 0;
+    margin: 10px 0 15px 0;
     padding-bottom: 10px;
     border-bottom: 1px solid #3a3a4a;
     font-size: 1.4em;
-}
-
-.player-stats-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin-top: 15px;
-}
-
-.player-stat-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 10px 15px;
-    background: rgba(40, 40, 55, 0.6);
-    border-radius: 6px;
-    transition: background 0.2s;
-}
-
-.player-stat-row:hover {
-    background: rgba(50, 50, 70, 0.8);
-}
-
-.profile-stat-label {
-    color: #b0b0c0;
-    font-weight: 600;
-    font-size: 0.95em;
-}
-
-.profile-stat-value {
-    color: #b6cfff;
-    font-weight: bold;
-    text-align: right;
-}
-
-@keyframes profileModalFade {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.profile-modal-content {
-    animation: profileModalFade 0.25s ease-out forwards;
-}
-
-.private-profile-message {
-    text-align: center;
-    padding: 30px 20px;
-    color: #b0b0c0;
-}
-
-.lock-icon {
-    font-size: 50px;
-    margin-bottom: 20px;
-    opacity: 0.7;
-}
-
-.small-text {
-    font-size: 0.85em;
-    margin-top: 10px;
-    color: #888;
-}
-
-/* Background */
-.profile-background {
-    background-size: 70%;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-}
-
-.profile-content-overlay {
-    background: rgba(30, 30, 45, 0.85);
-    min-height: 300px;
-}
-
-.prestige-icon {
-    width: 40px;
-    height: 40px;
-    vertical-align: middle;
-}
-
-.player-about {
-    font-size: 0.6em;
-    color: #888;
-    display: inline-block;
-    max-width: 60%;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    gap: 8px;
 }
 
 .profile-tabs {
@@ -1068,10 +1117,11 @@ button:hover,
     background: none;
     border: none;
     padding: 8px 15px;
-    margin-right: 5px;
+    margin-right: 3px;
     cursor: pointer;
     color: #b0b0c0;
     font-weight: 600;
+    font-size: 0.95em;
     border-radius: 4px 4px 0 0;
     transition: all 0.2s;
 }
@@ -1087,6 +1137,220 @@ button:hover,
     border-bottom: 2px solid #84d2ff;
 }
 
+.player-stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.player-stat-block {
+    background: rgba(40, 40, 55, 0.6);
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #3a3a4a;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.player-stat-block:hover {
+    background: rgba(50, 50, 70, 0.8);
+    transform: translateY(-2px);
+}
+
+.stat-block-value {
+    color: #b6cfff;
+    font-weight: bold;
+    font-size: 1.4em;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.stat-block-label {
+    color: #b0b0c0;
+    font-size: 0.85em;
+    display: block;
+}
+
+.prestige-icon {
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+}
+
+.profile-modal-content {
+    animation: profileModalFade 0.25s ease-out forwards;
+}
+
+@media (max-width: 600px) {
+    .profile-modal-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .player-info-section {
+        padding: 15px 10px;
+    }
+    
+    .player-avatar {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .profile-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .profile-tab {
+        padding: 6px 10px;
+        font-size: 0.85em;
+    }
+}
+
+/* Last Raid */
+.last-raid-special {
+    grid-column: span 2;
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(40, 40, 55, 0.8);
+    border-radius: 10px;
+    border: 1px solid #3a3a4a;
+}
+
+.last-raid-title {
+    color: #84d2ff;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+}
+
+/* Animations */
+@keyframes profileModalFade {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Private Profile Styles */
+.fake-stats-blurred {
+    filter: blur(5px);
+    opacity: 0.4;
+    pointer-events: none;
+    user-select: none;
+}
+
+.private-profile-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.private-profile-content {
+    background: rgba(30, 30, 45, 0.95);
+    border: 1px solid #3a3a4a;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.private-profile-content h3 {
+    color: #84d2ff;
+    margin: 15px 0 10px;
+    font-size: 1.5em;
+}
+
+.private-profile-content p {
+    color: #b0b0c0;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.lock-icon {
+    font-size: 50px;
+    color: #84d2ff;
+    opacity: 0.8;
+}
+
+.private-profile-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #3a3a4a;
+    color: #888;
+    font-size: 0.85em;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Background */
+.profile-background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    grid-column: span 2;
+}
+
+.profile-content-overlay {
+    background: rgba(30, 30, 45, 0.9);
+    padding: 30px;
+    min-height: 100%;
+}
+
+.prestige-icon {
+    width: 50px;
+    height: 50px;
+    vertical-align: middle;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-modal-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .player-stats-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .last-raid-special {
+        grid-column: span 1;
+    }
+}
+
 .hidden {
-    display: none !important;
+    display: none;
+}
+
+.last-raid-summary {
+    margin-top: 25px;
+    padding: 15px;
+    background: rgba(40, 40, 55, 0.6);
+    border-radius: 8px;
+    border: 1px solid #3a3a4a;
+}
+
+.last-raid-summary .player-profile-header {
+    margin-top: 0;
+    margin-bottom: 15px;
 }

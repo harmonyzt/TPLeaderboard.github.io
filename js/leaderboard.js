@@ -671,7 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Loading previous season for leaders
 async function loadPreviousSeasonWinners() {
     if (seasons.length < 2) {
-        console.log("Not enough seasons to show previous winners.");
+        console.log("Not enough seasons to show previous winners. Skipping... loadPreviousSeasonWinners()");
         return;
     }
 
@@ -840,6 +840,7 @@ function showDisqualProfile(container, player) {
 }
 
 // Public profile
+// Updated showPublicProfile function for the new layout
 function showPublicProfile(container, player) {
     const regDate = player.registrationDate
         ? new Date(player.registrationDate * 1000).toLocaleDateString('en-EN', {
@@ -850,133 +851,189 @@ function showPublicProfile(container, player) {
         : 'Unknown';
 
     const factionImages = {
-        'Bear': 'url(media/Bear.png)',
-        'Usec': 'url(media/Usec.png)',
+        'Bear': 'media/Bear.png',
+        'Usec': 'media/Usec.png',
     };
 
-    const factionBG = factionImages[player.faction] || '';
+    const factionImg = factionImages[player.faction] || '';
 
-    // Prestige
-    const prestigeImg = player.prestige === 1 || player.prestige === 2
-        ? `<img src="media/prestige${player.prestige}.png" class="prestige-icon" alt="Prestige ${player.prestige}">`
+    // Prestige and other badges
+    const prestigeBadge = player.prestige === 1 || player.prestige === 2
+        ? `<div class="badge" title="Prestige ${player.prestige}"><img src="media/prestige${player.prestige}.png" width="30" alt="Prestige"></div>`
         : '';
 
-    // About me
-    const aboutText = player.about && player.about.length <= 50
-        ? `<div class="player-about">${player.about}</div>`
-        : '<div class="player-about">Hey there! I am using SPT Leaderboard :)</div>';
+    const achievementBadges = player.achievements
+        ? player.achievements.map(ach =>
+            `<div class="badge" title="${ach.name}"><img src="media/achievements/${ach.id}.png" width="24" alt="${ach.name}"></div>`
+        ).join('')
+        : '';
 
-    // Tab Styles
-    if (player.tabStyle === "EFT") {
-
-    } else {
-        container.innerHTML = `
-        <div class="profile-background" style="background-image: ${factionBG}">
-          <div class="profile-content-overlay">
-            <h3 class="player-profile-header">
-              ${prestigeImg}
-              ${player.name}${player.isOnline ? `<div id="blink" style="background-color:rgb(106, 255, 163); margin-left: 5px"></div>` : `<div id="blink" style="background-color:rgb(121, 121, 121); animation: none; margin-left: 5px"></div>`}
-              ${aboutText}
-            </h3>
+    container.innerHTML = `
+        <div class="player-sidebar">
+            <img src="${player.avatar || 'media/default-avatar.png'}" class="player-avatar" alt="${player.name}">
+            <h2 class="player-name">${player.name}</h2>
+            <div class="player-level">Level ${player.level}</div>
             
+            ${factionImg ? `<img src="${factionImg}" class="faction-icon" alt="${player.faction}">` : ''}
+            
+            <div class="online-status">
+                <div class="online-dot" style="background-color: ${player.isOnline ? 'rgb(106, 255, 163)' : 'rgb(121, 121, 121)'}"></div>
+                <span class="online-text">${player.isOnline ? 'Online now' : 'Offline'}</span>
+            </div>
+            
+            <div class="badges-container">
+                ${prestigeBadge}
+                ${achievementBadges}
+            </div>
+        </div>
+        
+        <div class="profile-content">
             <div class="profile-tabs">
-              <button class="profile-tab active" data-tab="pmc">PMC</button>
-              <button class="profile-tab" data-tab="scav">SCAV</button>
-              <button class="profile-tab" data-tab="lastraid">Last Raid</button>
-              </div>
+                <button class="profile-tab active" data-tab="pmc">PMC Stats</button>
+                <button class="profile-tab" data-tab="scav">SCAV Stats</button>
+                <button class="profile-tab" data-tab="lastraid">Last Raid</button>
+            </div>
             
             <div class="player-stats-container" id="pmc-stats">
-              <div class="player-stat-row">
-                <span class="profile-stat-label">Registered:</span>
-                <span class="profile-stat-value">${regDate}</span>
-              </div>
-  
-              ${player.damage ? `
                 <div class="player-stat-row">
-                  <span class="profile-stat-label">Overall Damage:</span>
-                  <span class="profile-stat-value">${player.damage.toLocaleString()}</span>
+                    <div class="profile-stat-label">Registered</div>
+                    <div class="profile-stat-value">${regDate}</div>
                 </div>
-              ` : ''}
-  
-              <div class="player-stat-row">
-                <span class="profile-stat-label">Successful Raids in a Row:</span>
-                <span class="profile-stat-value">${player.currentWinstreak}</span>
-              </div>
-  
-              ${player.longestShot ? `
+                
+                ${player.damage ? `
                 <div class="player-stat-row">
-                  <span class="profile-stat-label">Longest Shot:</span>
-                  <span class="profile-stat-value">${player.longestShot.toLocaleString()} meters</span>
+                    <div class="profile-stat-label">Overall Damage</div>
+                    <div class="profile-stat-value">${player.damage.toLocaleString()}</div>
                 </div>
-              ` : ''}
+                ` : ''}
+                
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">Successful Raids</div>
+                    <div class="profile-stat-value">${player.currentWinstreak}</div>
+                </div>
+                
+                ${player.kdRatio ? `
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">K/D Ratio</div>
+                    <div class="profile-stat-value">${player.kdRatio.toFixed(2)}</div>
+                </div>
+                ` : ''}
+                
+                ${player.survivalRate ? `
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">Survival Rate</div>
+                    <div class="profile-stat-value">${player.survivalRate}%</div>
+                </div>
+                ` : ''}
+                
+                ${player.longestShot ? `
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">Longest Shot</div>
+                    <div class="profile-stat-value">${player.longestShot.toLocaleString()}m</div>
+                </div>
+                ` : ''}
+                
+                ${player.raidsCount ? `
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">Total Raids</div>
+                    <div class="profile-stat-value">${player.raidsCount}</div>
+                </div>
+                ` : ''}
             </div>
             
-            <!-- SCAV Profile -->
             <div class="player-stats-container hidden" id="scav-stats">
-              <div class="player-stat-row">
-                <span class="profile-stat-label">SCAV Level:</span>
-                <span class="profile-stat-value">${player.scavLevel || 'N/A'}</span>
-              </div>
-              
-              <div class="player-stat-row">
-                <span class="profile-stat-label">SCAV Raids:</span>
-                <span class="profile-stat-value">${player.scavRaids || 0}</span>
-              </div>
-              
-              <div class="player-stat-row">
-                <span class="profile-stat-label">SCAV Survives:</span>
-                <span class="profile-stat-value">${player.scavSurvives || 0}</span>
-              </div>
-              
-              <div class="player-stat-row">
-                <span class="profile-stat-label">SCAV Survival Rate:</span>
-                <span class="profile-stat-value">${player.scavSurvRate ? player.scavSurvRate + '%' : 'N/A'}</span>
-              </div>
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">SCAV Level</div>
+                    <div class="profile-stat-value">${player.scavLevel || 'N/A'}</div>
+                </div>
+                
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">SCAV Raids</div>
+                    <div class="profile-stat-value">${player.scavRaids || 0}</div>
+                </div>
+                
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">SCAV Survives</div>
+                    <div class="profile-stat-value">${player.scavSurvives || 0}</div>
+                </div>
+                
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">SCAV Survival Rate</div>
+                    <div class="profile-stat-value">${player.scavSurvRate ? player.scavSurvRate + '%' : 'N/A'}</div>
+                </div>
+                
+                ${player.scavKdRatio ? `
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">SCAV K/D Ratio</div>
+                    <div class="profile-stat-value">${player.scavKdRatio.toFixed(2)}</div>
+                </div>
+                ` : ''}
             </div>
             
-            <!-- Last Raid -->
             <div class="player-stats-container hidden" id="lastraid-stats">
-              <div class="player-stat-row">
-                <span class="profile-stat-label">Kills:</span>
-                <span class="profile-stat-value">${player.lastRaidKills || 0}</span>
-              </div>
-
-              <div class="player-stat-row">
-                <span class="profile-stat-label">Damage:</span>
-                <span class="profile-stat-value">${player.lastRaidDamage || 'Unknown'}</span>
-              </div>
-
-              <div class="player-stat-row">
-                <span class="profile-stat-label">Last Raid Map:</span>
-                <span class="profile-stat-value">${player.lastRaidMap || 'Unknown'}</span>
-              </div>
-              
-              <div class="player-stat-row">
-                <span class="profile-stat-label">Survived:</span>
-                <span class="profile-stat-value">${player.lastRaidSurvived ? 'Yes' : 'No'}</span>
-              </div>
+                <h3 class="last-raid-header">Last Raid Details</h3>
+                
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">Map</div>
+                    <div class="profile-stat-value">${player.lastRaidMap || 'Unknown'}</div>
+                </div>
+                
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">Result</div>
+                    <div class="profile-stat-value">${player.lastRaidSurvived ? 'Survived' : 'Died'}</div>
+                </div>
+                
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">Kills</div>
+                    <div class="profile-stat-value">${player.lastRaidKills || 0}</div>
+                </div>
+                
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">Damage</div>
+                    <div class="profile-stat-value">${player.lastRaidDamage || 'Unknown'}</div>
+                </div>
+                
+                ${player.lastRaidTime ? `
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">Duration</div>
+                    <div class="profile-stat-value">${formatRaidTime(player.lastRaidTime)}</div>
+                </div>
+                ` : ''}
+                
+                ${player.lastRaidLoot ? `
+                <div class="player-stat-row">
+                    <div class="profile-stat-label">Loot Value</div>
+                    <div class="profile-stat-value">${player.lastRaidLoot.toLocaleString()} ₽</div>
+                </div>
+                ` : ''}
             </div>
-          </div>
         </div>
-      `;
+    `;
 
-        const tabs = container.querySelectorAll('.profile-tab');
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
+    // Tab switching functionality
+    const tabs = container.querySelectorAll('.profile-tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
 
-                // Hide all tabs
-                document.getElementById('pmc-stats').classList.add('hidden');
-                document.getElementById('scav-stats').classList.add('hidden');
-                document.getElementById('lastraid-stats').classList.add('hidden');
+            // Hide all stats containers
+            document.getElementById('pmc-stats').classList.add('hidden');
+            document.getElementById('scav-stats').classList.add('hidden');
+            document.getElementById('lastraid-stats').classList.add('hidden');
 
-                // Show clicked tab
-                const tabName = tab.getAttribute('data-tab');
-                document.getElementById(`${tabName}-stats`).classList.remove('hidden');
-            });
+            // Show selected stats
+            const tabName = tab.getAttribute('data-tab');
+            document.getElementById(`${tabName}-stats`).classList.remove('hidden');
         });
-    }
+    });
+}
+
+// Helper function to format raid time
+function formatRaidTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}m ${secs}s`;
 }
 
 // Close modals on click or out of bounds click

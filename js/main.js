@@ -6,6 +6,7 @@ let allSeasonsCombinedData = []; // For keeping combined data from all seasons
 let sortDirection = {}; // Sort direction
 let seasons = []; // Storing available seasons
 
+//  https://visuals.nullcore.net/hidden/season
 const seasonPath = "/season/season";
 const seasonPathEnd = ".json";
 
@@ -33,9 +34,74 @@ async function detectSeasons() {
 
     populateSeasonDropdown();
 
+    // Determine previous winners if we have latest leaderboard
+    if (seasons.length > 1) {
+        loadPreviousSeasonWinners();
+    }
+
     // Load the latest season data by default
     if (seasons.length > 0) {
         loadSeasonData(seasons[0]);
+    }
+}
+
+// Previous season winners functionality
+async function loadPreviousSeasonWinners() {
+    if (seasons.length < 2) return;
+
+    const previousSeason = seasons[seasons.length - 1];
+
+    try {
+        const response = await fetch(`${seasonPath}${previousSeason}${seasonPathEnd}`);
+        if (!response.ok) return;
+
+        const data = await response.json();
+        const previousSeasonData = data.leaderboard || [];
+
+        calculateRanks(previousSeasonData);
+        displayWinners(previousSeasonData);
+    } catch (error) {
+        console.error('Error loading previous season:', error);
+    }
+}
+
+function displayWinners(data) {
+    const winnersTab = document.getElementById('winners');
+
+    winnersTab.innerHTML = `
+        <h2>Our previous season Champions!</h2>
+    `;
+
+    const top3Players = data.filter(player => player.rank <= 3);
+    const winnersContainer = document.createElement('div');
+    winnersContainer.className = 'winners-container';
+
+    const orderedPlayers = [
+        top3Players.find(p => p.rank === 2),
+        top3Players.find(p => p.rank === 1),
+        top3Players.find(p => p.rank === 3)
+    ].filter(Boolean);
+
+    orderedPlayers.forEach(player => {
+        winnersContainer.innerHTML += `
+            <div class="winner-card">
+                <p class="winner-name">${player.medal} ${player.name}</p>
+                <p class="winner-rank">${getRankText(player.rank)}</p>
+                <p class="winner-skill">Skill score: ${player.totalScore.toFixed(2)}</p>
+                <p class="winner-stats">Raids: ${player.totalRaids} | KDR: ${player.killToDeathRatio}</p>
+            </div>
+        `;
+    });
+
+    winnersTab.appendChild(winnersContainer);
+}
+
+function getRankText(rank) {
+    switch (rank) {
+        case 1: return '👑 First place 👑';
+        case 2: return 'Second place';
+        case 3: return 'Third place';
+        default: return '';
     }
 }
 
@@ -52,7 +118,7 @@ function populateSeasonDropdown() {
         seasonSelect.appendChild(option);
     });
 
-    // Add "Global Leaderboard" option
+    // "Global Leaderboard" option
     const allSeasonsOption = document.createElement('option');
     allSeasonsOption.value = 'all';
     allSeasonsOption.textContent = 'Global Leaderboard';
@@ -235,15 +301,21 @@ function displayLeaderboard(data) {
 
         // Account type handling
         let accountIcon = '';
-        let accountColor = '#787878';
-        if (player.disqualified !== "true") {
-            if (player.accountType === 'edge_of_darkness') {
-                accountIcon = '<img src="media/EOD.png" alt="EOD" class="account-icon">';
-                accountColor = '#be8301';
-            } else if (player.accountType === 'unheard_edition') {
-                accountIcon = '<img src="media/Unheard.png" alt="Unheard" class="account-icon">';
-                accountColor = '#54d0e7';
+        let accountColor = '';
+        if (player.disqualified === "false") {
+            switch (player.accountType) {
+                case 'edge_of_darkness':
+                    accountIcon = '<img src="media/EOD.png" alt="EOD" class="account-icon">';
+                    accountColor = '#be8301';
+                    break;
+                case 'unheard_edition':
+                    accountIcon = '<img src="media/Unheard.png" alt="Unheard" class="account-icon">';
+                    accountColor = '#54d0e7';
+                    break;
             }
+        } else {
+            accountIcon = '';
+            accountColor = '#787878';
         }
 
         // Prestige icon
@@ -377,7 +449,14 @@ function calculateRanks(data) {
         const MIN_RAIDS = 50;
         const SOFT_CAP_RAIDS = 100;
 
-        player.totalScore = kdrScore + sdrScore + Math.log(raidsScore) + pmcLevelScore;
+        if (player.disqualified === "true") {
+            player.totalScore = 0;
+            player.damage = 0;
+            player.killToDeathRatio = 0;
+            player.survivedToDiedRatio = 0;
+        } else {
+            player.totalScore = kdrScore + sdrScore + Math.log(raidsScore) + pmcLevelScore;
+        }
 
         if (player.totalRaids <= MIN_RAIDS) {
             player.totalScore *= 0.3;
@@ -385,16 +464,9 @@ function calculateRanks(data) {
             const progress = (player.totalRaids - MIN_RAIDS) / (SOFT_CAP_RAIDS - MIN_RAIDS);
             player.totalScore *= 0.3 + (0.7 * progress);
         }
-
-        if (player.disqualified === "true") {
-            player.totalScore = 0;
-            player.damage = 0;
-            player.killToDeathRatio = 0;
-            player.survivedToDiedRatio = 0;
-            player.publicProfile = "false";
-        }
     });
 
+    
     // Sort by total score
     data.sort((a, b) => b.totalScore - a.totalScore);
 
@@ -464,7 +536,7 @@ function calculateOverallStats(data) {
     animateNumber('averageSurvival', averageSurvival, 2);
 }
 
-// Animate number display
+// Simple number animation (CountUp.js)
 let countTimer = 2;
 function animateNumber(elementId, targetValue, decimals = 0) {
     const element = document.getElementById(elementId);
@@ -535,279 +607,6 @@ function sortLeaderboard(sortKey) {
     });
 
     displayLeaderboard(currentData);
-}
-
-// Player profile functions
-function openProfile(playerId) {
-    const modal = document.getElementById('playerProfileModal');
-    const modalContent = document.getElementById('modalPlayerInfo');
-
-    modalContent.innerHTML = '';
-
-    if (!playerId || playerId === '0') {
-        showPrivateProfile(modalContent, "Unknown Player");
-        modal.style.display = 'block';
-        setupModalCloseHandlers(modal);
-        return;
-    }
-
-    const currentData = leaderboardData.length > 0 ? leaderboardData : allSeasonsCombinedData;
-    const player = currentData.find(p => p.id === playerId);
-
-    if (!player) {
-        showPrivateProfile(modalContent, "Player Not Found");
-        modal.style.display = 'block';
-        setupModalCloseHandlers(modal);
-        return;
-    }
-
-    const isPublic = player.publicProfile === "true";
-
-    if (player.disqualified === "true") {
-        modal.style.display = 'block';
-        showDisqualProfile(modalContent, player);
-        return;
-    }
-
-    if (!isPublic) {
-        showPrivateProfile(modalContent, player);
-        modal.style.display = 'block';
-        setupModalCloseHandlers(modal);
-        return;
-    }
-
-    showPublicProfile(modalContent, player);
-    modal.style.display = 'block';
-    setupModalCloseHandlers(modal);
-}
-
-function showPrivateProfile(container, player) {
-    container.innerHTML = `
-    <div class="profile-content-overlay">
-      <h3 class="player-profile-header">${player.name || player}</h3>
-      <div class="private-profile-message">
-        <div class="lock-icon">🔒</div>
-        <p>This profile is private</p>
-        <p class="small-text">This player has restricted access to additional stats</p>
-      </div>
-    </div>
-    `;
-}
-
-function showDisqualProfile(container, player) {
-    container.innerHTML = `
-    <div class="profile-content-overlay">
-      <h3 class="player-profile-header">${player.name}</h3>
-      <div class="private-profile-message">
-        <div class="lock-icon">👻</div>
-        <p>This player is banned</p>
-        <p class="small-text">This player has been disqualified | banned from leaderboard</p>
-      </div>
-    </div>
-    `;
-}
-
-function showPublicProfile(container, player) {
-    const regDate = player.registrationDate
-        ? new Date(player.registrationDate * 1000).toLocaleDateString('en-EN', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        })
-        : 'Unknown';
-
-    const factionImages = {
-        'Bear': 'url(media/Bear.png)',
-        'Usec': 'url(media/Usec.png)',
-    };
-
-    const factionBG = factionImages[player.faction] || '';
-
-    const prestigeImg = [1, 2].includes(player.prestige)
-        ? `<img src="media/prestige${player.prestige}.png" class="prestige-icon" alt="Prestige ${player.prestige}">`
-        : '';
-
-    const aboutText = player.about && player.about.length <= 50
-        ? `<div class="player-about">${player.about}</div>`
-        : '<div class="player-about">Hey there! I am using SPT Leaderboard :)</div>';
-
-    container.innerHTML = `
-    <div class="profile-background" style="background-image: ${factionBG}">
-      <div class="profile-content-overlay">
-        <h3 class="player-profile-header">
-          ${prestigeImg}
-          ${player.name}${player.isOnline ? `<div id="blink" style="background-color:rgb(106, 255, 163); margin-left: 5px"></div>` : `<div id="blink" style="background-color:rgb(121, 121, 121); animation: none; margin-left: 5px"></div>`}
-          ${aboutText}
-        </h3>
-        
-        <div class="profile-tabs">
-          <button class="profile-tab active" data-tab="pmc">PMC</button>
-          <button class="profile-tab" data-tab="scav">SCAV</button>
-          <button class="profile-tab" data-tab="lastraid">Last Raid</button>
-        </div>
-      
-        <div class="player-stats-container" id="pmc-stats">
-          <div class="player-stat-row">
-            <span class="profile-stat-label">Registered:</span>
-            <span class="profile-stat-value">${regDate}</span>
-          </div>
-
-          ${player.damage ? `
-            <div class="player-stat-row">
-              <span class="profile-stat-label">Overall Damage:</span>
-              <span class="profile-stat-value">${player.damage.toLocaleString()}</span>
-            </div>
-          ` : ''}
-
-          <div class="player-stat-row">
-            <span class="profile-stat-label">Successful Raids in a Row:</span>
-            <span class="profile-stat-value">${player.currentWinstreak}</span>
-          </div>
-
-          ${player.longestShot ? `
-            <div class="player-stat-row">
-              <span class="profile-stat-label">Longest Shot:</span>
-              <span class="profile-stat-value">${player.longestShot.toLocaleString()} meters</span>
-            </div>
-          ` : ''}
-        </div>
-        
-        <div class="player-stats-container hidden" id="scav-stats">
-          <div class="player-stat-row">
-            <span class="profile-stat-label">SCAV Level:</span>
-            <span class="profile-stat-value">${player.scavLevel || 'N/A'}</span>
-          </div>
-          
-          <div class="player-stat-row">
-            <span class="profile-stat-label">SCAV Raids:</span>
-            <span class="profile-stat-value">${player.scavRaids || 0}</span>
-          </div>
-          
-          <div class="player-stat-row">
-            <span class="profile-stat-label">SCAV Survives:</span>
-            <span class="profile-stat-value">${player.scavSurvives || 0}</span>
-          </div>
-          
-          <div class="player-stat-row">
-            <span class="profile-stat-label">SCAV Survival Rate:</span>
-            <span class="profile-stat-value">${player.scavSurvRate ? player.scavSurvRate + '%' : 'N/A'}</span>
-          </div>
-        </div>
-        
-        <div class="player-stats-container hidden" id="lastraid-stats">
-          <div class="player-stat-row">
-            <span class="profile-stat-label">Kills:</span>
-            <span class="profile-stat-value">${player.lastRaidKills || 0}</span>
-          </div>
-
-          <div class="player-stat-row">
-            <span class="profile-stat-label">Damage:</span>
-            <span class="profile-stat-value">${player.lastRaidDamage || 'Unknown'}</span>
-          </div>
-
-          <div class="player-stat-row">
-            <span class="profile-stat-label">Last Raid Map:</span>
-            <span class="profile-stat-value">${player.lastRaidMap || 'Unknown'}</span>
-          </div>
-          
-          <div class="player-stat-row">
-            <span class="profile-stat-label">Survived:</span>
-            <span class="profile-stat-value">${player.lastRaidSurvived ? 'Yes' : 'No'}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-    // Tab switching functionality
-    const tabs = container.querySelectorAll('.profile-tab');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-
-            document.getElementById('pmc-stats').classList.add('hidden');
-            document.getElementById('scav-stats').classList.add('hidden');
-            document.getElementById('lastraid-stats').classList.add('hidden');
-
-            const tabName = tab.getAttribute('data-tab');
-            document.getElementById(`${tabName}-stats`).classList.remove('hidden');
-        });
-    });
-}
-
-function setupModalCloseHandlers(modal) {
-    const closeBtn = modal.querySelector('.profile-close-btn');
-    if (closeBtn) {
-        closeBtn.onclick = () => modal.style.display = 'none';
-    }
-
-    window.addEventListener('click', function closeModal(e) {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-            window.removeEventListener('click', closeModal);
-        }
-    });
-}
-
-// Previous season winners functionality
-async function loadPreviousSeasonWinners() {
-    if (seasons.length < 2) return;
-
-    const previousSeason = seasons[seasons.length - 1];
-
-    try {
-        const response = await fetch(`${seasonPath}${previousSeason}${seasonPathEnd}`);
-        if (!response.ok) return;
-
-        const data = await response.json();
-        const previousSeasonData = data.leaderboard || [];
-
-        calculateRanks(previousSeasonData);
-        displayWinners(previousSeasonData);
-    } catch (error) {
-        console.error('Error loading previous season:', error);
-    }
-}
-
-function displayWinners(data) {
-    const winnersTab = document.getElementById('winners');
-
-    winnersTab.innerHTML = `
-        <h2>Our previous season Champions!</h2>
-    `;
-
-    const top3Players = data.filter(player => player.rank <= 3);
-    const winnersContainer = document.createElement('div');
-    winnersContainer.className = 'winners-container';
-
-    const orderedPlayers = [
-        top3Players.find(p => p.rank === 2),
-        top3Players.find(p => p.rank === 1),
-        top3Players.find(p => p.rank === 3)
-    ].filter(Boolean);
-
-    orderedPlayers.forEach(player => {
-        winnersContainer.innerHTML += `
-            <div class="winner-card">
-                <p class="winner-name">${player.medal} ${player.name}</p>
-                <p class="winner-rank">${getRankText(player.rank)}</p>
-                <p class="winner-skill">Skill score: ${player.totalScore.toFixed(2)}</p>
-                <p class="winner-stats">Raids: ${player.totalRaids} | KDR: ${player.killToDeathRatio}</p>
-            </div>
-        `;
-    });
-
-    winnersTab.appendChild(winnersContainer);
-}
-
-function getRankText(rank) {
-    switch (rank) {
-        case 1: return '👑 First place 👑';
-        case 2: return 'Second place';
-        case 3: return 'Third place';
-        default: return '';
-    }
 }
 
 // Welcome popup

@@ -10,6 +10,7 @@
         <script src="https://betterdiscord.app/js/vendor/countUp.min.js?v=DBxeQBHNMaYkRvB8uPOLm07cbQj54TDexlykb-Dcg28"></script>
         <script src="js/funFact.js"></script>
         <script src="js/main.js"></script>
+        <script src="js/profiles.js"></script>
         <script src="js/searchBar.js"></script>
         <title>SPT Leaderboard</title>
     </head>
@@ -201,9 +202,10 @@
             <div id="emptyLeaderboardNotification" class="animate animate__animated animate__fadeInUp" style="display: none;">Whoops! Looks like leaderboard is empty. Be the first one to submit your stats!</div>
         </div>
         <div id="playerProfileModal" class="profile-modal">
-            <div class="profile-modal-content">
+            <div class="profile-modal-overlay"></div>
+            <div class="profile-modal-container">
               <span class="profile-close-btn">&times;</span>
-              <div id="modalPlayerInfo"></div>
+              <div id="modalPlayerInfo" class="profile-modal-content"></div>
             </div>
           </div>
     </body>
