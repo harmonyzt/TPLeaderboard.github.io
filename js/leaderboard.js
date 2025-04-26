@@ -674,13 +674,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const announcement = document.getElementById('updateAnnouncement');
    const closeBtn = document.getElementById('closeAnnouncement');
 
-    if (localStorage.getItem('announcementClosed') === 'true') {
+    if (localStorage.getItem('announcementClosed2') === 'true') {
         announcement.style.display = 'none';
     }
 
     closeBtn.addEventListener('click', function () {
         announcement.style.display = 'none';
-        localStorage.setItem('announcementClosed', 'true');
+        localStorage.setItem('announcementClosed2', 'true');
     });
 
     document.addEventListener('keydown', function (e) {
