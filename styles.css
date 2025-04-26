@@ -1043,7 +1043,6 @@ button:hover,
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px;
-    margin-bottom: 15px;
 }
 
 .badge {
@@ -1063,7 +1062,6 @@ button:hover,
     transform: scale(1.1);
 }
 
-/* Stats */
 .prestige-icon {
     width: 32px;
     height: 32px;
@@ -1080,6 +1078,7 @@ button:hover,
         opacity: 0;
         transform: translateY(-30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1148,19 +1147,6 @@ button:hover,
     display: none;
 }
 
-.last-raid-summary {
-    margin-top: 25px;
-    padding: 15px;
-    background: rgba(40, 40, 55, 0.6);
-    border-radius: 8px;
-    border: 1px solid #3a3a4a;
-}
-
-.last-raid-summary .player-profile-header {
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-
 .profile-grid-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1187,6 +1173,8 @@ button:hover,
     border-radius: 10px;
     padding: 15px;
     border: 1px solid #3a3a4a;
+    height: fit-content;
+    align-self: flex-start;
 }
 
 .stats-blocks {
@@ -1257,20 +1245,82 @@ button:hover,
     color: #6affa3;
 }
 
+.survived-bg {
+    background: radial-gradient(650px 180px at top left, hsla(178, 69%, 52%, 0.493), transparent);
+    pointer-events: none;
+}
+
 .died {
     color: #ff6a6a;
+}
+
+.died-bg {
+    background: radial-gradient(650px 180px at top left, hsla(0, 58%, 47%, 0.185), transparent);
+    pointer-events: none;
 }
 
 @media (max-width: 768px) {
     .profile-grid-layout {
         grid-template-columns: 1fr;
     }
-    
+
     .profile-main-card {
         grid-column: 1;
     }
-    
+
     .raid-stats-grid {
         grid-template-columns: 1fr;
     }
+}
+
+.raid-overview {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.raid-result {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.raid-meta {
+    font-size: 0.85em;
+    color: #b0b0c0;
+    margin-top: 4px;
+}
+
+.badge.tooltip {
+    position: relative;
+    cursor: pointer;
+}
+
+.badge.tooltip em {
+    font-size: 25px;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: max-content;
+    max-width: 500px;
+    background-color: #1b1b1b;
+    color: #fff;
+    text-align: center;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 0.8em;
+    position: absolute;
+    z-index: 10;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    white-space: nowrap;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
 }

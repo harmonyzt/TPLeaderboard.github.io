@@ -41,6 +41,7 @@ async function detectSeasons() {
 
     // Load the latest season data by default
     if (seasons.length > 0) {
+        loadAllSeasonsData();
         loadSeasonData(seasons[0]);
     }
 }
@@ -118,20 +119,9 @@ function populateSeasonDropdown() {
         seasonSelect.appendChild(option);
     });
 
-    // "Global Leaderboard" option
-    const allSeasonsOption = document.createElement('option');
-    allSeasonsOption.value = 'all';
-    allSeasonsOption.textContent = 'Global Leaderboard';
-    seasonSelect.appendChild(allSeasonsOption);
-
     seasonSelect.addEventListener('change', (event) => {
         const selectedValue = event.target.value;
-
-        if (selectedValue === 'all') {
-            loadAllSeasonsData();
-        } else {
             loadSeasonData(selectedValue);
-        }
     });
 }
 
@@ -169,19 +159,13 @@ async function loadSeasonData(season) {
 
 // Load and combine data from all seasons
 async function loadAllSeasonsData() {
-    const loadingNotification = document.getElementById('loadingNotification');
-    const emptyLeaderboardNotification = document.getElementById('emptyLeaderboardNotification');
-
-    emptyLeaderboardNotification.style.display = 'none';
-    loadingNotification.style.display = 'block';
-
     try {
         const uniquePlayers = {};
 
         for (const season of seasons) {
             try {
                 const response = await fetch(`${seasonPath}${season}${seasonPathEnd}`);
-                if (!response.ok) continue;
+
 
                 const data = await response.json();
                 if (!data.leaderboard || data.leaderboard.length === 0) continue;
@@ -220,17 +204,8 @@ async function loadAllSeasonsData() {
 
         allSeasonsCombinedData = Object.values(uniquePlayers);
 
-        if (allSeasonsCombinedData.length === 0) {
-            emptyLeaderboardNotification.style.display = 'block';
-            resetStats();
-        } else {
-            processSeasonData(allSeasonsCombinedData);
-            displayLeaderboard(allSeasonsCombinedData);
-        }
     } catch (error) {
         console.error('Error loading all seasons data:', error);
-    } finally {
-        loadingNotification.style.display = 'none';
     }
 }
 

@@ -1040,8 +1040,10 @@
             "currentWinstreak": 3,
             "longestShot": 124,
             "prestige": 1,
-            "about": "Hey there! I am using SPT Leaderboard!",
-            "tabStyle": ""
+            "about": "I don't like where this is going...",
+            "tabStyle": "",
+            "verified": true,
+            "suspiciousMods": true
         },
         {
             "id": "67e3a10300062c42e2796812",

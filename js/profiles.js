@@ -285,7 +285,7 @@ function showPublicProfile(container, player) {
     // About me
     const aboutText = player.about && player.about.length <= 100
         ? player.about
-        : 'Hey there! I am using SPT Leaderboard!';
+        : 'Nothing to see here.';
 
     // Generate badges
     const badgesHTML = generateBadgesHTML(player);
@@ -310,44 +310,34 @@ function showPublicProfile(container, player) {
       </div>
 
       <!-- Last Raid -->
-      <div class="last-raid-feed">
-        <h3 class="section-title">Last Raid</h3>
-        <div class="raid-stats-grid">
-          <div class="raid-stat-block">
-            <span class="profile-profile-stat-label">Map</span>
-            <span class="profile-stat-value">${player.lastRaidMap || 'Factory'}</span>
-          </div>
-          <div class="raid-stat-block">
-            <span class="profile-stat-label">Result:</span>
-            <span class="profile-stat-value ${player.lastRaidSurvived ? 'survived' : 'died'}">
-              ${player.lastRaidSurvived ? 'Survived' : 'Died'}
+        <div class="last-raid-feed ${player.lastRaidSurvived ? 'survived-bg' : 'died-bg'}">
+        <h3 class="section-title ${player.lastRaidSurvived ? 'survived' : 'died'}">Last Raid</h3>
+        <div class="raid-overview">
+            <span class="raid-result ${player.lastRaidSurvived ? 'survived' : 'died'}">
+            ${player.lastRaidSurvived ? 'Survived' : 'Died'}
             </span>
-          </div>
-          <div class="raid-stat-block">
-            <span class="profile-stat-label">Kills:</span>
-            <span class="profile-stat-value">${player.lastRaidKills || 1}</span>
-          </div>
-          <div class="raid-stat-block">
-            <span class="profile-stat-label">Damage:</span>
-            <span class="profile-stat-value">${player.lastRaidDamage || 76}</span>
-          </div>
-          <div class="raid-stat-block">
-            <span class="profile-stat-label">Duration:</span>
-            <span class="profile-stat-value">${player.lastRaidDuration || '3:00'}</span>
-          </div>
-          <div class="raid-stat-block">
-            <span class="profile-stat-label">Loot Value:</span>
-            <span class="profile-stat-value">₽${player.lastRaidLootValue ? player.lastRaidLootValue.toLocaleString() : '394'}</span>
-          </div>
+            <span class="raid-meta">
+            ${player.lastRaidMap || 'Factory'} • ${player.lastRaidType || 'SCAV'} • ${player.lastRaidDuration || '00:00'} • ${player.lastRaidTimeAgo || 'Just Now'}
+            </span>
         </div>
-      </div>
+        <div class="raid-stats-grid">
+            <div class="raid-stat-block">
+            <span class="profile-stat-label">Kills:</span>
+            <span class="profile-stat-value">${player.lastRaidKills ?? 0}</span>
+            </div>
+            <div class="raid-stat-block">
+            <span class="profile-stat-label">Damage:</span>
+            <span class="profile-stat-value">${player.lastRaidDamage ?? 0}</span>
+            </div>
+        </div>
+        </div>
 
       <div class="stats-blocks">
         <!-- PMC Block -->
         <div class="stat-block pmc-block">
           <h3 class="section-title">PMC</h3>
           <div class="stat-row">
-            <span class="profile-stat-label">Level</span>
+            <span class="profile-stat-label">Level (Overall)</span>
             <span class="profile-stat-value">${player.pmcLevel || 'N/A'}</span>
           </div>
           <div class="stat-row">
@@ -368,7 +358,7 @@ function showPublicProfile(container, player) {
         <div class="stat-block scav-block">
           <h3 class="section-title scav">SCAV</h3>
           <div class="stat-row">
-            <span class="profile-stat-label">Level</span>
+            <span class="profile-stat-label">Level (Overall)</span>
             <span class="profile-stat-value">${player.scavLevel || 'N/A'}</span>
           </div>
           <div class="stat-row">
@@ -393,16 +383,36 @@ function showPublicProfile(container, player) {
 function generateBadgesHTML(player) {
     let badges = '';
 
-    // Test badge prestige
-    if (player.prestige && player.prestige > 0) {
-        badges += `<div class="badge" title="Prestige ${player.prestige}">
-                     <img src="media/prestige${player.prestige}.png" width="40" height="40" alt="Prestige">
-                   </div>`;
+    const playerData = allSeasonsCombinedData.find(p => p.id === player.id || p.name === player.name);
+
+    if(playerData && playerData.seasonsCount > 1) {
+        badges += `<div class="badge tooltip">
+        <em class='bx bxs-joystick'></em>
+        <span class="tooltiptext">This player has been around for ${playerData.seasonsCount} seasons!</span>
+      </div>`;
     }
 
-    // Add achievement badges
-    // TEST
-    badges += `<div class="badge" title="Expert Killer">💀</div>`;
+    if(player?.verified == true){
+        badges += `<div class="badge tooltip">
+        <em class='bx bxs-star' style="color:rgb(100, 255, 165);"></em>
+        <span class="tooltiptext">Trusted Player</span>
+      </div>`;
+    }
+
+    if(player?.suspiciousMods == true){
+        badges += `<div class="badge tooltip">
+        <em class='bx bxs-shield-x' style="color:rgb(255, 123, 100);"></em>
+        <span class="tooltiptext">This player was marked as suspicious by SkillIssueDetector™. Their statistics may be innacurate</span>
+      </div>`;
+    }
+
+    // Test badge prestige
+    if (player.prestige && player.prestige > 0) {
+        badges += `<div class="badge tooltip">
+        <img src="media/prestige${player.prestige}.png" width="40" height="40" alt="Prestige">
+        <span class="tooltiptext">This player has reached prestige level ${player.prestige}</span>
+      </div>`;
+    }
 
     if (player.achivement) {
         if (player.achievements.includes('survivor')) {
@@ -415,12 +425,14 @@ function generateBadgesHTML(player) {
 
     // Add faction badge
     if (player.faction === 'Bear') {
-        badges += `<div class="badge" title="BEAR Operator">
+        badges += `<div class="badge tooltip">
                      <img src="media/Bear.png" width="70" height="70" alt="BEAR">
+                     <span class="tooltiptext">Plays as BEAR Operator</span>
                    </div>`;
     } else if (player.faction === 'Usec') {
-        badges += `<div class="badge" title="USEC Operator">
+        badges += `<div class="badge tooltip">
                      <img src="media/Usec.png" width="70" height="70" alt="USEC">
+                     <span class="tooltiptext">Plays as USEC Operator</span>
                    </div>`;
     }
 
