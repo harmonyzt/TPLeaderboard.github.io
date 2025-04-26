@@ -85,6 +85,11 @@ async function loadAllSeasonsData() {
             const response = await fetch(`https://visuals.nullcore.net/hidden/season${season}.json`);
             if (!response.ok) continue;
 
+            const responsePHP = await fetch(`https://visuals.nullcore.net/hidden/SPT_Profiles_Backend.php`);
+            
+            
+            console.log(responsePHP)
+
             const data = await response.json();
             if (data.leaderboard && data.leaderboard.length > 0) {
                 data.leaderboard.forEach(player => {
