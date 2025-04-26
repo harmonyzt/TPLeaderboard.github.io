@@ -190,7 +190,7 @@ async function loadAllSeasonsData() {
                                 seasonsCount: seasonsPlayed.includes(season) ? seasonsCount : seasonsCount + 1
                             };
                         } else if (!uniquePlayers[playerKey].seasonsPlayed.includes(season)) {
-                            // Add season to player's record
+                            // Add seasons to player's record
                             uniquePlayers[playerKey].seasonsPlayed.push(season);
                             uniquePlayers[playerKey].seasonsCount += 1;
                         }
