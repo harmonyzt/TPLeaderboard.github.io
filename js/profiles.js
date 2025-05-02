@@ -283,8 +283,8 @@ function showPublicProfile(container, player) {
         : 'Unknown';
 
     // About me
-    const aboutText = player.about && player.about.length <= 100
-        ? player.about
+    const aboutText = player.profileAboutMe && player.profileAboutMe.length <= 100
+        ? player.profileAboutMe
         : 'Nothing to see here.';
 
     // Generate badges
@@ -294,7 +294,7 @@ function showPublicProfile(container, player) {
     <div class="profile-grid-layout">
       <!-- Main -->
       <div class="profile-main-card">
-        <img src="${player.avatar || 'media/default_avatar.png'}" class="player-avatar" alt="${player.name}">
+        <img src="${player.profilePicture || 'media/default_avatar.png'}" class="player-avatar" alt="${player.name}">
         <div class="player-status">
           <div class="status-indicator ${player.isOnline ? 'status-online' : 'status-offline'}"></div>
           <span>${player.isOnline ? 'Online' : 'Offline'}</span>
@@ -392,14 +392,14 @@ function generateBadgesHTML(player) {
       </div>`;
     }
 
-    if(player?.verified == true){
+    if(player?.trusted == true){
         badges += `<div class="badge tooltip">
         <em class='bx bxs-star' style="color:rgb(100, 255, 165);"></em>
         <span class="tooltiptext">Trusted Player</span>
       </div>`;
     }
 
-    if(player?.suspiciousMods == true){
+    if(player?.suspicious == true){
         badges += `<div class="badge tooltip">
         <em class='bx bxs-shield-x' style="color:rgb(255, 123, 100);"></em>
         <span class="tooltiptext">This player was marked as suspicious by SkillIssueDetector™. Their statistics may be innacurate</span>
