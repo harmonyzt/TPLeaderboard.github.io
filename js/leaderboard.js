@@ -697,7 +697,7 @@ async function loadPreviousSeasonWinners() {
         return;
     }
 
-    const previousSeason = seasons[seasons.length - 1];
+    const previousSeason = seasons[seasons.length];
 
     try {
         const response = await fetch(`https://visuals.nullcore.net/hidden/season${previousSeason}.json`);
