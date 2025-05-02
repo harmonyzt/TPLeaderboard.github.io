@@ -483,7 +483,7 @@ function calculateOverallStats(data) {
             totalKDR += parseFloat(player.killToDeathRatio);
             totalSurvival += parseFloat(player.survivedToDiedRatio);
 
-            if (player.publicProfile === "true") {
+            if (player.publicProfile) {
                 totalDamage += player.damage;
             }
         }
