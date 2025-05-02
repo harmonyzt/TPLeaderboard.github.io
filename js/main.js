@@ -392,17 +392,6 @@ function addColorIndicators(data) {
             player.killToDeathRatioClass = 'impressive';
         }
 
-        // Average Life Time
-        const lifeTimeSeconds = convertTimeToSeconds(player.averageLifeTime);
-        if (lifeTimeSeconds < 300) {
-            player.averageLifeTimeClass = 'bad';
-        } else if (lifeTimeSeconds < 900) {
-            player.averageLifeTimeClass = 'average';
-        } else if (lifeTimeSeconds < 1200) {
-            player.averageLifeTimeClass = 'good';
-        } else {
-            player.averageLifeTimeClass = 'impressive';
-        }
     });
 }
 
