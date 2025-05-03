@@ -1,0 +1,38 @@
+{
+    "leaderboard": [
+        {
+            "id": "67ebac69000054e66cd1a42d",
+            "name": "freshman",
+            "lastPlayed": 1746293445,
+            "pmcLevel": 5,
+            "totalRaids": 4,
+            "kills": 0,
+            "deaths": 4,
+            "survived": 0,
+            "killToDeathRatio": 0,
+            "survivedToDiedRatio": 0,
+            "averageLifeTime": 48.5,
+            "accountType": "unheard_edition",
+            "sptVer": "3.11.3",
+            "disqualified": "false",
+            "publicProfile": true,
+            "registrationDate": 1743498413,
+            "faction": "Bear",
+            "damage": 84,
+            "currentWinstreak": null,
+            "longestShot": 0,
+            "trusted": true,
+            "suspicious": false,
+            "scavRaids": 1,
+            "scavKills": 0,
+            "profileAboutMe": "Woah there!",
+            "profilePicture": "https:\/\/i.imgur.com\/z15FrrK.png",
+            "pmcRaids": 1,
+            "pmcKills": 0,
+            "lastRaidKills": 0,
+            "lastRaidAs": "Bear",
+            "lastRaidDamage": 84,
+            "lastRaidMap": null
+        }
+    ]
+}

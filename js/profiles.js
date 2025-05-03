@@ -272,6 +272,13 @@ function showDisqualProfile(container, player) {
     `;
 }
 
+// To 00:00
+function formatSeconds(seconds) {
+    const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const secs = (seconds % 60).toString().padStart(2, '0');
+    return `${mins}:${secs}`;
+}
+
 // Public profile
 function showPublicProfile(container, player) {
     const regDate = player.registrationDate
@@ -289,6 +296,10 @@ function showPublicProfile(container, player) {
 
     // Generate badges
     const badgesHTML = generateBadgesHTML(player);
+
+    const lastRaidDuration = formatSeconds(player.lastRaidTimeSeconds);
+    const lastRaidAgo = formatLastPlayedRaid(player.lastPlayed)
+    const lifeTimePMC = formatSeconds(player.averageLifeTime)
 
     container.innerHTML = `
     <div class="profile-grid-layout">
@@ -317,7 +328,7 @@ function showPublicProfile(container, player) {
             ${player.lastRaidSurvived ? 'Survived' : 'Died'}
             </span>
             <span class="raid-meta">
-            ${player.lastRaidMap || 'Factory'} • ${player.lastRaidType || 'SCAV'} • ${player.lastRaidDuration || '00:00'} • ${player.lastRaidTimeAgo || 'Just Now'}
+            ${player.lastRaidMap || 'Factory'} • ${player.lastRaidAs || 'N/A'} • ${lastRaidDuration || '00:00'} • ${lastRaidAgo || 'Just Now'}
             </span>
         </div>
         <div class="raid-stats-grid">
@@ -366,7 +377,7 @@ function showPublicProfile(container, player) {
             <span class="profile-stat-value">${player.scavRaids || 0}</span>
           </div>
           <div class="stat-row">
-            <span class="profile-stat-label">Survival</span>
+            <span class="profile-stat-label">Survival Rate</span>
             <span class="profile-stat-value">${player.scavSurvRate ? player.scavSurvRate + '%' : 'N/A'}</span>
           </div>
           <div class="stat-row">
@@ -456,4 +467,56 @@ function setupModalCloseHandlers(modal) {
             window.removeEventListener('click', closeModal);
         }
     });
+}
+
+function formatLastPlayedRaid(unixTimestamp) {
+    if (typeof unixTimestamp !== 'number' || unixTimestamp <= 0) {
+        return 'Unknown';
+    }
+
+    const date = new Date(unixTimestamp * 1000);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+
+    if (diffInSeconds < 60) {
+        return 'Just Now';
+    }
+
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes === 1) {
+        return '1 minute ago';
+    }
+    if (diffInMinutes < 60) {
+        return `${diffInMinutes} minutes ago`;
+    }
+
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours === 1) {
+        return '1 hour ago';
+    }
+    if (diffInHours < 24) {
+        return `${diffInHours} hours ago`;
+    }
+
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays === 1) {
+        return '1 day ago';
+    }
+    if (diffInDays < 30) {
+        return `${diffInDays} days ago`;
+    }
+
+    const diffInMonths = Math.floor(diffInDays / 30);
+    if (diffInMonths === 1) {
+        return '1 month ago';
+    }
+    if (diffInMonths < 12) {
+        return `${diffInMonths} months ago`;
+    }
+
+    const diffInYears = Math.floor(diffInMonths / 12);
+    if (diffInYears === 1) {
+        return '1 year ago';
+    }
+    return `${diffInYears} years ago`;
 }
