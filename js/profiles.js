@@ -298,8 +298,7 @@ function showPublicProfile(container, player) {
     const badgesHTML = generateBadgesHTML(player);
 
     const lastRaidDuration = formatSeconds(player.lastRaidTimeSeconds);
-    const lastRaidAgo = formatLastPlayedRaid(player.lastPlayed)
-    const lifeTimePMC = formatSeconds(player.averageLifeTime)
+    const lastRaidAgo = formatLastPlayedRaid(player.lastPlayed);
 
     container.innerHTML = `
     <div class="profile-grid-layout">
@@ -435,12 +434,12 @@ function generateBadgesHTML(player) {
     }
 
     // Add faction badge
-    if (player.faction === 'Bear') {
+    if (player.pmcSide === 'Bear') {
         badges += `<div class="badge tooltip">
                      <img src="media/Bear.png" width="70" height="70" alt="BEAR">
                      <span class="tooltiptext">Plays as BEAR Operator</span>
                    </div>`;
-    } else if (player.faction === 'Usec') {
+    } else if (player.pmcSide === 'Usec') {
         badges += `<div class="badge tooltip">
                      <img src="media/Usec.png" width="70" height="70" alt="USEC">
                      <span class="tooltiptext">Plays as USEC Operator</span>

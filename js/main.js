@@ -272,7 +272,7 @@ function displayLeaderboard(data) {
 
         // Format last played time
         const lastGame = formatLastPlayed(player.lastPlayed);
-        player.isOnline = lastGame === "In raid <div id=\"blink\"></div>";
+        player.isOnline = lastGame === "In game <div id=\"blink\"></div>";
 
         // Account type handling
         let accountIcon = '';
