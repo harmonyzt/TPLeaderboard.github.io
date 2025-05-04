@@ -248,6 +248,13 @@ function compareLastPlayed(dateStr1, dateStr2) {
     return date1 - date2;
 }
 
+// To 00:00
+function formatSeconds(seconds) {
+    const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const secs = (seconds % 60).toString().padStart(2, '0');
+    return `${mins}:${secs}`;
+}
+
 // Display leaderboard table
 function displayLeaderboard(data) {
     const tableBody = document.querySelector('#leaderboardTable tbody');
@@ -309,7 +316,7 @@ function displayLeaderboard(data) {
             <td>${player.totalRaids}</td>
             <td class="${player.survivedToDiedRatioClass}">${player.survivedToDiedRatio}%</td>
             <td class="${player.killToDeathRatioClass}">${player.killToDeathRatio}</td>
-            <td class="${player.averageLifeTimeClass}">${player.averageLifeTime}</td>
+            <td class="${player.averageLifeTimeClass}">${formatSeconds(player.averageLifeTime)}</td>
             <td>${player.totalScore <= 0 ? 'Calibrating...' : player.totalScore.toFixed(2)} ${player.totalScore <= 0 ? '' : `(${rankLabel})`}</td>
             <td>${player.sptVer}</td>
         `;
@@ -340,7 +347,7 @@ function formatLastPlayed(unixTimestamp) {
     const diffInMinutes = Math.floor(diffInSeconds / 60);
 
     if (diffInMinutes < 60) {
-        return 'In raid <div id="blink"></div>';
+        return 'In game <div id="blink"></div>';
     }
 
     const diffInHours = Math.floor(diffInMinutes / 60);

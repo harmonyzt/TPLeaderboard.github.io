@@ -359,7 +359,7 @@ function showPublicProfile(container, player) {
             <span class="profile-stat-value">${player.totalRaids || 0}</span>
           </div>
           <div class="stat-row">
-            <span class="profile-stat-label">Survival</span>
+            <span class="profile-stat-label">Survival Rate</span>
             <span class="profile-stat-value">${player.survivedToDiedRatio || 0}%</span>
           </div>
         </div>
@@ -372,16 +372,16 @@ function showPublicProfile(container, player) {
             <span class="profile-stat-value">${player.scavLevel || 'N/A'}</span>
           </div>
           <div class="stat-row">
+            <span class="profile-stat-label">K/D Ratio</span>
+            <span class="profile-stat-value">${player.scavKdRatio || 'N/A'}</span>
+          </div>
+          <div class="stat-row">
             <span class="profile-stat-label">Raids</span>
             <span class="profile-stat-value">${player.scavRaids || 0}</span>
           </div>
           <div class="stat-row">
             <span class="profile-stat-label">Survival Rate</span>
             <span class="profile-stat-value">${player.scavSurvRate ? player.scavSurvRate + '%' : 'N/A'}</span>
-          </div>
-          <div class="stat-row">
-            <span class="profile-stat-label">K/D Ratio</span>
-            <span class="profile-stat-value">${player.scavKdRatio || 'N/A'}</span>
           </div>
         </div>
       </div>
