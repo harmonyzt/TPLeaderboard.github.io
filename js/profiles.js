@@ -414,6 +414,11 @@ function generateBadgesHTML(player) {
         <em class='bx bxs-shield-x' style="color:rgb(255, 123, 100);"></em>
         <span class="tooltiptext">This player was marked as suspicious by SkillIssueDetector™. Their statistics may be innacurate</span>
       </div>`;
+    } else {
+        badges += `<div class="badge tooltip">
+        <em class='bx bxs-check-shield' style="color:rgb(100, 255, 165);"></em>
+        <span class="tooltiptext">Profile in good standing</span>
+      </div>`;
     }
 
     // Test badge prestige
