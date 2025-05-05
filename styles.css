@@ -1272,7 +1272,7 @@ button:hover,
 }
 
 .survived-bg {
-    background: radial-gradient(650px 180px at top left, rgba(144, 225, 3, 0.199), transparent);
+    background: radial-gradient(650px 180px at top left, rgba(144, 225, 3, 0.185), transparent);
     pointer-events: none;
 }
 
@@ -1281,7 +1281,7 @@ button:hover,
 }
 
 .died-bg {
-    background: radial-gradient(650px 180px at top left, hsla(0, 58%, 47%, 0.185), transparent);
+    background: radial-gradient(650px 180px at top left, rgba(218, 23, 23, 0.185), transparent);
     pointer-events: none;
 }
 

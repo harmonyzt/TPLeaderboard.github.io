@@ -324,7 +324,7 @@ function showPublicProfile(container, player) {
         <h3 class="section-title ${player.lastRaidSurvived ? 'survived' : 'died'}">Last Raid</h3>
         <div class="raid-overview">
             <span class="raid-result ${player.lastRaidSurvived ? 'survived' : 'died'}">
-            ${player.lastRaidSurvived ? 'Survived' : 'Died'}
+            ${player.lastRaidSurvived ? 'Survived' : 'Killed in Action'}
             </span>
             <span class="raid-meta">
             ${player.lastRaidMap || 'Factory'} • ${player.lastRaidAs || 'N/A'} • ${lastRaidDuration || '00:00'} • ${lastRaidAgo || 'Just Now'}
