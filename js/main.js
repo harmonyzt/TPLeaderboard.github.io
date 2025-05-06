@@ -478,26 +478,32 @@ function calculateOverallStats(data) {
     let totalDeaths = 0;
     let totalRaids = 0;
     let totalKills = 0;
-    let totalKDR = 0;
     let totalSurvival = 0;
     let totalDamage = 0;
+    let validPlayers = 0;
 
     data.forEach(player => {
-        if (player.disqualified !== "true") {
-            totalDeaths += Math.round(player.pmcRaids * (100 - player.survivalRate) / 100);
-            totalRaids += parseInt(player.pmcRaids);
-            totalKills += parseFloat(player.killToDeathRatio) * Math.round(player.pmcRaids * (100 - player.survivalRate) / 100);
-            totalKDR += parseFloat(player.killToDeathRatio);
-            totalSurvival += parseFloat(player.survivalRate);
+        if (player.disqualified !== true && player.disqualified !== "true") {
+            const pmcRaids = Math.max(0, parseInt(player.pmcRaids) || 0);
+            const survivalRate = Math.min(100, Math.max(0, parseFloat(player.survivalRate) || 0));
+            const kdr = Math.max(0, parseFloat(player.killToDeathRatio) || 0);
 
-            if (player.publicProfile) {
-                totalDamage += player.damage;
+            if (pmcRaids > 0) {
+                totalRaids += pmcRaids;
+                totalDeaths += pmcRaids * (100 - survivalRate) / 100;
+                totalKills += kdr * pmcRaids;
+                totalSurvival += survivalRate;
+                validPlayers++;
+
+                if (player.publicProfile) {
+                    totalDamage += parseFloat(player.damage) || 0;
+                }
             }
         }
     });
 
-    const averageKDR = (totalKDR / data.length).toFixed(2);
-    const averageSurvival = (totalSurvival / data.length).toFixed(2);
+    const averageKDR = totalDeaths > 0 ? (totalKills / totalDeaths).toFixed(2) : "0.00";
+    const averageSurvival = validPlayers > 0 ? (totalSurvival / validPlayers).toFixed(2) : "0.00";
 
     animateNumber('totalDeaths', totalDeaths);
     animateNumber('totalRaids', totalRaids);
