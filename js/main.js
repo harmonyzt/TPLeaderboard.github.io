@@ -486,7 +486,7 @@ function calculateOverallStats(data) {
         if (player.disqualified !== "true") {
             totalDeaths += Math.round(player.pmcRaids * (100 - player.survivalRate) / 100);
             totalRaids += parseInt(player.pmcRaids);
-            totalKills += parseFloat(player.killToDeathRatio) * Math.round(player.pmcRaids * (100 - player.survivedToDiedRatio) / 100);
+            totalKills += parseFloat(player.killToDeathRatio) * Math.round(player.pmcRaids * (100 - player.survivalRate) / 100);
             totalKDR += parseFloat(player.killToDeathRatio);
             totalSurvival += parseFloat(player.survivalRate);
 
