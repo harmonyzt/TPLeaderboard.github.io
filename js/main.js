@@ -89,7 +89,7 @@ function displayWinners(data) {
                 <p class="winner-name">${player.medal} ${player.name}</p>
                 <p class="winner-rank">${getRankText(player.rank)}</p>
                 <p class="winner-skill">Skill score: ${player.totalScore.toFixed(2)}</p>
-                <p class="winner-stats">Raids: ${player.totalRaids} | KDR: ${player.killToDeathRatio}</p>
+                <p class="winner-stats">Raids: ${player.pmcRaids} | KDR: ${player.killToDeathRatio}</p>
             </div>
         `;
     });
@@ -313,8 +313,8 @@ function displayLeaderboard(data) {
             <td class="player-name ${nameClass}" style="color: ${accountColor}" data-player-id="${player.id || '0'}"> ${accountIcon} ${player.name} ${prestigeImg}</td>
             <td>${lastGame || 'N/A'}</td>
             <td>${player.pmcLevel}</td>
-            <td>${player.totalRaids}</td>
-            <td class="${player.survivedToDiedRatioClass}">${player.survivedToDiedRatio}%</td>
+            <td>${player.pmcRaids}</td>
+            <td class="${player.survivedToDiedRatioClass}">${player.survivalRate}%</td>
             <td class="${player.killToDeathRatioClass}">${player.killToDeathRatio}</td>
             <td class="${player.averageLifeTimeClass}">${formatSeconds(player.averageLifeTime)}</td>
             <td>${player.totalScore <= 0 ? 'Calibrating...' : player.totalScore.toFixed(2)} ${player.totalScore <= 0 ? '' : `(${rankLabel})`}</td>
@@ -378,11 +378,11 @@ function formatLastPlayed(unixTimestamp) {
 function addColorIndicators(data) {
     data.forEach(player => {
         // Survived/Died Ratio
-        if (player.survivedToDiedRatio < 30) {
+        if (player.survivalRate < 30) {
             player.survivedToDiedRatioClass = 'bad';
-        } else if (player.survivedToDiedRatio < 55) {
+        } else if (player.survivalRate < 55) {
             player.survivedToDiedRatioClass = 'average';
-        } else if (player.survivedToDiedRatio < 65) {
+        } else if (player.survivalRate < 65) {
             player.survivedToDiedRatioClass = 'good';
         } else {
             player.survivedToDiedRatioClass = 'impressive';
@@ -414,7 +414,7 @@ function calculateRanks(data) {
     data.forEach(player => {
         const kdrScore = player.killToDeathRatio * 0.1;
         const sdrScore = player.survivedToDiedRatio * 0.2;
-        const raidsScore = player.totalRaids * 0.6;
+        const raidsScore = player.pmcRaids * 0.6;
         const pmcLevelScore = player.pmcLevel * 0.1;
 
         const MIN_RAIDS = 50;
@@ -429,10 +429,10 @@ function calculateRanks(data) {
             player.totalScore = kdrScore + sdrScore + Math.log(raidsScore) + pmcLevelScore;
         }
 
-        if (player.totalRaids <= MIN_RAIDS) {
+        if (player.pmcRaids <= MIN_RAIDS) {
             player.totalScore *= 0.3;
-        } else if (player.totalRaids < SOFT_CAP_RAIDS) {
-            const progress = (player.totalRaids - MIN_RAIDS) / (SOFT_CAP_RAIDS - MIN_RAIDS);
+        } else if (player.pmcRaids < SOFT_CAP_RAIDS) {
+            const progress = (player.pmcRaids - MIN_RAIDS) / (SOFT_CAP_RAIDS - MIN_RAIDS);
             player.totalScore *= 0.3 + (0.7 * progress);
         }
     });
@@ -484,11 +484,11 @@ function calculateOverallStats(data) {
 
     data.forEach(player => {
         if (player.disqualified !== "true") {
-            totalDeaths += Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
-            totalRaids += parseInt(player.totalRaids);
-            totalKills += parseFloat(player.killToDeathRatio) * Math.round(player.totalRaids * (100 - player.survivedToDiedRatio) / 100);
+            totalDeaths += Math.round(player.pmcRaids * (100 - player.survivalRate) / 100);
+            totalRaids += parseInt(player.pmcRaids);
+            totalKills += parseFloat(player.killToDeathRatio) * Math.round(player.pmcRaids * (100 - player.survivedToDiedRatio) / 100);
             totalKDR += parseFloat(player.killToDeathRatio);
-            totalSurvival += parseFloat(player.survivedToDiedRatio);
+            totalSurvival += parseFloat(player.survivalRate);
 
             if (player.publicProfile) {
                 totalDamage += player.damage;
@@ -558,7 +558,7 @@ function sortLeaderboard(sortKey) {
             valueB = b.rank;
         }
 
-        if (['pmcLevel', 'totalRaids', 'survivedToDiedRatio', 'killToDeathRatio', 'totalScore'].includes(sortKey)) {
+        if (['pmcLevel', 'pmcRaids', 'survivalRate', 'killToDeathRatio', 'totalScore'].includes(sortKey)) {
             valueA = parseFloat(valueA);
             valueB = parseFloat(valueB);
         }
