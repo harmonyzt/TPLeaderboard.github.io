@@ -413,7 +413,7 @@ function convertTimeToSeconds(time) {
 function calculateRanks(data) {
     data.forEach(player => {
         const kdrScore = player.killToDeathRatio * 0.1;
-        const sdrScore = player.survivedToDiedRatio * 0.2;
+        const sdrScore = player.survivalRate * 0.2;
         const raidsScore = player.pmcRaids * 0.6;
         const pmcLevelScore = player.pmcLevel * 0.1;
 
