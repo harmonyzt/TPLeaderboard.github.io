@@ -356,11 +356,11 @@ function showPublicProfile(container, player) {
           </div>
           <div class="stat-row">
             <span class="profile-stat-label">Raids</span>
-            <span class="profile-stat-value">${player.totalRaids || 0}</span>
+            <span class="profile-stat-value">${player.pmcRaids || 0}</span>
           </div>
           <div class="stat-row">
             <span class="profile-stat-label">Survival Rate</span>
-            <span class="profile-stat-value">${player.survivedToDiedRatio || 0}%</span>
+            <span class="profile-stat-value">${player.survivalRate || 0}%</span>
           </div>
         </div>
 
