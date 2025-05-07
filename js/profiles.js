@@ -338,7 +338,7 @@ function showPublicProfile(container, player) {
                 player.isTransition ? 'transit' : 
                 player.lastRaidSurvived ? 'survived' : 'died'}">
                 ${player.discFromRaid ? 'Disconnected' : 
-                player.isTransition ? `In Transit (${player.lastRaidMap} → ${player.lastRaidTransitionTo || 'Unknown'})` : 
+                player.isTransition ? `In Transit (${player.lastRaidMap} <em class='bx bx-revision bx-spin'></em> ${player.lastRaidTransitionTo || 'Unknown'})` : 
                 player.lastRaidSurvived ? 'Survived' : 'Killed in Action'}
             </span>
         <span class="raid-meta">
