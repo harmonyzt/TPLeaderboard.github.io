@@ -977,8 +977,8 @@ button:hover,
 .profile-close-btn {
     color: #b8b8b8;
     position: absolute;
-    right: 15px;
-    top: 15px;
+    right: 30px;
+    top: 30px;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
@@ -1013,14 +1013,14 @@ button:hover,
 .player-reg-date {
     margin: 10px 0;
     padding: 8px 12px;
-    background: rgba(40, 40, 55, 0.6);
+    background: rgba(255, 255, 255, 0.041);
     border-radius: 6px;
     font-size: 0.85em;
     color: #b0b0c0;
     display: flex;
     align-items: center;
     gap: 8px;
-    border: 1px solid #3a3a4a;
+    border: 1px solid #ffffff2d;
 }
 
 .reg-date-text {
@@ -1065,7 +1065,7 @@ button:hover,
     text-align: center;
     margin-bottom: 15px;
     padding: 8px;
-    background: rgba(30, 30, 45, 0.7);
+    background: rgb(255 255 255 / 6%);
     border-radius: 5px;
     width: 100%;
 }
@@ -1081,11 +1081,11 @@ button:hover,
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    background: rgba(60, 60, 80, 0.7);
+    background: rgba(255, 255, 255, 0.062);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #3a3a4a;
+    border: 1px solid #ffffff21;
     transition: transform 0.2s;
     font-size: 0.9em;
 }
