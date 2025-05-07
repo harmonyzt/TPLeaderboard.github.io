@@ -284,7 +284,7 @@ function displayLeaderboard(data) {
         // Account type handling
         let accountIcon = '';
         let accountColor = '';
-        if (player.disqualified === "false") {
+        if (!player.disqualified) {
             switch (player.accountType) {
                 case 'edge_of_darkness':
                     accountIcon = '<img src="media/EOD.png" alt="EOD" class="account-icon">';
