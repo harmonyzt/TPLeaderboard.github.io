@@ -415,7 +415,6 @@ function calculateRanks(data) {
         const kdrScore = player.killToDeathRatio * 0.1;
         const sdrScore = player.survivalRate * 0.2;
         const raidsScore = player.pmcRaids * 0.6;
-        const pmcLevelScore = player.pmcLevel * 0.1;
 
         const MIN_RAIDS = 50;
         const SOFT_CAP_RAIDS = 100;
@@ -426,7 +425,7 @@ function calculateRanks(data) {
             player.killToDeathRatio = 0;
             player.survivedToDiedRatio = 0;
         } else {
-            player.totalScore = kdrScore + sdrScore + Math.log(raidsScore) + pmcLevelScore;
+            player.totalScore = kdrScore + sdrScore + Math.log(raidsScore);
         }
 
         if (player.pmcRaids <= MIN_RAIDS) {
