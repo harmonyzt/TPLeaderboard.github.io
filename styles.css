@@ -1,6 +1,6 @@
 :root {
     --bg-dark: #0a192f;
-    --bg-dark-secondary: #172a45;
+    --bg-dark-secondary: #223d5f;
     --accent-teal: #64ffda;
     --accent-blue: #1e90ff;
     --text-light: #ccd6f6;
@@ -429,7 +429,7 @@ button:hover,
 }
 
 .stats-container {
-    background-color: rgba(45, 58, 78, 0.6);
+    background-color: rgb(255 255 255 / 6%);
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 40px;
