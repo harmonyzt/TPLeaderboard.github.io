@@ -338,8 +338,8 @@ function showPublicProfile(container, player) {
                 player.isTransition ? 'transit' : 
                 player.lastRaidSurvived ? 'survived' : 'died'}">
                 ${player.discFromRaid ? 'Disconnected' : 
-                player.isTransition ? `In Transit (${player.lastRaidMap} <em class='bx bx-revision bx-spin'></em> ${player.lastRaidTransitionTo || 'Unknown'})` : 
-                player.lastRaidSurvived ? 'Survived' : 'Killed in Action'}
+                player.isTransition ? `In Transit (${player.lastRaidMap} <em class='bx bx-loader-alt bx-spin'></em> ${player.lastRaidTransitionTo || 'Unknown'})` : 
+                player.lastRaidSurvived ? `<em class='bx bx-walk'></em> Survived` : `<em class='bx bxs-skull'></em> Killed in Action`}
             </span>
         <span class="raid-meta">
             ${player.lastRaidMap || 'Unknown'} • ${player.lastRaidAs || 'N/A'} • ${lastRaidDuration || '00:00'} • ${lastRaidAgo || 'Just Now'}
