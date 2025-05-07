@@ -301,10 +301,10 @@ function showPublicProfile(container, player) {
     const lastRaidAgo = formatLastPlayedRaid(player.lastPlayed);
 
     container.innerHTML = `
-    <div class="profile-grid-layout prestige-${player.prestige || 0}">
+    <div class="profile-grid-layout">
       <!-- Main -->
-      <div class="profile-main-card ${player.prestige ? 'prestige-theme prestige-glow' : ''}">
-        <img src="${player.profilePicture || 'media/default_avatar.png'}" class="player-avatar ${player.prestige ? 'prestige-border' : ''}" alt="${player.name}">
+      <div class="profile-main-card">
+        <img src="${player.profilePicture || 'media/default_avatar.png'}" class="player-avatar" alt="${player.name}">
         <div class="player-status">
           <div class="status-indicator ${player.isOnline ? 'status-online' : 'status-offline'}"></div>
           <span>${player.isOnline ? 'Online' : 'Offline'}</span>

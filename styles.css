@@ -7,37 +7,10 @@
     --text-muted: #8892b0;
 }
 
-.prestige-1 { --prestige-accent: #36975b; }
-
-.prestige-theme {
-    border-color: var(--prestige-accent) !important;
-    background: linear-gradient(
-        135deg,
-        rgba(40, 40, 55, 0.7),
-        rgba(40, 40, 55, 0.9)
-    ) !important;
-}
-.prestige-glow {
-    box-shadow: 0 0 10px var(--prestige-accent);
-}
 .prestige-title {
-    color: var(--prestige-accent) !important;
-    text-shadow: 0 0 5px var(--prestige-accent);
-}
-
-.prestige-border {
-    border: 2px solid var(--prestige-accent);
-    position: relative;
-}
-
-.prestige-border::after {
-    content: '';
-    position: absolute;
-    top: -4px; left: -4px; right: -4px; bottom: -4px;
-    border: 1px dashed var(--prestige-accent);
-    border-radius: 8px;
-    opacity: 0.5;
-    pointer-events: none;
+    background: linear-gradient(135deg, #a67ce0, #f39ede, #edd2e1, #bae5ea, #8eb6fc, #a680e3), linear-gradient(135deg, #a67ce0, #f39ede, #edd2e1, #bae5ea, #8eb6fc, #a680e3), linear-gradient(135deg, #a67ce0, #f39ede, #edd2e1, #bae5ea, #8eb6fc, #a680e3), linear-gradient(135deg, #a67ce0, #f39ede, #edd2e1, #bae5ea, #8eb6fc, #a680e3);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
 }
 
 body {
