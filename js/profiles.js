@@ -338,7 +338,7 @@ function showPublicProfile(container, player) {
                 player.isTransition ? 'transit' : 
                 player.lastRaidSurvived ? 'survived' : 'died'}">
                 ${player.discFromRaid ? `<em class='bx bxs-log-out'></em> Left` : 
-                player.isTransition ? `In Transit (${player.lastRaidMap} <span class="transit"></span> ${player.lastRaidTransitionTo || 'Unknown'})` : 
+                player.isTransition ? `<i class='bx bx-loader-alt bx-spin'></i> In Transit (${player.lastRaidMap} <em class='bx bxs-chevrons-right'></em> ${player.lastRaidTransitionTo || 'Unknown'})` : 
                 player.lastRaidSurvived ? `<em class='bx bx-walk'></em> Survived` : `<em class='bx bxs-skull'></em> Killed in Action`}
             </span>
         <span class="raid-meta">
