@@ -312,7 +312,7 @@ function displayLeaderboard(data) {
             <td class="rank ${rankClass}">${player.rank} ${player.medal}</td>
             <td class="player-name ${nameClass}" style="color: ${accountColor}" data-player-id="${player.id || '0'}"> ${accountIcon} ${player.name} ${prestigeImg}</td>
             <td>${lastGame || 'N/A'}</td>
-            <td>${player.pmcLevel}</td>
+            <td>${player.pmcLevel <= 0 ? '0' : player.pmcLevel}</td>
             <td>${player.pmcRaids}</td>
             <td class="${player.survivedToDiedRatioClass}">${player.survivalRate}%</td>
             <td class="${player.killToDeathRatioClass}">${player.killToDeathRatio}</td>
