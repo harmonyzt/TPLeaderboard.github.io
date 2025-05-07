@@ -26,7 +26,7 @@ function openProfile(playerId) {
     const isPublic = player.publicProfile;
 
     // If disqualified
-    if (player.disqualified === "true") {
+    if (player.disqualified) {
         modal.style.display = 'block';
         showDisqualProfile(modalContent, player);
         setupModalCloseHandlers(modal, player);
