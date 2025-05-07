@@ -1151,8 +1151,8 @@ button:hover,
 }
 
 .private-profile-content {
-    background: rgba(30, 30, 45, 0.95);
-    border: 1px solid #3a3a4a;
+    background: rgb(30, 30, 45);
+    border: 1px solid rgba(255, 255, 255, 0.027);
     border-radius: 10px;
     padding: 30px;
     max-width: 400px;
