@@ -86,6 +86,7 @@ h1 {
     background-color: var(--bg-dark-secondary);
     padding: 10px 25px;
     border-radius: 50px;
+    border: solid #ffffff14 1px;
     display: flex;
     justify-content: space-between;
     align-items: center;
