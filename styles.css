@@ -1090,6 +1090,26 @@ button:hover,
     font-size: 0.9em;
 }
 
+.badge-lb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+    font-size: 0.9em;
+}
+
+.badge-lb.tooltip {
+    position: relative;
+    cursor: pointer;
+}
+
+.badge-lb.tooltip em {
+    font-size: 25px;
+}
+
 .badge:hover {
     transform: scale(1.1);
 }
@@ -1347,7 +1367,7 @@ button:hover,
 .tooltip .tooltiptext {
     visibility: hidden;
     width: max-content;
-    max-width: 500px;
+    max-width: 600px;
     background-color: #1b1b1b;
     color: #fff;
     text-align: center;

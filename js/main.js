@@ -281,6 +281,25 @@ function displayLeaderboard(data) {
         const lastGame = formatLastPlayed(player.lastPlayed);
         player.isOnline = lastGame === "In game <div id=\"blink\"></div>";
 
+        // Add profile standing
+        let badge = '';
+        if(player?.suspicious == true){
+            badge = `<div class="badge-lb tooltip">
+            <em class='bx bxs-shield-x bx-flashing' style="color:rgb(255, 123, 100);"></em>
+            <span class="tooltiptext">This player was marked as suspicious by SkillIssueDetector™. Their statistics may be innacurate</span>
+          </div>`;
+        } else {
+            badge = `<div class="badge-lb tooltip">
+            <em class='bx bxs-check-shield' style="color:rgb(100, 255, 165);"></em>
+            <span class="tooltiptext">Profile in good standing</span>
+          </div>`;
+        }
+        
+        let profileOpenIcon = `Private <em class='bx bxs-lock' style="font-size: 23px"></em>`
+        if(player.publicProfile) {
+            profileOpenIcon = `Public <em class='bx bxs-lock-open' style="font-size: 23px"></em>`
+        }
+
         // Account type handling
         let accountIcon = '';
         let accountColor = '';
@@ -312,7 +331,8 @@ function displayLeaderboard(data) {
             <td class="rank ${rankClass}">${player.rank} ${player.medal}</td>
             <td class="player-name ${nameClass}" style="color: ${accountColor}" data-player-id="${player.id || '0'}"> ${accountIcon} ${player.name} ${prestigeImg}</td>
             <td>${lastGame || 'N/A'}</td>
-            <td>${player.pmcLevel <= 0 ? '0' : player.pmcLevel}</td>
+            <td>${profileOpenIcon}</td>
+            <td>${badge}</td>
             <td>${player.pmcRaids}</td>
             <td class="${player.survivedToDiedRatioClass}">${player.survivalRate}%</td>
             <td class="${player.killToDeathRatioClass}">${player.killToDeathRatio}</td>
@@ -411,64 +431,63 @@ function convertTimeToSeconds(time) {
 
 // Calculate player ranks
 function calculateRanks(data) {
+    const MIN_RAIDS = 50;
+    const SOFT_CAP_RAIDS = 100;
+
+    const maxKDR = Math.max(...data.map(p => p.killToDeathRatio));
+    const maxSurvival = Math.max(...data.map(p => p.survivalRate));
+    const maxRaids = Math.max(...data.map(p => p.pmcRaids));
+
     data.forEach(player => {
-        const kdrScore = player.killToDeathRatio * 0.1;
-        const sdrScore = player.survivalRate * 0.2;
-        const raidsScore = player.pmcRaids * 0.6;
-
-        const MIN_RAIDS = 50;
-        const SOFT_CAP_RAIDS = 100;
-
         if (player.disqualified) {
             player.totalScore = 0;
             player.damage = 0;
             player.killToDeathRatio = 0;
             player.survivedToDiedRatio = 0;
-        } else {
-            player.totalScore = kdrScore + sdrScore + Math.log(raidsScore);
+            return;
         }
 
+        const normKDR = maxKDR ? player.killToDeathRatio / maxKDR : 0;
+        const normSurvival = maxSurvival ? player.survivalRate / maxSurvival : 0;
+        const normRaids = maxRaids ? player.pmcRaids / maxRaids : 0;
+
+        let score = (normKDR * 0.4) + (normSurvival * 0.3) + (normRaids * 0.3);
+
+        // Soft cap for raids
         if (player.pmcRaids <= MIN_RAIDS) {
-            player.totalScore *= 0.3;
+            score *= 0.3;
         } else if (player.pmcRaids < SOFT_CAP_RAIDS) {
             const progress = (player.pmcRaids - MIN_RAIDS) / (SOFT_CAP_RAIDS - MIN_RAIDS);
-            player.totalScore *= 0.3 + (0.7 * progress);
+            score *= 0.3 + (0.7 * progress);
         }
+
+        player.totalScore = score;
     });
 
-    
-    // Sort by total score
+
     data.sort((a, b) => b.totalScore - a.totalScore);
 
-    // Assign ranks and medals
+
     data.forEach((player, index) => {
         player.rank = index + 1;
-        if (player.rank === 1) {
-            player.medal = '🥇';
-        } else if (player.rank === 2) {
-            player.medal = '🥈';
-        } else if (player.rank === 3) {
-            player.medal = '🥉';
-        } else {
-            player.medal = '';
-        }
+        player.medal = ['🥇', '🥈', '🥉'][index] || '';
     });
 }
 
 // Get skill rank label
 function getRankLabel(totalScore) {
-    if (totalScore < 5) return 'L-';
-    if (totalScore < 10) return 'L';
-    if (totalScore < 17) return 'L+';
-    if (totalScore < 18) return 'M-';
-    if (totalScore < 19) return 'M';
-    if (totalScore < 20) return 'M+';
-    if (totalScore < 21) return 'H-';
-    if (totalScore < 23) return 'H';
-    if (totalScore < 24) return 'H+';
-    if (totalScore < 25) return 'P-';
-    if (totalScore < 27) return 'P';
-    if (totalScore < 32) return 'P+';
+    if (totalScore < 0.2) return 'L-';
+    if (totalScore < 0.35) return 'L';
+    if (totalScore < 0.45) return 'L+';
+    if (totalScore < 0.55) return 'M-';
+    if (totalScore < 0.65) return 'M';
+    if (totalScore < 0.72) return 'M+';
+    if (totalScore < 0.78) return 'H-';
+    if (totalScore < 0.84) return 'H';
+    if (totalScore < 0.9) return 'H+';
+    if (totalScore < 0.94) return 'P-';
+    if (totalScore < 0.97) return 'P';
+    if (totalScore < 0.99) return 'P+';
     return 'G';
 }
 
