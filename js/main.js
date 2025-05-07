@@ -488,16 +488,16 @@ function calculateOverallStats(data) {
         if (player.disqualified !== true && player.disqualified !== "true") {
             const pmcRaids = Math.max(0, parseInt(player.pmcRaids) || 0);
             const survivalRate = Math.min(100, Math.max(0, parseFloat(player.survivalRate) || 0));
-            const kdr = Math.max(0, parseFloat(player.killToDeathRatio) || 0);
+            const rawKills = parseFloat(player.pmcKills) || 0;
+            const rawKDR = parseFloat(player.killToDeathRatio);
+            const kdr = isFinite(rawKDR) && rawKDR >= 0 ? rawKDR : 0;
 
-            if (pmcRaids > 0) {
+            if (pmcRaids > 0 && rawKills >= 0) {
+                const deaths = kdr > 0 ? rawKills / kdr : pmcRaids;
+
                 totalRaids += pmcRaids;
-
-                const estimatedDeaths = kdr > 0 ? pmcRaids / (1 + kdr) : pmcRaids;
-                const estimatedKills = pmcRaids - estimatedDeaths;
-
-                totalKills += estimatedKills;
-                totalDeaths += estimatedDeaths;
+                totalKills += rawKills;
+                totalDeaths += deaths;
 
                 totalKDR += kdr;
                 totalSurvival += survivalRate;
