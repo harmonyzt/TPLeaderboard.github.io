@@ -301,15 +301,15 @@ function showPublicProfile(container, player) {
     const lastRaidAgo = formatLastPlayedRaid(player.lastPlayed);
 
     container.innerHTML = `
-    <div class="profile-grid-layout">
+    <div class="profile-grid-layout prestige-${player.prestige || 0}">
       <!-- Main -->
-      <div class="profile-main-card">
-        <img src="${player.profilePicture || 'media/default_avatar.png'}" class="player-avatar" alt="${player.name}">
+      <div class="profile-main-card ${player.prestige ? 'prestige-theme prestige-glow' : ''}">
+        <img src="${player.profilePicture || 'media/default_avatar.png'}" class="player-avatar ${player.prestige ? 'prestige-border' : ''}" alt="${player.name}">
         <div class="player-status">
           <div class="status-indicator ${player.isOnline ? 'status-online' : 'status-offline'}"></div>
           <span>${player.isOnline ? 'Online' : 'Offline'}</span>
         </div>
-        <h2 class="profile-player-name">${player.name}</h2>
+        <h2 class="profile-player-name ${player.prestige ? 'prestige-title' : ''}">${player.name}</h2>
           <div class="player-about">${aboutText}</div>
         <div class="player-reg-date">
           <span class="reg-date-text">Registered: ${regDate}</span>
@@ -427,7 +427,7 @@ function generateBadgesHTML(player) {
 
     if(player?.suspicious == true){
         badges += `<div class="badge tooltip">
-        <em class='bx bxs-shield-x' style="color:rgb(255, 123, 100);"></em>
+        <em class='bx bxs-shield-x bx-flashing' style="color:rgb(255, 123, 100);"></em>
         <span class="tooltiptext">This player was marked as suspicious by SkillIssueDetector™. Their statistics may be innacurate</span>
       </div>`;
     } else {
@@ -437,7 +437,7 @@ function generateBadgesHTML(player) {
       </div>`;
     }
 
-    // Test badge prestige
+    // Prestige badge
     if (player.prestige && player.prestige > 0) {
         badges += `<div class="badge tooltip">
         <img src="media/prestige${player.prestige}.png" width="40" height="40" alt="Prestige">
