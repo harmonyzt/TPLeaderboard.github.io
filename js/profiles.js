@@ -420,7 +420,7 @@ function generateBadgesHTML(player) {
 
     if(player?.trusted == true){
         badges += `<div class="badge tooltip">
-        <img src="media/trusted.png" width="40" height="40" alt="Trusted">
+        <img src="media/trusted.png" width="30" height="30" alt="Trusted">
         <span class="tooltiptext">Official Tester</span>
       </div>`;
     }
