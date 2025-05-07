@@ -420,8 +420,8 @@ function generateBadgesHTML(player) {
 
     if(player?.trusted == true){
         badges += `<div class="badge tooltip">
-        <em class='bx bxs-star' style="color:rgb(100, 255, 165);"></em>
-        <span class="tooltiptext">Trusted Player</span>
+        <img src="media/trusted.png" width="40" height="40" alt="Trusted">
+        <span class="tooltiptext">Official Tester</span>
       </div>`;
     }
 
@@ -445,7 +445,7 @@ function generateBadgesHTML(player) {
       </div>`;
     }
 
-    if (player.achivement) {
+    if (player.achievement) {
         if (player.achievements.includes('survivor')) {
             badges += `<div class="badge" title="Master Survivor">bimboom</div>`;
         }
