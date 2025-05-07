@@ -1184,7 +1184,7 @@ button:hover,
     gap: 8px;
     margin-top: 20px;
     padding-top: 15px;
-    border: 1px solid rgb(255 255 255 / 10%);
+    border-top: 1px solid rgb(255 255 255 / 10%);
     color: #888;
     font-size: 0.85em;
 }
