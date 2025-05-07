@@ -419,7 +419,7 @@ function calculateRanks(data) {
         const MIN_RAIDS = 50;
         const SOFT_CAP_RAIDS = 100;
 
-        if (player.disqualified === "true") {
+        if (player.disqualified) {
             player.totalScore = 0;
             player.damage = 0;
             player.killToDeathRatio = 0;
@@ -484,7 +484,7 @@ function calculateOverallStats(data) {
     let validPlayers = 0;
 
     data.forEach(player => {
-        if (player.disqualified !== true && player.disqualified !== "true") {
+        if (!player.disqualified) {
             const pmcRaids = Math.max(0, parseInt(player.pmcRaids) || 0);
             const survivalRate = Math.min(100, Math.max(0, parseFloat(player.survivalRate) || 0));
             const rawKills = parseFloat(player.pmcKills) || 0;
