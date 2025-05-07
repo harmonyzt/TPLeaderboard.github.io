@@ -475,11 +475,13 @@ function getRankLabel(totalScore) {
 
 // Calculate overall stats
 function calculateOverallStats(data) {
-    let totalDeaths = 0;
     let totalRaids = 0;
     let totalKills = 0;
-    let totalSurvival = 0;
+    let totalDeaths = 0;
     let totalDamage = 0;
+
+    let totalKDR = 0;
+    let totalSurvival = 0;
     let validPlayers = 0;
 
     data.forEach(player => {
@@ -490,8 +492,14 @@ function calculateOverallStats(data) {
 
             if (pmcRaids > 0) {
                 totalRaids += pmcRaids;
-                totalDeaths += pmcRaids * (100 - survivalRate) / 100;
-                totalKills += kdr * pmcRaids;
+
+                const estimatedDeaths = kdr > 0 ? pmcRaids / (1 + kdr) : pmcRaids;
+                const estimatedKills = pmcRaids - estimatedDeaths;
+
+                totalKills += estimatedKills;
+                totalDeaths += estimatedDeaths;
+
+                totalKDR += kdr;
                 totalSurvival += survivalRate;
                 validPlayers++;
 
@@ -505,13 +513,14 @@ function calculateOverallStats(data) {
     const averageKDR = totalDeaths > 0 ? (totalKills / totalDeaths).toFixed(2) : "0.00";
     const averageSurvival = validPlayers > 0 ? (totalSurvival / validPlayers).toFixed(2) : "0.00";
 
-    animateNumber('totalDeaths', totalDeaths);
     animateNumber('totalRaids', totalRaids);
     animateNumber('totalKills', Math.round(totalKills));
+    animateNumber('totalDeaths', Math.round(totalDeaths));
     animateNumber('totalDamage', totalDamage);
     animateNumber('averageKDR', averageKDR, 2);
     animateNumber('averageSurvival', averageSurvival, 2);
 }
+
 
 // Simple number animation (CountUp.js)
 let countTimer = 2;
