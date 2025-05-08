@@ -41,8 +41,6 @@ function initControls() {
     startUpdateTimer();
     
     function startUpdateTimer() {
-        console.log(`Counting`);
-
         updateTimer = setInterval(() => {
             timeLeft--;
             
