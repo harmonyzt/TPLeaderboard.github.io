@@ -17,7 +17,7 @@ let oldValidPlayers = 0;
 
 // https://visuals.nullcore.net/hidden/season
 // season/season [DEBUG]
-const seasonPath = "season/season";
+const seasonPath = "https://visuals.nullcore.net/hidden/season";
 const seasonPathEnd = ".json";
 
 // Check if season file exists
