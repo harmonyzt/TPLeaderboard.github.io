@@ -310,9 +310,12 @@ function showPublicProfile(container, player) {
 
     const lastRaidDuration = formatSeconds(player.lastRaidTimeSeconds);
     const lastRaidAgo = formatLastPlayedRaid(player.lastPlayed);
-    const lastAchivementAgo = formatLastPlayedRaid(player.latestAchievementTimestamp);
-    const lastAchievementIcon = player.latestAchievementImageUrl
-    const lastAchievementIconResult = lastAchievementIcon.slice(1)
+
+    if(player.latestAchievementImageUrl) {
+        const lastAchivementAgo = formatLastPlayedRaid(player.latestAchievementTimestamp);
+        const lastAchievementIcon = player.latestAchievementImageUrl
+        const lastAchievementIconResult = lastAchievementIcon.slice(1)
+    }
 
     container.innerHTML = `
     <div class="profile-grid-layout">
