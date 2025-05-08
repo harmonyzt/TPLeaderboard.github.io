@@ -42,7 +42,7 @@ function updatePlayerStats($data, $suspicious, $isBanned)
                 }
 
             } else if (!$isScav) {
-                // PMC STATS THAT ARE ALWAYS SENT HOLY FUCK
+                // PMC STATS THAT ARE ALWAYS SENT
                 $player['survived'] = ($player['survived'] ?? 0) + $survived;
                 $player['pmcDeaths'] = ($player['pmcDeaths'] ?? 0) + $died;
                 $player['pmcKills'] = ($player['pmcKills'] ?? 0) + $raidKills;
@@ -93,6 +93,7 @@ function updatePlayerStats($data, $suspicious, $isBanned)
 
                 $player['profileAboutMe'] = $data['profileAboutMe'] ?? '';
                 $player['profilePicture'] = $data['profilePicture'] ?? '';
+                $player['profileTheme'] = $data['profileTheme'] ?? '';
 
                 // Last raid stats
                 $player['lastRaidEXP'] = $data['lastRaidEXP'];
@@ -106,10 +107,16 @@ function updatePlayerStats($data, $suspicious, $isBanned)
                 $player['lastRaidMap'] = $lastMap;
                 $player['lastRaidSurvived'] = $survived ? true : false;
                 $player['lastRaidTimeSeconds'] = $data['raidTime'];
+                $player['lastRaidEXP'] = $data['lastRaidEXP'];
+                $player['lastRaidHits'] = $data['lastRaidHits'];
                 $player['pmcSide'] = $data['pmcSide'];
                 $player['scavLevel'] = $data['scavLevel'];
                 $player['prestige'] = $data['prestige'];
                 $player['usePrestigeStyling'] = $data['usePrestigeStyling'];
+                $player['latestAchievementName'] = $data['latestAchievementName'];
+                $player['latestAchievementDescription'] = $data['latestAchievementDescription'];
+                $player['latestAchievementImageUrl'] = $data['latestAchievementImageUrl'];
+                $player['latestAchievementTimestamp'] = $data['latestAchievementTimestamp'];
             }
 
             $player['suspicious'] = $suspicious;
@@ -160,7 +167,7 @@ function addNewPlayer($data, $trusted, $suspicious, $isBanned)
         'suspicious' => $suspicious
     ];
 
-    // Always update because addNewPlayer TRIGGERS ONLY FOR PMC IF PROFILE IS PRIVATE so we assume that this player IS PMC AT ANY TIME
+    // Always update
     $newPlayer['pmcRaids'] = 1;
     $newPlayer['averageLifeTime'] = $data['raidTime'] ?? 0;
     $newPlayer['killToDeathRatio'] = $died > 0 ? round($raidKills / $died, 2) : $raidKills;
@@ -173,7 +180,7 @@ function addNewPlayer($data, $trusted, $suspicious, $isBanned)
         $newPlayer['profilePicture'] = $data['profilePicture'] ?? '';
         $newPlayer['registrationDate'] = $data['registrationDate'] ?? '';
 
-        // Last raid stats
+        // Last raid stats and ach
         $newPlayer['lastRaidKills'] = $data['raidKills'];
         $newPlayer['lastRaidAs'] = $data['playedAs'];
         $newPlayer['lastRaidDamage'] = $data['raidDamage'];
@@ -181,6 +188,12 @@ function addNewPlayer($data, $trusted, $suspicious, $isBanned)
         $newPlayer['isTransition'] = $data['isTransition'];
         $newPlayer['lastRaidTransitionTo'] = $data['lastRaidTransitionTo'];
         $newPlayer['discFromRaid'] = $data['discFromRaid'];
+        $newPlayer['latestAchievementName'] = $data['latestAchievementName'];
+        $newPlayer['latestAchievementDescription'] = $data['latestAchievementDescription'];
+        $newPlayer['latestAchievementImageUrl'] = $data['latestAchievementImageUrl'];
+        $newPlayer['latestAchievementTimestamp'] = $data['latestAchievementTimestamp'];
+        $newPlayer['lastRaidEXP'] = $data['lastRaidEXP'];
+        $newPlayer['lastRaidHits'] = $data['lastRaidHits'];
 
         if ($data['lastRaidMap'] === "east") {
             $newPlayer['lastRaidMap'] = "Ground Zero - Low";
@@ -215,7 +228,7 @@ function addNewPlayer($data, $trusted, $suspicious, $isBanned)
             $newPlayer['killToDeathRatio'] = 0;
             $newPlayer['survivalRate'] = 0;
 
-            // Send this - it won't be updated anyways (ihope)
+            // Send this anyways - it won't be updated anyways
         } else {
             // PMC stats
             $newPlayer['pmcRaids'] = 1;
