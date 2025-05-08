@@ -7,7 +7,7 @@ function openProfile(playerId) {
     // If no id data-player-id="0" (shouldn't be happening)
     if (!playerId || playerId === '0') {
         showPrivateProfile(modalContent, "Unknown Player");
-        modal.style.display = 'block';
+        modal.style.display = 'flex';
         setupModalCloseHandlers(modal);
         return;
     }
@@ -18,7 +18,7 @@ function openProfile(playerId) {
     // Couldn't find
     if (!player) {
         showPrivateProfile(modalContent, "Player Not Found");
-        modal.style.display = 'block';
+        modal.style.display = 'flex';
         setupModalCloseHandlers(modal);
         return;
     }
@@ -27,7 +27,7 @@ function openProfile(playerId) {
 
     // If disqualified
     if (player.disqualified) {
-        modal.style.display = 'block';
+        modal.style.display = 'flex';
         showDisqualProfile(modalContent, player);
         setupModalCloseHandlers(modal, player);
         return;
@@ -35,7 +35,7 @@ function openProfile(playerId) {
 
     // Privated profile
     if (!isPublic) {
-        modal.style.display = 'block';
+        modal.style.display = 'flex';
         showPrivateProfile(modalContent, player);
         setupModalCloseHandlers(modal, player);
         return;
@@ -43,7 +43,7 @@ function openProfile(playerId) {
 
     // Showing public profile
     showPublicProfile(modalContent, player);
-    modal.style.display = 'block';
+    modal.style.display = 'flex';
     setupModalCloseHandlers(modal);
 }
 

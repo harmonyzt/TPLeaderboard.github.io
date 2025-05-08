@@ -936,7 +936,7 @@ button:hover,
 
 /* SPT profiles */
 .profile-modal {
-    display: flex;
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
