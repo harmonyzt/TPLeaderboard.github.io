@@ -41,8 +41,11 @@ function initControls() {
     startUpdateTimer();
     
     function startUpdateTimer() {
+        console.log(`Counting`);
+
         updateTimer = setInterval(() => {
             timeLeft--;
+            
             updateTimeDisplay();
             
             if (timeLeft <= 0) {
@@ -56,6 +59,3 @@ function initControls() {
         timeToUpdateSpan.textContent = `Next update in: ${timeLeft}s`;
     }
 }
-
-// only on dom load
-document.addEventListener('DOMContentLoaded', initControls);

@@ -547,51 +547,6 @@ function saveControlsToCookies() {
     setCookie('updateInterval', updateInterval);
 }
 
-function initControls() {
-    initControlsFromCookies();
-
-    const autoUpdateToggle = document.getElementById('autoUpdateToggle');
-    const updateIntervalSelect = document.getElementById('updateInterval');
-    const manualUpdateBtn = document.getElementById('manualUpdate');
-    const timeToUpdateSpan = document.getElementById('timeToUpdate');
-
-    autoUpdateToggle.addEventListener('change', (e) => {
-        autoUpdateEnabled = e.target.checked;
-        saveControlsToCookies();
-
-        if (autoUpdateEnabled) {
-            startUpdateTimer();
-        } else {
-            clearTimeout(updateTimer);
-            timeToUpdateSpan.textContent = "Auto-update disabled";
-        }
-    });
-
-    updateIntervalSelect.addEventListener('change', (e) => {
-        updateInterval = parseInt(e.target.value);
-        timeLeft = updateInterval;
-        saveControlsToCookies();
-
-        if (autoUpdateEnabled) {
-            clearTimeout(updateTimer);
-            startUpdateTimer();
-        }
-        updateTimeDisplay();
-    });
-
-    manualUpdateBtn.addEventListener('click', () => {
-        detectSeasons();
-        if (autoUpdateEnabled) {
-            timeLeft = updateInterval;
-            updateTimeDisplay();
-        }
-    });
-
-    if (autoUpdateEnabled) {
-        startUpdateTimer();
-    }
-}
-
 // Calculate all stats + dynamic update support
 function calculateOverallStats(data) {
     // Save old values before calculating new ones
