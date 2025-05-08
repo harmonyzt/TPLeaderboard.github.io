@@ -402,16 +402,16 @@ function addColorIndicators(data) {
             player.survivedToDiedRatioClass = 'bad';
         } else if (player.survivalRate < 55) {
             player.survivedToDiedRatioClass = 'average';
-        } else if (player.survivalRate < 65) {
+        } else if (player.survivalRate < 70) {
             player.survivedToDiedRatioClass = 'good';
         } else {
             player.survivedToDiedRatioClass = 'impressive';
         }
 
         // Kill/Death Ratio
-        if (player.killToDeathRatio < 5) {
+        if (player.killToDeathRatio < 3) {
             player.killToDeathRatioClass = 'bad';
-        } else if (player.killToDeathRatio < 12) {
+        } else if (player.killToDeathRatio < 5) {
             player.killToDeathRatioClass = 'average';
         } else if (player.killToDeathRatio < 15) {
             player.killToDeathRatioClass = 'good';
@@ -451,7 +451,7 @@ function calculateRanks(data) {
         const normSurvival = maxSurvival ? player.survivalRate / maxSurvival : 0;
         const normRaids = maxRaids ? player.pmcRaids / maxRaids : 0;
 
-        let score = (normKDR * 0.4) + (normSurvival * 0.3) + (normRaids * 0.3);
+        let score = (normKDR * 0.2) + (normSurvival * 0.3) + (normRaids * 0.5);
 
         // Soft cap for raids
         if (player.pmcRaids <= MIN_RAIDS) {
