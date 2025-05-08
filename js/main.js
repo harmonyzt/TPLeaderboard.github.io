@@ -17,7 +17,7 @@ let oldValidPlayers = 0;
 
 // https://visuals.nullcore.net/hidden/season
 // season/season [DEBUG]
-const seasonPath = "https://visuals.nullcore.net/hidden/season";
+const seasonPath = "season/season";
 const seasonPathEnd = ".json";
 
 // Check if season file exists
@@ -624,66 +624,48 @@ function animateNumber(elementId, targetValue, decimals = 0, startValue = null) 
     const suffix = elementId === 'averageSurvival' ? '%' : '';
 
     // Parse current displayed value
-    let currentDisplayValue = element.textContent;
+    let currentDisplayValue = element.textContent.replace(/[^0-9.-]/g, '');
 
-    // handling for KDR to avoid start from 1000
-    if (elementId === 'averageKDR') {
-        // Try to parse the current value, fallback to startValue or 0
-        let currentValue;
-        try {
-            currentValue = parseFloat(currentDisplayValue);
-            if (isNaN(currentValue)) {
-                currentValue = (startValue !== null) ? startValue : 0;
-            }
-        } catch (e) {
+    if (suffix === '%') {
+        currentDisplayValue = currentDisplayValue.replace('%', '');
+    }
+
+    let currentValue;
+    try {
+        currentValue = parseFloat(currentDisplayValue);
+        if (isNaN(currentValue)) {
             currentValue = (startValue !== null) ? startValue : 0;
         }
-
-        // Ensure we don't start from an unrealistic value
-        if (currentValue > 100 && targetValue < 100) {
-            currentValue = (startValue !== null) ? startValue : targetValue;
-        }
-
-        startValue = currentValue;
-    } else {
-        // standard parsing for other values
-        startValue = (startValue !== null) ? startValue :
-            parseFloat(currentDisplayValue.replace(/[^0-9.-]/g, '')) || 0;
+    } catch (e) {
+        currentValue = (startValue !== null) ? startValue : 0;
     }
 
-    // remove the % before parsing (in case)
-    if (suffix === '%') {
-        startValue = parseFloat(currentDisplayValue.replace('%', '')) || 0;
+    // Special case handling for KDR
+    if (elementId === 'averageKDR' && currentValue > 100 && targetValue < 100) {
+        currentValue = (startValue !== null) ? startValue : targetValue;
     }
 
-    // if target is 0 and start is very large, reset start
+    startValue = (startValue !== null) ? startValue : currentValue;
+
+    // Ensure no huge mismatch between values
     if (targetValue === 0 && startValue > 1000) {
         startValue = 0;
     }
 
-    const countUp = new CountUp(element, targetValue, {
-        startVal: startValue,
-        duration: 5,
-        decimalPlaces: decimals,
-        separator: ',',
-        suffix: suffix,
-        useEasing: true,
-        smartEasingThreshold: 2000,
-        smartEasingAmount: 30
-    });
+    // Format value with decimals and suffix
+    const formatValue = (value) => {
+        return (decimals > 0 ? value.toFixed(decimals) : Math.round(value)) + suffix;
+    };
 
-    if (!countUp.error) {
-        countUp.start();
-    } else {
-        console.error(countUp.error);
+    // Set initial value to avoid jumping from default
+    element.innerHTML = formatValue(startValue);
 
-        if (decimals > 0) {
-            element.textContent = targetValue.toFixed(decimals) + suffix;
-        } else {
-            element.textContent = Math.round(targetValue) + suffix;
-        }
-    }
+    // Trigger odometer animation by setting target after short delay
+    setTimeout(() => {
+        element.innerHTML = formatValue(targetValue);
+    }, 50); // slight delay to allow Odometer to detect change
 }
+
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {

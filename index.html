@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
         <script src="https://betterdiscord.app/js/vendor/countUp.min.js?v=DBxeQBHNMaYkRvB8uPOLm07cbQj54TDexlykb-Dcg28"></script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="https://github.hubspot.com/odometer/themes/odometer-theme-default.css" />
         <script src="js/funFact.js"></script>
         <script src="js/main.js"></script>
         <script src="js/searchBar.js"></script>
@@ -172,7 +173,7 @@
             <p class="update-info">Random Quote/Fact: <span id="highlight"></span></p>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-value" id="totalDeaths">0</div>
+                    <div class="stat-value odometer" id="totalDeaths">0</div>
                     <div class="stat-label">💀 Total Deaths</div>
                 </div>
                 <!-- Not used for now
@@ -182,23 +183,23 @@
                 </div>
                 -->
                 <div class="stat-card">
-                    <div class="stat-value" id="totalRaids">0</div>
+                    <div class="stat-value odometer" id="totalRaids">0</div>
                     <div class="stat-label">🎮 Total Raids</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="totalKills">0</div>
+                    <div class="stat-value odometer" id="totalKills">0</div>
                     <div class="stat-label">⚔️ Total Kills</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="totalDamage">0</div>
+                    <div class="stat-value odometer" id="totalDamage">0</div>
                     <div class="stat-label">🎯 Total Damage*</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="averageKDR">0.00</div>
+                    <div class="stat-value odometer" id="averageKDR">0.00</div>
                     <div class="stat-label">⚔️ Average K/D Ratio</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="averageSurvival">0%</div>
+                    <div class="stat-value odometer" id="averageSurvival">0%</div>
                     <div class="stat-label">🛡️ Average Survival Rate</div>
                 </div>
             </div>
@@ -292,5 +293,7 @@
               <div id="modalPlayerInfo" class="profile-modal-content"></div>
             </div>
           </div>
+
+          <script src="https://github.hubspot.com/odometer/odometer.js"></script>
     </body>
 </html>
