@@ -439,7 +439,7 @@ function showPublicProfile(container, player) {
           </div>
           <div class="stat-row">
             <span class="profile-stat-label">Survival Rate</span>
-            <span class="profile-stat-value">${player.scavSurvivalRate ? scavSurvivalRate + '%' : 'N/A'}</span>
+            <span class="profile-stat-value">${player.scavSurvivalRate ? player.scavSurvivalRate + '%' : 'N/A'}</span>
           </div>
         </div>
       </div>
