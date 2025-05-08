@@ -451,7 +451,7 @@ function calculateRanks(data) {
         const normSurvival = maxSurvival ? player.survivalRate / maxSurvival : 0;
         const normRaids = maxRaids ? player.pmcRaids / maxRaids : 0;
 
-        let score = (normKDR * 0.2) + (normSurvival * 0.3) + (normRaids * 0.5);
+        let score = (normKDR * 0.15) + (normSurvival * 0.2) + (normRaids * 0.4);
 
         // Soft cap for raids
         if (player.pmcRaids <= MIN_RAIDS) {
