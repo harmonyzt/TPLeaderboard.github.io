@@ -293,7 +293,7 @@ function showPublicProfile(container, player) {
     // Profile Theme
     const profileModal = document.querySelector('.profile-modal-content');
     switch(player.profileTheme) {
-        case "Dark":
+        case "Darker":
             profileModal.style.background = "#121212";
             break;
         default:
