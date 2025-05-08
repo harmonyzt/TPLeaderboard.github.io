@@ -382,7 +382,7 @@ function showPublicProfile(container, player) {
                 <h3 class="section-title">Latest Achievement</h3>
                 <div class="achievement-content">
                     <div class="achievement-icon">
-                    <img src="${player.latestAchievementImageUrl || 'files/achievement/Standard_35_1.png'}" alt="Achievement Icon">
+                    <img src="${player.latestAchievementImageUrl.slice(1) || 'files/achievement/Standard_35_1.png'}" alt="Achievement Icon">
                     <div class="achievement-time">${lastAchivementAgo || 'N/A'}</div>
                     </div>
                     <div class="achievement-info">
