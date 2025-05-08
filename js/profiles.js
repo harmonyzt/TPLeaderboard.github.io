@@ -311,6 +311,7 @@ function showPublicProfile(container, player) {
     const lastRaidDuration = formatSeconds(player.lastRaidTimeSeconds);
     const lastRaidAgo = formatLastPlayedRaid(player.lastPlayed);
     const lastAchivementAgo = formatLastPlayedRaid(player.latestAchievementTimestamp);
+    const lastAchievementIcon = player.latestAchievementImageUrl
 
     container.innerHTML = `
     <div class="profile-grid-layout">
@@ -382,7 +383,7 @@ function showPublicProfile(container, player) {
                 <h3 class="section-title">Latest Achievement</h3>
                 <div class="achievement-content">
                     <div class="achievement-icon">
-                    <img src="${player.latestAchievementImageUrl.slice(1) || 'files/achievement/Standard_35_1.png'}" alt="Achievement Icon">
+                    <img src="${lastAchievementIcon.slice(1) || 'files/achievement/Standard_35_1.png'}" alt="Achievement Icon">
                     <div class="achievement-time">${lastAchivementAgo || 'N/A'}</div>
                     </div>
                     <div class="achievement-info">
