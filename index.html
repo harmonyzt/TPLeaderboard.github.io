@@ -13,6 +13,7 @@
         <script src="js/main.js"></script>
         <script src="js/searchBar.js"></script>
         <script src="js/profiles.js"></script>
+        <script src="js/navbarModals.js"></script>
         <title>SPT Leaderboard</title>
     </head>
 
@@ -23,6 +24,9 @@
             </a>
             <div class="navbar-links">
                 <a id="infoButton" class="navbar-link">How it works</a>
+            </div>
+            <div class="navbar-links">
+                <a id="tosButton" class="navbar-link">LA/TOS</a>
             </div>
             <div class="season-selector">
                 <label for="seasonSelect">Season:</label>
@@ -117,6 +121,40 @@
                 </ul>
             </div>
         </div>
+
+        <div id="tosModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Legal Agreement / Terms of Service (LA/TOS)</h2>
+                <p>By submitting your statistics to the SPT Leaderboard, you agree to comply with the following Terms of Service. Violations may lead to removal from the leaderboard or permanent bans.</p>
+        
+                <h3>1. General Rules</h3>
+                <ul>
+                    <li><strong>Fair Play:</strong> Use of cheats, exploits, stat manipulation, or any attempt to deceive the system will result in a permanent ban from the leaderboard.</li>
+                    <li><strong>Allowed Mods:</strong> Cosmetic and quality-of-life (QoL) mods are permitted. However, <strong>gameplay-altering mods</strong> (e.g., god mode, unlimited ammo, faster reload speed, extra amount of loot, radar hacks, revival after death) are strictly forbidden.</li>
+                    <li><strong>Account Standing:</strong> Accounts flagged for suspicious activity or abnormal statistics may be disqualified without the right to appeal.</li>
+                    <li><strong>Content Guidelines:</strong> Usernames, profile pictures (PFP), and “About Me” sections must not contain offensive, discriminatory, hateful, or NSFW content. Violations may lead to disqualification, removal from leaderboard or permanent ban.</li>
+                </ul>
+        
+                <h3>2. Eligibility & Participation</h3>
+                <p>Participation is open to all players who comply with the rules outlined in this agreement:</p>
+                <ul>
+                    <li><strong>Mod Policy:</strong> Use of any mod that gives a competitive or statistical advantage will result in disqualification or ban from the leaderboard.</li>
+                    <li><strong>One Account Policy:</strong> Players may only submit statistics from one account. This rule doesn't apply to players with a "Tester" flag.</li>
+                    <li><strong>Honesty:</strong> All submitted statistics must reflect genuine gameplay. Any form of falsified or edited data will result in a disqualification from leaderboard, or permanent ban.</li>
+                </ul>
+        
+                <h3>3. Data Usage & Rights</h3>
+                <ul>
+                    <li><strong>Public Display:</strong> By submitting your data, you grant permission for it to be publicly displayed on the leaderboard. This applies to any form or state of the player profile.</li>
+                    <li><strong>Moderation Discretion:</strong> Administrators reserve the right to review, modify, or remove any submissions at their sole discretion without prior notice.</li>
+                    <li><strong>Policy Updates:</strong> These Terms may be updated at any time. Continued use of the leaderboard implies acceptance of the most recent version.</li>
+                </ul>
+        
+                <p><em>Last updated: May 8, 2025</em></p>
+            </div>
+        </div>
+        
 
         <!--
         <div id="updateAnnouncement" class="animate animate__animated animate__fadeIn">
