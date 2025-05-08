@@ -299,7 +299,7 @@ function showPublicProfile(container, player) {
         default:
             profileModal.style.background = "#1e1e2d";
     }
-    
+
     // About me
     const aboutText = player.profileAboutMe && player.profileAboutMe.length <= 80
         ? player.profileAboutMe
@@ -316,7 +316,7 @@ function showPublicProfile(container, player) {
     <div class="profile-grid-layout">
       <!-- Main -->
       <div class="profile-main-card">
-        <img src="${player.profilePicture || 'media/default_avatar.png'}" class="player-avatar" alt="${player.name}">
+        <img src="${player.profilePicture}" class="player-avatar" alt="${player.name}">
         <div class="player-status">
           <div class="status-indicator ${player.isOnline ? 'status-online' : 'status-offline'}"></div>
           <span>${player.isOnline ? 'Online' : 'Offline'}</span>
@@ -382,7 +382,7 @@ function showPublicProfile(container, player) {
                 <h3 class="section-title">Latest Achievement</h3>
                 <div class="achievement-content">
                     <div class="achievement-icon">
-                    <img src="${player.latestAchievementImageUrl || 'media/achievements/Standard_35_1.png'}" alt="Achievement Icon">
+                    <img src="${player.latestAchievementImageUrl || '/files/achievement/Standard_35_1.png'}" alt="Achievement Icon">
                     <div class="achievement-time">${lastAchivementAgo || 'N/A'}</div>
                     </div>
                     <div class="achievement-info">
