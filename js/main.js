@@ -6,8 +6,18 @@ let allSeasonsCombinedData = []; // For keeping combined data from all seasons
 let sortDirection = {}; // Sort direction
 let seasons = []; // Storing available seasons
 
-//  https://visuals.nullcore.net/hidden/season
-const seasonPath = "https://visuals.nullcore.net/hidden/season";
+// For dynamic stat count
+let oldTotalRaids = 0;
+let oldTotalKills = 0;
+let oldTotalDeaths = 0;
+let oldTotalDamage = 0;
+let oldTotalKDR = 0;
+let oldTotalSurvival = 0;
+let oldValidPlayers = 0;
+
+// https://visuals.nullcore.net/hidden/season
+// season/season [DEBUG]
+const seasonPath = "season/season";
 const seasonPathEnd = ".json";
 
 // Check if season file exists
@@ -43,6 +53,7 @@ async function detectSeasons() {
     if (seasons.length > 0) {
         loadAllSeasonsData();
         loadSeasonData(seasons[0]);
+        saveCurrentStats();
     }
 }
 
@@ -121,7 +132,7 @@ function populateSeasonDropdown() {
 
     seasonSelect.addEventListener('change', (event) => {
         const selectedValue = event.target.value;
-            loadSeasonData(selectedValue);
+        loadSeasonData(selectedValue);
     });
 }
 
@@ -166,13 +177,12 @@ async function loadAllSeasonsData() {
             try {
                 const response = await fetch(`${seasonPath}${season}${seasonPathEnd}`);
 
-
                 const data = await response.json();
                 if (!data.leaderboard || data.leaderboard.length === 0) continue;
 
                 data.leaderboard.forEach(player => {
                     const playerKey = player.id || player.name;
-                    
+
                     if (!uniquePlayers[playerKey]) {
                         // New player - initialize with current season data
                         uniquePlayers[playerKey] = {
@@ -283,7 +293,7 @@ function displayLeaderboard(data) {
 
         // Add profile standing
         let badge = '';
-        if(player?.suspicious == true){
+        if (player?.suspicious == true) {
             badge = `<div class="badge-lb tooltip">
             <em class='bx bxs-shield-x bx-flashing' style="color:rgb(255, 123, 100);"></em>
             <span class="tooltiptext">This player was marked as suspicious by SkillIssueDetector™. Their statistics may be innacurate</span>
@@ -294,9 +304,9 @@ function displayLeaderboard(data) {
             <span class="tooltiptext">Profile in good standing</span>
           </div>`;
         }
-        
+
         let profileOpenIcon = `Private <em class='bx bxs-lock' style="font-size: 23px"></em>`
-        if(player.publicProfile) {
+        if (player.publicProfile) {
             profileOpenIcon = `Public <em class='bx bxs-lock-open' style="font-size: 23px"></em>`
         }
 
@@ -492,12 +502,114 @@ function getRankLabel(totalScore) {
 }
 
 // Calculate overall stats
+// Cookies! :D
+function setCookie(name, value, days = 30) {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
+}
+
+function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length);
+    }
+    return null;
+}
+
+// Initialize controls from cookies
+function initControlsFromCookies() {
+    // Auto-update toggle
+    const autoUpdateToggle = document.getElementById('autoUpdateToggle');
+    const savedAutoUpdate = getCookie('autoUpdateEnabled');
+    autoUpdateToggle.checked = savedAutoUpdate !== 'false';
+    autoUpdateEnabled = autoUpdateToggle.checked;
+
+
+    const updateIntervalSelect = document.getElementById('updateInterval');
+    const savedInterval = getCookie('updateInterval');
+    if (savedInterval) {
+        updateInterval = parseInt(savedInterval);
+        updateIntervalSelect.value = savedInterval;
+        timeLeft = updateInterval;
+    }
+
+    updateTimeDisplay();
+}
+
+// Save controls to cookies
+function saveControlsToCookies() {
+    setCookie('autoUpdateEnabled', autoUpdateEnabled);
+    setCookie('updateInterval', updateInterval);
+}
+
+function initControls() {
+    initControlsFromCookies();
+
+    const autoUpdateToggle = document.getElementById('autoUpdateToggle');
+    const updateIntervalSelect = document.getElementById('updateInterval');
+    const manualUpdateBtn = document.getElementById('manualUpdate');
+    const timeToUpdateSpan = document.getElementById('timeToUpdate');
+
+    autoUpdateToggle.addEventListener('change', (e) => {
+        autoUpdateEnabled = e.target.checked;
+        saveControlsToCookies();
+
+        if (autoUpdateEnabled) {
+            startUpdateTimer();
+        } else {
+            clearTimeout(updateTimer);
+            timeToUpdateSpan.textContent = "Auto-update disabled";
+        }
+    });
+
+    updateIntervalSelect.addEventListener('change', (e) => {
+        updateInterval = parseInt(e.target.value);
+        timeLeft = updateInterval;
+        saveControlsToCookies();
+
+        if (autoUpdateEnabled) {
+            clearTimeout(updateTimer);
+            startUpdateTimer();
+        }
+        updateTimeDisplay();
+    });
+
+    manualUpdateBtn.addEventListener('click', () => {
+        detectSeasons();
+        if (autoUpdateEnabled) {
+            timeLeft = updateInterval;
+            updateTimeDisplay();
+        }
+    });
+
+    if (autoUpdateEnabled) {
+        startUpdateTimer();
+    }
+}
+
+// Calculate all stats + dynamic update support
 function calculateOverallStats(data) {
+    // Save old values before calculating new ones
+    const previousStats = {
+        raids: oldTotalRaids,
+        kills: oldTotalKills,
+        deaths: oldTotalDeaths,
+        damage: oldTotalDamage,
+        kdr: oldTotalKDR,
+        survival: oldTotalSurvival,
+        players: oldValidPlayers
+    };
+
+    // Reset counters
     let totalRaids = 0;
     let totalKills = 0;
     let totalDeaths = 0;
     let totalDamage = 0;
-
     let totalKDR = 0;
     let totalSurvival = 0;
     let validPlayers = 0;
@@ -528,37 +640,130 @@ function calculateOverallStats(data) {
         }
     });
 
-    const averageKDR = totalDeaths > 0 ? (totalKills / totalDeaths).toFixed(2) : "0.00";
-    const averageSurvival = validPlayers > 0 ? (totalSurvival / validPlayers).toFixed(2) : "0.00";
+    // Calculate averages
+    const averageKDR = totalDeaths > 0 ? (totalKills / totalDeaths) : 0;
+    const averageSurvival = validPlayers > 0 ? (totalSurvival / validPlayers) : 0;
 
-    animateNumber('totalRaids', totalRaids);
-    animateNumber('totalKills', Math.round(totalKills));
-    animateNumber('totalDeaths', Math.round(totalDeaths));
-    animateNumber('totalDamage', totalDamage);
-    animateNumber('averageKDR', averageKDR, 2);
-    animateNumber('averageSurvival', averageSurvival, 2);
+    // Update old values for next animation
+    oldTotalRaids = totalRaids;
+    oldTotalKills = totalKills;
+    oldTotalDeaths = totalDeaths;
+    oldTotalDamage = totalDamage;
+    oldTotalKDR = averageKDR;
+    oldTotalSurvival = averageSurvival;
+    oldValidPlayers = validPlayers;
+
+    // Animate from previous values
+    animateNumber('totalRaids', totalRaids, 0, previousStats.raids);
+    animateNumber('totalKills', Math.round(totalKills), 0, previousStats.kills);
+    animateNumber('totalDeaths', Math.round(totalDeaths), 0, previousStats.deaths);
+    animateNumber('totalDamage', totalDamage, 0, previousStats.damage);
+    animateNumber('averageKDR', averageKDR, 2, previousStats.kdr);
+    animateNumber('averageSurvival', averageSurvival, 2, previousStats.survival);
 }
 
-
-// Simple number animation (CountUp.js)
-let countTimer = 2;
-function animateNumber(elementId, targetValue, decimals = 0) {
+function animateNumber(elementId, targetValue, decimals = 0, startValue = null) {
     const element = document.getElementById(elementId);
+    if (!element) return;
+
     const suffix = elementId === 'averageSurvival' ? '%' : '';
 
+    // Parse current displayed value
+    let currentDisplayValue = element.textContent;
+
+    // handling for KDR to avoid start from 1000
+    if (elementId === 'averageKDR') {
+        // Try to parse the current value, fallback to startValue or 0
+        let currentValue;
+        try {
+            currentValue = parseFloat(currentDisplayValue);
+            if (isNaN(currentValue)) {
+                currentValue = (startValue !== null) ? startValue : 0;
+            }
+        } catch (e) {
+            currentValue = (startValue !== null) ? startValue : 0;
+        }
+
+        // Ensure we don't start from an unrealistic value
+        if (currentValue > 100 && targetValue < 100) {
+            currentValue = (startValue !== null) ? startValue : targetValue;
+        }
+
+        startValue = currentValue;
+    } else {
+        // standard parsing for other values
+        startValue = (startValue !== null) ? startValue :
+            parseFloat(currentDisplayValue.replace(/[^0-9.-]/g, '')) || 0;
+    }
+
+    // remove the % before parsing (in case)
+    if (suffix === '%') {
+        startValue = parseFloat(currentDisplayValue.replace('%', '')) || 0;
+    }
+
+    // if target is 0 and start is very large, reset start
+    if (targetValue === 0 && startValue > 1000) {
+        startValue = 0;
+    }
+
     const countUp = new CountUp(element, targetValue, {
-        startVal: 0,
-        duration: countTimer += 0.3,
+        startVal: startValue,
+        duration: 5,
         decimalPlaces: decimals,
         separator: ',',
-        suffix: suffix
+        suffix: suffix,
+        useEasing: true,
+        smartEasingThreshold: 2000,
+        smartEasingAmount: 30
     });
 
     if (!countUp.error) {
         countUp.start();
     } else {
         console.error(countUp.error);
+
+        if (decimals > 0) {
+            element.textContent = targetValue.toFixed(decimals) + suffix;
+        } else {
+            element.textContent = Math.round(targetValue) + suffix;
+        }
     }
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initControls();
+
+    // Load previous stats from localStorage if can
+    const savedStats = localStorage.getItem('leaderboardStats');
+    if (savedStats) {
+        try {
+            const stats = JSON.parse(savedStats);
+            oldTotalRaids = stats.raids || 0;
+            oldTotalKills = stats.kills || 0;
+            oldTotalDeaths = stats.deaths || 0;
+            oldTotalDamage = stats.damage || 0;
+            oldTotalKDR = stats.kdr || 0;
+            oldTotalSurvival = stats.survival || 0;
+            oldValidPlayers = stats.players || 0;
+        } catch (e) {
+            console.error('Failed to parse saved stats', e);
+        }
+    }
+});
+
+// Save current stats to localStorage
+function saveCurrentStats() {
+    const stats = {
+        raids: oldTotalRaids,
+        kills: oldTotalKills,
+        deaths: oldTotalDeaths,
+        damage: oldTotalDamage,
+        kdr: oldTotalKDR,
+        survival: oldTotalSurvival,
+        players: oldValidPlayers
+    };
+    localStorage.setItem('leaderboardStats', JSON.stringify(stats));
 }
 
 // Add sort listeners to table headers
@@ -581,7 +786,7 @@ function sortLeaderboard(sortKey) {
     }
 
     const currentData = leaderboardData.length > 0 ? leaderboardData : allSeasonsCombinedData;
-    
+
     currentData.sort((a, b) => {
         let valueA = a[sortKey];
         let valueB = b[sortKey];

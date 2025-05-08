@@ -14,6 +14,7 @@
         <script src="js/searchBar.js"></script>
         <script src="js/profiles.js"></script>
         <script src="js/navbarModals.js"></script>
+        <script src="js/autoRefresh.js"></script>
         <title>SPT Leaderboard</title>
     </head>
 
@@ -227,9 +228,35 @@
                 </div>
             </div></div>
         <p id="status"></p>
-        <div class="search-container">
-            <input type="text" id="playerSearch" placeholder="Find player..." />
-            <button id="clearSearch">Clear</button>
+        <div class="leaderboard-controls">
+            <div class="search-container">
+                <input type="text" id="playerSearch" placeholder="Find player..." />
+                <button id="clearSearch">Clear</button>
+            </div>
+            
+            <div class="controls-toolset">
+                <div class="auto-update-control">
+                    <label>
+                        <input type="checkbox" id="autoUpdateToggle" checked />
+                        Auto-update
+                    </label>
+                    <select id="updateInterval">
+                        <option value="30">Every 30 sec</option>
+                        <option value="60" selected>Every 1 min</option>
+                        <option value="120">Every 2 min</option>
+                        <option value="300">Every 5 min</option>
+                    </select>
+                    <span id="timeToUpdate">Next update in: 60s</span>
+                </div>
+                
+                <button id="manualUpdate" class="button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 4v6h-6M1 20v-6h6"></path>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                    Update Now
+                </button>
+            </div>
         </div>
         <table id="leaderboardTable" class="animate animate__animated animate__fadeIn">
             <thead>

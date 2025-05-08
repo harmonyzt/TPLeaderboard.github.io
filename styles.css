@@ -155,13 +155,73 @@ h1 {
     box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.3);
 }
 
-.search-container {
-    margin: 20px 0;
-    gap: 10px;
-    max-width: 600px;
-    margin-left: 200px;
+.leaderboard-controls {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
+.search-container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.controls-toolset {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0;
+    border-top: 1px solid var(--text-muted);
+}
+
+.auto-update-control {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: var(--text-light);
+}
+
+.auto-update-control label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+#updateInterval {
+    padding: 6px 10px;
+    background-color: var(--bg-dark-secondary);
+    border: 1px solid var(--text-muted);
+    border-radius: 6px;
+    color: var(--text-light);
+}
+
+#timeToUpdate {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+#manualUpdate {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+}
+
+#manualUpdate svg {
+    transition: transform 0.3s ease;
+}
+
+#manualUpdate:active svg {
+    transform: rotate(180deg);
+}
+
+/* Сохраняем ваши существующие стили для search */
 #playerSearch {
     flex-grow: 1;
     padding: 12px 16px;
