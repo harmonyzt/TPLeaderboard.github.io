@@ -7,7 +7,7 @@ let sortDirection = {}; // Sort direction
 let seasons = []; // Storing available seasons
 
 //  https://visuals.nullcore.net/hidden/season
-const seasonPath = "https://visuals.nullcore.net/hidden/season";
+const seasonPath = "season/season";
 const seasonPathEnd = ".json";
 
 // Check if season file exists

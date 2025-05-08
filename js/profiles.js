@@ -289,8 +289,19 @@ function showPublicProfile(container, player) {
         })
         : 'Unknown';
 
+    
+    // Profile Theme
+    const profileModal = document.querySelector('.profile-modal-content');
+    switch(player.profileTheme) {
+        case "Dark":
+            profileModal.style.background = "#121212";
+            break;
+        default:
+            profileModal.style.background = "#1e1e2d";
+    }
+    
     // About me
-    const aboutText = player.profileAboutMe && player.profileAboutMe.length <= 100
+    const aboutText = player.profileAboutMe && player.profileAboutMe.length <= 80
         ? player.profileAboutMe
         : 'Nothing to see here.';
 
@@ -299,6 +310,7 @@ function showPublicProfile(container, player) {
 
     const lastRaidDuration = formatSeconds(player.lastRaidTimeSeconds);
     const lastRaidAgo = formatLastPlayedRaid(player.lastPlayed);
+    const lastAchivementAgo = formatLastPlayedRaid(player.latestAchievementTimestamp);
 
     container.innerHTML = `
     <div class="profile-grid-layout">
@@ -341,22 +353,46 @@ function showPublicProfile(container, player) {
                 player.isTransition ? `<i class='bx bx-loader-alt bx-spin' style='line-height: 0 !important;'></i> In Transit (${player.lastRaidMap} <em class='bx bxs-chevrons-right' style='position: relative; top: 2px;'></em> ${player.lastRaidTransitionTo || 'Unknown'})` : 
                 player.lastRaidSurvived ? `<em class='bx bx-walk'></em> Survived` : `<em class='bx bxs-skull'></em> Killed in Action`}
             </span>
-        <span class="raid-meta">
-            ${player.lastRaidMap || 'Unknown'} • ${player.lastRaidAs || 'N/A'} • ${lastRaidDuration || '00:00'} • ${lastRaidAgo || 'Just Now'}
-        </span>
-        </div>
+            <span class="raid-meta">
+                ${player.lastRaidMap || 'Unknown'} • ${player.lastRaidAs || 'N/A'} • ${lastRaidDuration || '00:00'} • ${lastRaidAgo || 'Just Now'}
+            </span>
+            </div>
         
-        <div class="raid-stats-grid">
+            <div class="raid-stats-grid">
             <div class="raid-stat-block">
-            <span class="profile-stat-label">Kills:</span>
-            <span class="profile-stat-value">${player.lastRaidKills ?? 0}</span>
+                <span class="profile-stat-label">Kills:</span>
+                <span class="profile-stat-value">${player.lastRaidKills ?? 0}</span>
             </div>
             <div class="raid-stat-block">
-            <span class="profile-stat-label">Damage:</span>
-            <span class="profile-stat-value">${player.lastRaidDamage ?? 0}</span>
+                <span class="profile-stat-label">Damage:</span>
+                <span class="profile-stat-value">${player.lastRaidDamage ?? 0}</span>
+            </div>
+            <div class="raid-stat-block">
+                <span class="profile-stat-label">Player Hits:</span>
+                <span class="profile-stat-value">${player.lastRaidHits ?? 0}</span>
+            </div>
+            <div class="raid-stat-block">
+                <span class="profile-stat-label">Looting EXP:</span>
+                <span class="profile-stat-value">${player.lastRaidLootExp ?? 0}</span>
+            </div>
+            </div>
+
+            <!-- Latest Achievement Block -->
+            <div class="stat-block achievement-block">
+                <h3 class="section-title">Latest Achievement</h3>
+                <div class="achievement-content">
+                    <div class="achievement-icon">
+                    <img src="${player.latestAchievementImageUrl || 'media/achievements/Standard_35_1.png'}" alt="Achievement Icon">
+                    <div class="achievement-time">${lastAchivementAgo || 'N/A'}</div>
+                    </div>
+                    <div class="achievement-info">
+                    <div class="achievement-title">${player.latestAchievementName || 'Nothing to see here yet...'}</div>
+                    <div class="achievement-description">${player.latestAchievementDescription || 'Nothing to see here yet...'}</div>
+                    </div>
+                </div>
             </div>
         </div>
-        </div>
+
 
       <div class="stats-blocks">
         <!-- PMC Block -->

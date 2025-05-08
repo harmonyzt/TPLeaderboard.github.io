@@ -1209,7 +1209,7 @@ button:hover,
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background: rgba(40, 40, 55, 0.6);
+    background: rgb(255 255 255 / 4%);
     border-radius: 10px;
     border: 1px solid rgb(255 255 255 / 10%);
     text-align: center;
@@ -1231,7 +1231,7 @@ button:hover,
 }
 
 .stat-block {
-    background: rgba(40, 40, 55, 0.6);
+    background: rgb(255 255 255 / 2%);
     border-radius: 10px;
     padding: 15px;
     border: 1px solid rgb(255 255 255 / 10%);
@@ -1265,7 +1265,7 @@ button:hover,
 }
 
 .raid-stat-block {
-    background: rgba(30, 30, 45, 0.8);
+    background: rgb(255 255 255 / 4%);
     padding: 10px;
     border-radius: 6px;
     text-align: center;
@@ -1294,7 +1294,7 @@ button:hover,
 }
 
 .survived-bg {
-    background: radial-gradient(650px 180px at top left, hsl(178deg 69% 52% / 22%), transparent);
+    background: radial-gradient(650px 240px at top left, hsl(178deg 69% 52% / 22%), #fffdfd03);
 }
 
 /* Died */
@@ -1303,7 +1303,7 @@ button:hover,
 }
 
 .died-bg {
-    background: radial-gradient(650px 180px at top left, hsla(0, 58%, 47%, 0.185), transparent);
+    background: radial-gradient(650px 240px at top left, hsla(0, 58%, 47%, 0.185), #fffdfd03);
 }
 
 /* Transit */
@@ -1312,7 +1312,7 @@ button:hover,
 }
 
 .transit-bg {
-    background: radial-gradient(650px 180px at top left, #f4783025, transparent);
+    background: radial-gradient(650px 240px at top left, #f4783025, #fffdfd03);
 }
 
 /* Disconnected */
@@ -1321,7 +1321,7 @@ button:hover,
 }
 
 .disconnected-bg {
-    background: radial-gradient(650px 180px at top left, hsla(0, 58%, 47%, 0.185), transparent);
+    background: radial-gradient(650px 240px at top left, hsla(0, 58%, 47%, 0.185), #fffdfd03);
 }
 
 @media (max-width: 768px) {
@@ -1388,4 +1388,55 @@ button:hover,
 .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
+}
+
+.achievement-block {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background-color: #ffffff03;
+    border-radius: 10px;
+    margin-top: 70px;
+}
+
+.achievement-content {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.achievement-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.achievement-icon img {
+    width: 64px;
+    height: 70px;
+    border-radius: 8px;
+}
+
+.achievement-time {
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: 0.25rem;
+}
+
+.achievement-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.achievement-title {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.achievement-description {
+    font-size: 0.9rem;
+    color: #ccc;
 }
