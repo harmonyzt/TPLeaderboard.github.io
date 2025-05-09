@@ -501,52 +501,6 @@ function getRankLabel(totalScore) {
     return 'G';
 }
 
-// Calculate overall stats
-// Cookies! :D
-function setCookie(name, value, days = 30) {
-    const date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-    const expires = "expires=" + date.toUTCString();
-    document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
-}
-
-function getCookie(name) {
-    const nameEQ = name + "=";
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1);
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length);
-    }
-    return null;
-}
-
-// Initialize controls from cookies
-function initControlsFromCookies() {
-    // Auto-update toggle
-    const autoUpdateToggle = document.getElementById('autoUpdateToggle');
-    const savedAutoUpdate = getCookie('autoUpdateEnabled');
-    autoUpdateToggle.checked = savedAutoUpdate !== 'false';
-    autoUpdateEnabled = autoUpdateToggle.checked;
-
-
-    const updateIntervalSelect = document.getElementById('updateInterval');
-    const savedInterval = getCookie('updateInterval');
-    if (savedInterval) {
-        updateInterval = parseInt(savedInterval);
-        updateIntervalSelect.value = savedInterval;
-        timeLeft = updateInterval;
-    }
-
-    updateTimeDisplay();
-}
-
-// Save controls to cookies
-function saveControlsToCookies() {
-    setCookie('autoUpdateEnabled', autoUpdateEnabled);
-    setCookie('updateInterval', updateInterval);
-}
-
 // Calculate all stats + dynamic update support
 function calculateOverallStats(data) {
     // Save old values before calculating new ones
