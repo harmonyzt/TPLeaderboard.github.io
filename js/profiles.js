@@ -379,7 +379,7 @@ function showPublicProfile(container, player) {
             </div>
             <div class="raid-stat-block">
                 <span class="profile-stat-label">Looting EXP:</span>
-                <span class="profile-stat-value">${player.lastRaidLootExp ?? 0}</span>
+                <span class="profile-stat-value">${player.lastRaidEXP ?? 0}</span>
             </div>
             </div>
 
