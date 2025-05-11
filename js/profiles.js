@@ -49,6 +49,9 @@ function openProfile(playerId) {
 
 // Private profile HTML
 function showPrivateProfile(container, player) {
+    const profileModal = document.querySelector('.profile-modal-content');
+    profileModal.style.background = "#1e1e2d";
+
     container.innerHTML = `
    <div class="profile-grid-layout banned">
       <!-- Main -->
@@ -162,6 +165,9 @@ function showPrivateProfile(container, player) {
 
 // Disqualified profile HTML
 function showDisqualProfile(container, player) {
+    const profileModal = document.querySelector('.profile-modal-content');
+    profileModal.style.background = "#1e1e2d";
+
     container.innerHTML = `
     <div class="profile-grid-layout banned">
       <!-- Main -->
@@ -295,6 +301,12 @@ function showPublicProfile(container, player) {
     switch (player.profileTheme) {
         case "Darker":
             profileModal.style.background = "#121212";
+            break;
+        case "Light":
+            profileModal.style.background = "rgb(61 87 106)";
+            break;
+        case "Gradient":
+            profileModal.style.background = "linear-gradient(169deg,rgba(62, 150, 141, 1) 0%, rgba(49, 49, 92, 1) 42%, rgba(60, 62, 99, 1) 69%)";
             break;
         default:
             profileModal.style.background = "#1e1e2d";

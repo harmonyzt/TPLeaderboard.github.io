@@ -331,6 +331,12 @@ function displayLeaderboard(data) {
             accountColor = '#787878';
         }
 
+        // Tester overwrite every icon
+        if(player.trusted) {
+            accountIcon = '<img src="media/trusted.png" alt="Tester" class="account-icon">';
+            accountColor = '#ba8bdb';
+        }
+
         // Prestige icon
         const prestigeImg = [1, 2].includes(player.prestige)
             ? `<img src="media/prestige${player.prestige}.png" style="width: 30px; height: 30px" class="prestige-icon" alt="Prestige ${player.prestige}">`
