@@ -573,7 +573,7 @@ function calculateOverallStats(data) {
             }
 
             if(player.totalPlayTime){
-                totalPlayTime = round(Math.floor(player.totalPlayTime / 3600));
+                totalPlayTime = Math.floor(player.totalPlayTime / 3600);
             }
         }
     });
