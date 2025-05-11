@@ -164,8 +164,6 @@ async function loadSeasonData(season) {
             processSeasonData(leaderboardData);
             displayLeaderboard(leaderboardData);
         }
-    } catch (error) {
-        console.error('Error loading season data:', error);
     } finally {
         loadingNotification.style.display = 'none';
     }
