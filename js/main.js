@@ -16,6 +16,7 @@ let oldTotalSurvival = 0;
 let oldValidPlayers = 0;
 let oldTotalPlayers = 0;
 let oldOnlinePlayers = 0;
+let oldTotalPlayTime = 0;
 
 // https://visuals.nullcore.net/hidden/season
 // season/season [DEBUG]
@@ -527,7 +528,8 @@ function calculateOverallStats(data) {
         survival: oldTotalSurvival,
         players: oldValidPlayers,
         totalPlayers: oldTotalPlayers,
-        onlinePlayers: oldOnlinePlayers
+        onlinePlayers: oldOnlinePlayers,
+        totalPlayTime: oldTotalPlayTime
     };
 
     // Reset counters
@@ -539,6 +541,7 @@ function calculateOverallStats(data) {
     let totalSurvival = 0;
     let validPlayers = 0;
     let onlinePlayers = 0;
+    let totalPlayTime = 0;
 
     data.forEach(player => {
         if (!player.disqualified) {
@@ -568,6 +571,10 @@ function calculateOverallStats(data) {
             if (player.isOnline) {
                 onlinePlayers++;
             }
+
+            if(player.totalPlayTime){
+                totalPlayTime = round(Math.floor(player.totalPlayTime / 3600));
+            }
         }
     });
 
@@ -586,6 +593,7 @@ function calculateOverallStats(data) {
     oldValidPlayers = validPlayers;
     oldTotalPlayers = totalPlayers;
     oldOnlinePlayers = onlinePlayers;
+    oldTotalPlayTime = totalPlayTime;
 
     // Animate from previous values
     animateNumber('totalRaids', totalRaids, 0, previousStats.raids);
@@ -596,6 +604,7 @@ function calculateOverallStats(data) {
     animateNumber('averageSurvival', averageSurvival, 2, previousStats.survival);
     animateNumber('totalPlayers', totalPlayers, 0, previousStats.totalPlayers);
     animateNumber('onlinePlayers', onlinePlayers, 0, previousStats.onlinePlayers);
+    animateNumber('totalPlayTime', totalPlayTime, 0, previousStats.totalPlayTime);
 }
 
 function animateNumber(elementId, targetValue, decimals = 0, startValue = null) {
@@ -681,7 +690,8 @@ function saveCurrentStats() {
         survival: oldTotalSurvival,
         players: oldValidPlayers,
         totalPlayers: oldTotalPlayers,
-        onlinePlayers: oldOnlinePlayers
+        onlinePlayers: oldOnlinePlayers,
+        totalPlayTime: oldTotalPlayTime
     };
     localStorage.setItem('leaderboardStats', JSON.stringify(stats));
 }
