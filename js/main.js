@@ -14,6 +14,8 @@ let oldTotalDamage = 0;
 let oldTotalKDR = 0;
 let oldTotalSurvival = 0;
 let oldValidPlayers = 0;
+let oldTotalPlayers = 0;
+let oldOnlinePlayers = 0;
 
 // https://visuals.nullcore.net/hidden/season
 // season/season [DEBUG]
@@ -503,6 +505,12 @@ function getRankLabel(totalScore) {
 
 // Calculate all stats + dynamic update support
 function calculateOverallStats(data) {
+
+    data.forEach(player => {
+        const lastGame = formatLastPlayed(player.lastPlayed);
+        player.isOnline = lastGame === "In game <div id=\"blink\"></div>";
+    });
+
     // Save old values before calculating new ones
     const previousStats = {
         raids: oldTotalRaids,
@@ -511,7 +519,9 @@ function calculateOverallStats(data) {
         damage: oldTotalDamage,
         kdr: oldTotalKDR,
         survival: oldTotalSurvival,
-        players: oldValidPlayers
+        players: oldValidPlayers,
+        totalPlayers: oldTotalPlayers,
+        onlinePlayers: oldOnlinePlayers
     };
 
     // Reset counters
@@ -522,6 +532,7 @@ function calculateOverallStats(data) {
     let totalKDR = 0;
     let totalSurvival = 0;
     let validPlayers = 0;
+    let onlinePlayers = 0;
 
     data.forEach(player => {
         if (!player.disqualified) {
@@ -546,12 +557,18 @@ function calculateOverallStats(data) {
                     totalDamage += parseFloat(player.damage) || 0;
                 }
             }
+
+            // Check if player is online
+            if (player.isOnline) {
+                onlinePlayers++;
+            }
         }
     });
 
     // Calculate averages
     const averageKDR = totalDeaths > 0 ? (totalKills / totalDeaths) : 0;
     const averageSurvival = validPlayers > 0 ? (totalSurvival / validPlayers) : 0;
+    const totalPlayers = data.length;
 
     // Update old values for next animation
     oldTotalRaids = totalRaids;
@@ -561,6 +578,8 @@ function calculateOverallStats(data) {
     oldTotalKDR = averageKDR;
     oldTotalSurvival = averageSurvival;
     oldValidPlayers = validPlayers;
+    oldTotalPlayers = totalPlayers;
+    oldOnlinePlayers = onlinePlayers;
 
     // Animate from previous values
     animateNumber('totalRaids', totalRaids, 0, previousStats.raids);
@@ -569,6 +588,8 @@ function calculateOverallStats(data) {
     animateNumber('totalDamage', totalDamage, 0, previousStats.damage);
     animateNumber('averageKDR', averageKDR, 2, previousStats.kdr);
     animateNumber('averageSurvival', averageSurvival, 2, previousStats.survival);
+    animateNumber('totalPlayers', totalPlayers, 0, previousStats.totalPlayers);
+    animateNumber('onlinePlayers', onlinePlayers, 0, previousStats.onlinePlayers);
 }
 
 function animateNumber(elementId, targetValue, decimals = 0, startValue = null) {
@@ -652,7 +673,9 @@ function saveCurrentStats() {
         damage: oldTotalDamage,
         kdr: oldTotalKDR,
         survival: oldTotalSurvival,
-        players: oldValidPlayers
+        players: oldValidPlayers,
+        totalPlayers: oldTotalPlayers,
+        onlinePlayers: oldOnlinePlayers
     };
     localStorage.setItem('leaderboardStats', JSON.stringify(stats));
 }

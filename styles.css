@@ -496,7 +496,7 @@ button:hover,
     left: 0;
     width: 100%;
     background: rgba(57, 89, 131, 0.205);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(15px);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -506,8 +506,7 @@ button:hover,
     font-family: 'Inter', 'Segoe UI', sans-serif;
     box-sizing: border-box;
     font-size: 0.96rem;
-    color-scheme: dark;
-    min-width: 900px;
+    min-width: 1300px;
 }
 
 .stats-line {
@@ -561,6 +560,37 @@ button:hover,
     color: rgba(100, 255, 218, 0.8);
 }
 
+.player-stats {
+    display: flex;
+    gap: 16px;
+    margin-left: 20px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.player-stats::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 60%;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.player-count strong {
+    color: #ffa64d;
+}
+
+.online-count strong {
+    color: #66ff66;
+}
+
+.stats-item.player-count,
+.stats-item.online-count {
+    background: rgba(255, 255, 255, 0.03);
+}
 /* Modal */
 .modal {
     display: none;
