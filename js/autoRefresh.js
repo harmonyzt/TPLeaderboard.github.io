@@ -42,7 +42,7 @@ function initControls() {
     const autoUpdateToggle = document.getElementById('autoUpdateToggle');
     const manualUpdateBtn = document.getElementById('manualUpdate');
     const timeToUpdateSpan = document.getElementById('timeToUpdate');
-    
+
     autoUpdateToggle.addEventListener('change', (e) => {
         autoUpdateEnabled = e.target.checked;
         if (autoUpdateEnabled) {
@@ -53,7 +53,7 @@ function initControls() {
         }
     });
 
-    
+
     manualUpdateBtn.addEventListener('click', () => {
         detectSeasons();
         if (autoUpdateEnabled) {
@@ -61,23 +61,23 @@ function initControls() {
             updateTimeDisplay();
         }
     });
-    
+
     // start timer
     startUpdateTimer();
-    
+
     function startUpdateTimer() {
         updateTimer = setInterval(() => {
             timeLeft--;
-            
+
             updateTimeDisplay();
-            
+
             if (timeLeft <= 0) {
                 detectSeasons();
                 timeLeft = updateInterval;
             }
         }, 1000);
     }
-    
+
     function updateTimeDisplay() {
         timeToUpdateSpan.textContent = `Next update in: ${timeLeft}s`;
     }

@@ -289,10 +289,10 @@ function showPublicProfile(container, player) {
         })
         : 'Unknown';
 
-    
+
     // Profile Theme
     const profileModal = document.querySelector('.profile-modal-content');
-    switch(player.profileTheme) {
+    switch (player.profileTheme) {
         case "Darker":
             profileModal.style.background = "#121212";
             break;
@@ -311,9 +311,9 @@ function showPublicProfile(container, player) {
     const lastRaidDuration = formatSeconds(player.lastRaidTimeSeconds);
     const lastRaidAgo = formatLastPlayedRaid(player.lastPlayed);
     const lastAchivementAgo = formatLastPlayedRaid(player.latestAchievementTimestamp);
-    
+
     let lastAchievementIconResult = '';
-    if(player.latestAchievementImageUrl) {
+    if (player.latestAchievementImageUrl) {
         let lastAchievementIcon = player.latestAchievementImageUrl
         lastAchievementIconResult = lastAchievementIcon.slice(1)
     }
@@ -339,24 +339,24 @@ function showPublicProfile(container, player) {
 
       <!-- Last Raid -->
         <div class="last-raid-feed 
-            ${player.discFromRaid ? 'disconnected-bg' : 
-            player.isTransition ? 'transit-bg' : 
-            player.lastRaidSurvived ? 'survived-bg' : 'died-bg'}">
+            ${player.discFromRaid ? 'disconnected-bg' :
+            player.isTransition ? 'transit-bg' :
+                player.lastRaidSurvived ? 'survived-bg' : 'died-bg'}">
 
             <h3 class="section-title 
-                ${player.discFromRaid ? 'disconnected' : 
-                player.isTransition ? 'transit' : 
+                ${player.discFromRaid ? 'disconnected' :
+            player.isTransition ? 'transit' :
                 player.lastRaidSurvived ? 'survived' : 'died'}">
                 Last Raid
             </h3>
 
         <div class="raid-overview">
             <span class="raid-result 
-                ${player.discFromRaid ? 'disconnected' : 
-                player.isTransition ? 'transit' : 
+                ${player.discFromRaid ? 'disconnected' :
+            player.isTransition ? 'transit' :
                 player.lastRaidSurvived ? 'survived' : 'died'}">
-                ${player.discFromRaid ? `<em class='bx bxs-log-out'></em> Left` : 
-                player.isTransition ? `<i class='bx bx-loader-alt bx-spin' style='line-height: 0 !important;'></i> In Transit (${player.lastRaidMap} <em class='bx bxs-chevrons-right' style='position: relative; top: 2px;'></em> ${player.lastRaidTransitionTo || 'Unknown'})` : 
+                ${player.discFromRaid ? `<em class='bx bxs-log-out'></em> Left` :
+            player.isTransition ? `<i class='bx bx-loader-alt bx-spin' style='line-height: 0 !important;'></i> In Transit (${player.lastRaidMap} <em class='bx bxs-chevrons-right' style='position: relative; top: 2px;'></em> ${player.lastRaidTransitionTo || 'Unknown'})` :
                 player.lastRaidSurvived ? `<em class='bx bx-walk'></em> Survived` : `<em class='bx bxs-skull'></em> Killed in Action`}
             </span>
             <span class="raid-meta">
@@ -453,21 +453,21 @@ function generateBadgesHTML(player) {
 
     const playerData = allSeasonsCombinedData.find(p => p.id === player.id || p.name === player.name);
 
-    if(playerData && playerData.seasonsCount > 1) {
+    if (playerData && playerData.seasonsCount > 1) {
         badges += `<div class="badge tooltip">
         <em class='bx bxs-joystick'></em>
         <span class="tooltiptext">This player has been around for ${playerData.seasonsCount} seasons!</span>
       </div>`;
     }
 
-    if(player?.trusted == true){
+    if (player?.trusted == true) {
         badges += `<div class="badge tooltip">
         <img src="media/trusted.png" width="30" height="30" alt="Trusted">
         <span class="tooltiptext">Official Tester</span>
       </div>`;
     }
 
-    if(player?.suspicious == true){
+    if (player?.suspicious == true) {
         badges += `<div class="badge tooltip">
         <em class='bx bxs-shield-x bx-flashing' style="color:rgb(255, 123, 100);"></em>
         <span class="tooltiptext">This player was marked as suspicious by SkillIssueDetector™. Their statistics may be innacurate</span>

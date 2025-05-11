@@ -591,6 +591,7 @@ button:hover,
 .stats-item.online-count {
     background: rgba(255, 255, 255, 0.03);
 }
+
 /* Modal */
 .modal {
     display: none;
