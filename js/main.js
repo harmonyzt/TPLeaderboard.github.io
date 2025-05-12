@@ -338,7 +338,7 @@ function displayLeaderboard(data) {
 
         // Developer
         if(player.dev) {
-            accountIcon = `<em class='bx bxl-dev-to' style="font-size: 22px"></em>`;
+            accountIcon = `<em class='bx bxl-dev-to' style="font-size: 26px; top: 4px; position: relative;"></em>`;
             accountColor = '#db6096';
         }
 
