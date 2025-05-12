@@ -8,10 +8,10 @@
 }
 
 .prestige-title {
-    background: linear-gradient(135deg, #959289, #525658, #d6dad4, #f0d78e, #525658, #d6dad4),
-                linear-gradient(135deg, #959289, #525658, #d6dad4, #f0d78e, #525658, #d6dad4),
-                linear-gradient(135deg, #959289, #525658, #d6dad4, #f0d78e, #525658, #d6dad4),
-                linear-gradient(135deg, #959289, #525658, #d6dad4, #f0d78e, #525658, #d6dad4);
+    background: linear-gradient(135deg, #aee8ff, #f0d78e, #f0d78e, #aee8ff),
+                linear-gradient(135deg, #aee8ff, #f0d78e, #f0d78e, #aee8ff),
+                linear-gradient(135deg, #aee8ff, #f0d78e, #f0d78e, #aee8ff),
+                linear-gradient(135deg, #aee8ff, #f0d78e, #f0d78e, #aee8ff);
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
