@@ -47,9 +47,11 @@ Navigate to the BACKEND folder and configure which JSON file stores stats
 (Recommended to use `season` in both scenarios. The season system on frontend adds the number automatically.)
 
 Go to the js folder and open main.js. At the top:
+
 `const seasonPath = "https://your.domain.com/backend/season";`
 
 `const seasonPathEnd = ".json";`
+
 Update the URL (seasonPath) to match your own hosted path.
 
 ⚠️ AGAIN - Do not include a season number - the system adds that automatically when reading through files (FRONTEND).
