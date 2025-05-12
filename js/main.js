@@ -330,10 +330,16 @@ function displayLeaderboard(data) {
             accountColor = '#787878';
         }
 
-        // Tester overwrite every icon
+        // Tester overwrite every icon and color text on top
         if(player.trusted) {
             accountIcon = '<img src="media/trusted.png" alt="Tester" class="account-icon">';
             accountColor = '#ba8bdb';
+        }
+
+        // Developer
+        if(player.dev) {
+            accountIcon = `<em class='bx bxl-dev-to'></em>`;
+            accountColor = '#FF6347';
         }
 
         // Prestige icon
@@ -571,7 +577,7 @@ function calculateOverallStats(data) {
             }
 
             if(player.totalPlayTime){
-                totalPlayTime = Math.floor(player.totalPlayTime / 3600);
+                totalPlayTime += Math.floor(player.totalPlayTime / 3600);
             }
         }
     });
