@@ -338,8 +338,8 @@ function displayLeaderboard(data) {
 
         // Developer
         if(player.dev) {
-            accountIcon = `<em class='bx bxl-dev-to'></em>`;
-            accountColor = '#FF6347';
+            accountIcon = `<em class='bx bxl-dev-to' style="font-size: 20px">></em>`;
+            accountColor = '#db6096';
         }
 
         // Prestige icon
