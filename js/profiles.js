@@ -332,7 +332,7 @@ function showPublicProfile(container, player) {
 
     // If user has usePrestigeStyling and prestige unlocked, assign a color name
     let profileClassStyle = ''
-    if(player.prestige && player.usePrestigeStyling){
+    if (player.prestige && player.usePrestigeStyling) {
         profileClassStyle = 'prestige-title';
     }
 

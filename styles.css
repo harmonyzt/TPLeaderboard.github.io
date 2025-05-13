@@ -9,9 +9,9 @@
 
 .prestige-title {
     background: linear-gradient(135deg, #aee8ff, #f0d78e, #f0d78e, #aee8ff),
-                linear-gradient(135deg, #aee8ff, #f0d78e, #f0d78e, #aee8ff),
-                linear-gradient(135deg, #aee8ff, #f0d78e, #f0d78e, #aee8ff),
-                linear-gradient(135deg, #aee8ff, #f0d78e, #f0d78e, #aee8ff);
+        linear-gradient(135deg, #aee8ff, #f0d78e, #f0d78e, #aee8ff),
+        linear-gradient(135deg, #aee8ff, #f0d78e, #f0d78e, #aee8ff),
+        linear-gradient(135deg, #aee8ff, #f0d78e, #f0d78e, #aee8ff);
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
@@ -510,7 +510,7 @@ button:hover,
     font-family: 'Inter', 'Segoe UI', sans-serif;
     box-sizing: border-box;
     font-size: 0.96rem;
-    min-width: 1320px;
+    min-width: 1430px;
 }
 
 .stats-line {
@@ -594,6 +594,45 @@ button:hover,
 .stats-item.player-count,
 .stats-item.online-count {
     background: rgba(255, 255, 255, 0.03);
+}
+
+#serverStatus {
+    font-weight: 600;
+    margin-left: 20px;
+    padding: 6px 16px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+#serverStatus::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+    background-color: currentColor;
+    vertical-align: middle;
+}
+
+@keyframes pulse-server {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}
+
+.server-online {
+    animation: pulse-server 2s infinite;
 }
 
 /* Modal */
@@ -1504,8 +1543,8 @@ button:hover,
 }
 
 .achievement-icon img {
-    width: 64px;
-    height: 70px;
+    width: 70px;
+    height: 75px;
     border-radius: 8px;
 }
 
