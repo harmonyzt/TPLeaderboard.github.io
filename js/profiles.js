@@ -467,7 +467,7 @@ function showPublicProfile(container, player) {
         </div>
       </div>
     <div id="player-profile-hof">
-        hello!gergergegegergergregre
+        Error.
       </div>
     </div>
     `;
