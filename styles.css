@@ -614,21 +614,7 @@ button:hover,
     border-radius: 50%;
     margin-right: 8px;
     vertical-align: middle;
-    animation: pulse-server 2s infinite;
-}
-
-@keyframes pulse-server {
-    0% {
-        opacity: 0.6;
-    }
-
-    50% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0.6;
-    }
+    animation: blink 2s infinite;
 }
 
 /* If server is online */
@@ -638,6 +624,24 @@ button:hover,
 
 #serverStatus.server-online::before {
     background-color:#6fdf60;
+}
+
+/* If server is offline */
+#serverStatus.server-offline {
+    color:#ff6a6a;
+}
+
+#serverStatus.server-offline::before {
+    background-color:#ff6a6a;
+}
+
+/* If server is under maintenance */
+#serverStatus.server-maintenance {
+    color:#F47730;
+}
+
+#serverStatus.server-maintenance::before {
+    background-color:#F47730;
 }
 
 .server-tooltip {
