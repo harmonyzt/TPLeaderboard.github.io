@@ -1,6 +1,6 @@
 async function getServerStatus() {
     try {
-        const response = await fetch('online.json');
+        const response = await fetch('https://visuals.nullcore.net/hidden/online.json');
         if (!response.ok) throw new Error('Server not responding');
         return await response.json();
     } catch (error) {
