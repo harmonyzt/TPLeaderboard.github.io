@@ -1,3 +1,5 @@
+openedPlayerData = [];
+
 function openProfile(playerId) {
     const modal = document.getElementById('playerProfileModal');
     const modalContent = document.getElementById('modalPlayerInfo');
@@ -43,6 +45,7 @@ function openProfile(playerId) {
 
     // Showing public profile
     showPublicProfile(modalContent, player);
+    openedPlayerData = player;
     modal.style.display = 'flex';
     setupModalCloseHandlers(modal);
 }
@@ -295,7 +298,6 @@ function showPublicProfile(container, player) {
         })
         : 'Unknown';
 
-
     // Profile Theme
     const profileModal = document.querySelector('.profile-modal-content');
     switch (player.profileTheme) {
@@ -340,6 +342,9 @@ function showPublicProfile(container, player) {
     <div class="profile-grid-layout">
       <!-- Main -->
       <div class="profile-main-card">
+        <div class="hall-of-fame-button-container">
+            <button class="hall-of-fame-button" id="toggle-hof-button">Hall of Fame</button>
+        </div>
         <img src="${player.profilePicture}" class="player-avatar" alt="${player.name}">
         <div class="player-status">
           <div class="status-indicator ${player.isOnline ? 'status-online' : 'status-offline'}"></div>
@@ -359,7 +364,7 @@ function showPublicProfile(container, player) {
         <div class="last-raid-feed 
             ${player.discFromRaid ? 'disconnected-bg' :
             player.isTransition ? 'transit-bg' :
-                player.lastRaidSurvived ? 'survived-bg' : 'died-bg'}">
+                player.lastRaidSurvived ? 'survived-bg' : 'died-bg'}" id="last-raid-feed">
 
             <h3 class="section-title 
                 ${player.discFromRaid ? 'disconnected' :
@@ -418,7 +423,7 @@ function showPublicProfile(container, player) {
         </div>
 
 
-      <div class="stats-blocks">
+      <div class="stats-blocks" id="raid-stats-grid">
         <!-- PMC Block -->
         <div class="stat-block pmc-block">
           <h3 class="section-title">PMC</h3>
@@ -461,8 +466,14 @@ function showPublicProfile(container, player) {
           </div>
         </div>
       </div>
+    <div id="player-profile-hof">
+        hello!gergergegegergergregre
+      </div>
     </div>
     `;
+
+    // Init hall of fame button once the thing has opened
+    initHOF(player);
 }
 
 // Helper function to generate badges HTML
