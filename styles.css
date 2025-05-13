@@ -459,6 +459,7 @@ button:hover,
     background: linear-gradient(170deg, #a1fffa, #80bbff, #a1e1ff);
     background-clip: border-box;
     background-size: 300% auto;
+    background-position: 0% 50%;
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
     animation: silveranim 4s ease-in-out infinite;
