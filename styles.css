@@ -631,7 +631,7 @@ button:hover,
     }
 }
 
-.server-online {
+#serverStatus::before.server-online {
     color:#6fdf60;
 }
 
