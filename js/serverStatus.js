@@ -1,32 +1,66 @@
-async function checkServerStatus() {
+async function getServerStatus() {
     try {
-        const response = await fetch('https://visuals.nullcore.net/hidden/online.json');
-        if (response.ok) {
-            return true;
-        }
-        return false;
+        const response = await fetch('online.json');
+        if (!response.ok) throw new Error('Server not responding');
+        return await response.json();
     } catch (error) {
-        return false;
+        return {
+            online: false,
+            underWork: false,
+            workText: "Failed to connect to server. Check your connection!"
+        };
     }
 }
 
 async function updateServerStatus() {
-    const isOnline = await checkServerStatus();
+    const status = await getServerStatus();
     const statusElement = document.getElementById('serverStatus');
-
-    if (isOnline) {
+    
+    statusElement.className = 'live-data-label server-status';
+    statusElement.removeAttribute('data-tooltip');
+    
+    if (status.underWork) {
+        statusElement.textContent = 'Server Maintenance';
+        statusElement.classList.add('server-maintenance');
+        if (status.workText) {
+            statusElement.setAttribute('data-tooltip', status.workText);
+        }
+    } else if (status.online) {
         statusElement.textContent = 'Server Online';
-        statusElement.style.color = '#66ff66';
-        statusElement.style.textShadow = '0 0 3px #6affa3';
+        statusElement.classList.add('server-online');
     } else {
         statusElement.textContent = 'Server Offline';
-        statusElement.style.color = '#ff6666';
-        statusElement.style.textShadow = '0 0 3px #ff6a6a';
+        statusElement.classList.add('server-offline');
+        if (status.workText) {
+            statusElement.setAttribute('data-tooltip', status.workText);
+        }
     }
 }
 
-// 30 sec update
-updateServerStatus();
-setInterval(updateServerStatus, 30000);
+document.addEventListener('DOMContentLoaded', () => {
+    updateServerStatus();
+    setInterval(updateServerStatus, 30000);
+    
+    const statusElement = document.getElementById('serverStatus');
+    statusElement.addEventListener('mouseenter', showTooltip);
+    statusElement.addEventListener('mouseleave', hideTooltip);
+});
 
-document.getElementById('serverStatus').style.transition = 'all 0.3s ease';
+function showTooltip(e) {
+    if (!this.hasAttribute('data-tooltip')) return;
+    
+    const tooltip = document.createElement('div');
+    tooltip.className = 'server-tooltip';
+    tooltip.textContent = this.getAttribute('data-tooltip');
+    
+    document.body.appendChild(tooltip);
+    
+    const rect = this.getBoundingClientRect();
+    tooltip.style.left = `${rect.left + rect.width/2 - tooltip.offsetWidth/2}px`;
+    tooltip.style.top = `${rect.bottom + 5}px`;
+}
+
+function hideTooltip() {
+    const tooltip = document.querySelector('.server-tooltip');
+    if (tooltip) tooltip.remove();
+}
