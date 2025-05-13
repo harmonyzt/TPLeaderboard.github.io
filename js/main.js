@@ -141,11 +141,9 @@ function populateSeasonDropdown() {
 
 // Load data for a specific season
 async function loadSeasonData(season) {
-    const loadingNotification = document.getElementById('loadingNotification');
     const emptyLeaderboardNotification = document.getElementById('emptyLeaderboardNotification');
 
     emptyLeaderboardNotification.style.display = 'none';
-    loadingNotification.style.display = 'block';
 
     try {
         const response = await fetch(`${seasonPath}${season}${seasonPathEnd}`);
@@ -165,7 +163,7 @@ async function loadSeasonData(season) {
             displayLeaderboard(leaderboardData);
         }
     } finally {
-        loadingNotification.style.display = 'none';
+        // Nothing
     }
 }
 
