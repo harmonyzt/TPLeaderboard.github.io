@@ -633,6 +633,7 @@ button:hover,
 
 .server-online {
     animation: pulse-server 2s infinite;
+    color:#6fdf60;
 }
 
 .server-tooltip {
