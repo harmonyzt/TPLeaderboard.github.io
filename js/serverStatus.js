@@ -17,11 +17,11 @@ async function updateServerStatus() {
     if (isOnline) {
         statusElement.textContent = 'Server Online';
         statusElement.style.color = '#66ff66';
-        statusElement.style.textShadow = '0 0 8px #6affa3';
+        statusElement.style.textShadow = '0 0 3px #6affa3';
     } else {
         statusElement.textContent = 'Server Offline';
         statusElement.style.color = '#ff6666';
-        statusElement.style.textShadow = '0 0 8px #ff6a6a';
+        statusElement.style.textShadow = '0 0 3px #ff6a6a';
     }
 }
 
