@@ -608,7 +608,7 @@ button:hover,
 #serverStatus::before {
     content: "";
     display: inline-block;
-    color: #8f8f8f;
+    background-color: #8f8f8f;
     width: 8px;
     height: 8px;
     border-radius: 50%;
@@ -631,8 +631,13 @@ button:hover,
     }
 }
 
-#serverStatus.server-online::before {
+/* If server is online */
+#serverStatus.server-online {
     color:#6fdf60;
+}
+
+#serverStatus.server-online::before {
+    background-color:#6fdf60;
 }
 
 .server-tooltip {
