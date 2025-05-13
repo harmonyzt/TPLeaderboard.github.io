@@ -225,7 +225,6 @@ h1 {
     transform: rotate(180deg);
 }
 
-/* Сохраняем ваши существующие стили для search */
 #playerSearch {
     flex-grow: 1;
     padding: 12px 16px;
@@ -457,7 +456,7 @@ button:hover,
 
 .silver-name {
     font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(170deg, #a1fffa, #b1d5ff, #74d3ff);
+    background: linear-gradient(170deg, #a1fffa, #80bbff, #a1e1ff);
     background-clip: border-box;
     background-size: 300% auto;
     -webkit-text-fill-color: transparent;
@@ -510,7 +509,7 @@ button:hover,
     font-family: 'Inter', 'Segoe UI', sans-serif;
     box-sizing: border-box;
     font-size: 0.96rem;
-    min-width: 1430px;
+    min-width: 1500px;
 }
 
 .stats-line {
@@ -613,8 +612,8 @@ button:hover,
     height: 8px;
     border-radius: 50%;
     margin-right: 8px;
-    background-color: currentColor;
     vertical-align: middle;
+    animation: pulse-server 2s infinite;
 }
 
 @keyframes pulse-server {
@@ -632,7 +631,6 @@ button:hover,
 }
 
 .server-online {
-    animation: pulse-server 2s infinite;
     color:#6fdf60;
 }
 
@@ -662,11 +660,6 @@ button:hover,
     border-width: 0 5px 5px;
     border-style: solid;
     border-color: transparent transparent rgba(70, 70, 90, 0.7);
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 [data-tooltip] {
