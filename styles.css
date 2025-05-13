@@ -520,6 +520,8 @@ button:hover,
     justify-content: center;
     flex-wrap: wrap;
     flex-grow: 1;
+    /* temporary solution to stats not being centered */
+    margin-left: 150px;
 }
 
 .stats-item {
