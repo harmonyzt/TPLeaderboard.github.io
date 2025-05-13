@@ -608,7 +608,7 @@ button:hover,
 #serverStatus::before {
     content: "";
     display: inline-block;
-    background-color: #8f8f8f;
+    color: #8f8f8f;
     width: 8px;
     height: 8px;
     border-radius: 50%;
