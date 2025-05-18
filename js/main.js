@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', detectSeasons);
 
 let leaderboardData = []; // For keeping current season data
+let oldLeaderboardData = []; // For keeping current season data
 let allSeasonsCombinedData = []; // For keeping combined data from all seasons
 let sortDirection = {}; // Sort direction
 let seasons = []; // Storing available seasons
@@ -20,7 +21,7 @@ let oldTotalPlayTime = 0;
 
 // https://visuals.nullcore.net/hidden/season
 // season/season [DEBUG]
-const seasonPath = "https://visuals.nullcore.net/hidden/season";
+const seasonPath = "season/season";
 const seasonPathEnd = ".json";
 
 // Check if season file exists
@@ -53,7 +54,7 @@ async function detectSeasons() {
     //}
 
     // Load the latest season data by default
-    if (seasons.length > 0) {
+    if (seasons.length > 0 && leaderboardData !== oldLeaderboardData) {
         loadAllSeasonsData();
         loadSeasonData(seasons[0]);
         saveCurrentStats();
@@ -163,7 +164,7 @@ async function loadSeasonData(season) {
             displayLeaderboard(leaderboardData);
         }
     } finally {
-        // Nothing
+        oldLeaderboardData = leaderboardData;
     }
 }
 
@@ -329,13 +330,13 @@ function displayLeaderboard(data) {
         }
 
         // Tester overwrite every icon and color text on top
-        if(player.trusted) {
+        if (player.trusted) {
             accountIcon = '<img src="media/trusted.png" alt="Tester" class="account-icon">';
             accountColor = '#ba8bdb';
         }
 
         // Developer
-        if(player.dev) {
+        if (player.dev) {
             accountIcon = `<em class='bx bxl-dev-to' style="font-size: 26px; top: 4px; position: relative;"></em>`;
             accountColor = '#db6096';
         }
@@ -514,7 +515,6 @@ function getRankLabel(totalScore) {
 
 // Calculate all stats + dynamic update support
 function calculateOverallStats(data) {
-
     data.forEach(player => {
         const lastGame = formatLastPlayed(player.lastPlayed);
         player.isOnline = lastGame === "In game <div id=\"blink\"></div>";
@@ -574,8 +574,8 @@ function calculateOverallStats(data) {
                 onlinePlayers++;
             }
 
-            if(player.totalPlayTime){
-                totalPlayTime += Math.floor(player.totalPlayTime / 60);
+            if (player.totalPlayTime) {
+                totalPlayTime += Math.floor(player.totalPlayTime / 3600);
             }
         }
     });

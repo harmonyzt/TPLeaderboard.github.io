@@ -7,7 +7,7 @@ async function getServerStatus() {
         return {
             online: false,
             underWork: false,
-            workText: "Failed to connect to server. Check your connection!"
+            workText: "Failed to connect."
         };
     }
 }
@@ -15,10 +15,10 @@ async function getServerStatus() {
 async function updateServerStatus() {
     const status = await getServerStatus();
     const statusElement = document.getElementById('serverStatus');
-    
+
     statusElement.className = 'live-data-label server-status';
     statusElement.removeAttribute('data-tooltip');
-    
+
     if (status.underWork) {
         statusElement.textContent = 'Server Maintenance';
         statusElement.classList.add('server-maintenance');
@@ -40,7 +40,7 @@ async function updateServerStatus() {
 document.addEventListener('DOMContentLoaded', () => {
     updateServerStatus();
     setInterval(updateServerStatus, 30000);
-    
+
     const statusElement = document.getElementById('serverStatus');
     statusElement.addEventListener('mouseenter', showTooltip);
     statusElement.addEventListener('mouseleave', hideTooltip);
@@ -48,15 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function showTooltip(e) {
     if (!this.hasAttribute('data-tooltip')) return;
-    
+
     const tooltip = document.createElement('div');
     tooltip.className = 'server-tooltip';
     tooltip.textContent = this.getAttribute('data-tooltip');
-    
+
     document.body.appendChild(tooltip);
-    
+
     const rect = this.getBoundingClientRect();
-    tooltip.style.left = `${rect.left + rect.width/2 - tooltip.offsetWidth/2}px`;
+    tooltip.style.left = `${rect.left + rect.width / 2 - tooltip.offsetWidth / 2}px`;
     tooltip.style.top = `${rect.bottom + 5}px`;
 }
 

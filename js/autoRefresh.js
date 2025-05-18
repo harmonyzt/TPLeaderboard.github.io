@@ -1,4 +1,4 @@
-let updateInterval = 5; // seconds
+let updateInterval = 3; // seconds
 let timeLeft = updateInterval;
 let autoUpdateEnabled = true;
 let updateTimer;
@@ -67,9 +67,8 @@ function initControls() {
 
     function startUpdateTimer() {
         updateTimer = setInterval(() => {
-            timeLeft--;
-
             updateTimeDisplay();
+            timeLeft--;
 
             if (timeLeft <= 0) {
                 detectSeasons();

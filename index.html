@@ -11,6 +11,7 @@
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="https://github.hubspot.com/odometer/themes/odometer-theme-default.css" />
         <script src="js/main.js"></script>
+        <script src="js/announcement.js"></script>
         <script src="js/searchBar.js"></script>
         <script src="js/profiles.js"></script>
         <script src="js/hallOfFame.js"></script>
@@ -134,16 +135,15 @@
                 <p><em>Last updated: May 8, 2025</em></p>
             </div>
         </div>
-        <!--
-        <div id="updateAnnouncement" class="animate animate__animated animate__fadeIn">
-            <button id="closeAnnouncement" class="close-btn">×</button>
-            <h2>Season 2 is coming to an end</h2>
-            <p>As of right now, the SPT Leaderboard mod and its backend is getting actively updated.</p>
-                <p>Season 2 will be immortalized forever, our winners chosen, code polished, and new season started.</p>
-            <p>Almost there. Just around the corner.</p>
-            <div class="update-signature">— Developer</div>
+
+        <div class="leaderboard-notification">
+            <div class="notification-content">
+                <p><img src="media/loading_bar.gif" width="20px" height="20px" style="position: relative; top: 5px;"> Hold on tight! We're working on a v2.2.0 update!</p>
+                <p>The release will be published on official SPT Hub - as for now, give it some rest!</p>
+            </div>
+            <button class="close-notification" aria-label="Close notification">&times;</button>
         </div>
-        -->
+
         <div class="top-stats-bar">
             <div class="live-data-label" id="serverStatus">Server Online</div>
             <div class="stats-line">
@@ -231,7 +231,9 @@
             <div id="emptyLeaderboardNotification" class="animate animate__animated animate__fadeInUp" style="display: none;">Whoops! Looks like leaderboard is empty. Be the first one to submit your stats!</div>
         </div>
         <div id="playerProfileModal" class="profile-modal">
-            <div class="profile-modal-overlay"></div>
+            <div class="profile-modal-overlay">
+            <!-- Here goes anything -->
+            </div>
             <div class="profile-modal-container">
                 <span class="profile-close-btn">&times;</span>
                 <div id="modalPlayerInfo" class="profile-modal-content"></div>

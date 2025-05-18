@@ -302,7 +302,7 @@ function showPublicProfile(container, player) {
     const profileModal = document.querySelector('.profile-modal-content');
     switch (player.profileTheme) {
         case "Darker":
-            profileModal.style.background = "#121212";
+            profileModal.style.background = "rgb(10 10 10)";
             break;
         case "Light":
             profileModal.style.background = "rgb(61 87 106)";
@@ -339,55 +339,45 @@ function showPublicProfile(container, player) {
     }
 
     container.innerHTML = `
-    <div class="profile-grid-layout">
-      <!-- Main -->
-      <div class="profile-main-card">
-        <div class="hall-of-fame-button-container">
-            <button class="hall-of-fame-button" id="toggle-hof-button">Hall of Fame</button>
-        </div>
-        <img src="${player.profilePicture}" class="player-avatar" alt="${player.name}">
+<div class="profile-grid-layout" id="profile-main-grid">
+    <!-- Main -->
+    <div class="profile-main-card">
+        <img src="${player.profilePicture}" class="player-avatar" alt="${player.name}" onerror="this.src='/media/default_avatar.png';" />
         <div class="player-status">
-          <div class="status-indicator ${player.isOnline ? 'status-online' : 'status-offline'}"></div>
-          <span>${player.isOnline ? 'Online' : 'Offline'}</span>
+            <div class="status-indicator ${player.isOnline ? 'status-online' : 'status-offline'}"></div>
+            <span>${player.isOnline ? 'Online' : 'Offline'}</span>
         </div>
         <h2 class="profile-player-name ${profileClassStyle}">${player.name}</h2>
-          <div class="player-about">${aboutText}</div>
+        <div class="player-about">${aboutText}</div>
         <div class="player-reg-date">
-          <span class="reg-date-text">Registered: ${regDate}</span>
+            <span class="reg-date-text">Registered: ${regDate}</span>
         </div>
         <div class="badges-container">
-          ${badgesHTML}
+            ${badgesHTML}
         </div>
-      </div>
+        <div class="hall-of-fame-button-container">
+            <button class="hall-of-fame-button" id="toggle-hof-button">Profile Battlepass</button>
+        </div>
+    </div>
 
-      <!-- Last Raid -->
-        <div class="last-raid-feed 
-            ${player.discFromRaid ? 'disconnected-bg' :
-            player.isTransition ? 'transit-bg' :
-                player.lastRaidSurvived ? 'survived-bg' : 'died-bg'}" id="last-raid-feed">
-
-            <h3 class="section-title 
-                ${player.discFromRaid ? 'disconnected' :
-            player.isTransition ? 'transit' :
-                player.lastRaidSurvived ? 'survived' : 'died'}">
-                Last Raid
-            </h3>
+    <!-- Last Raid -->
+    <div class="last-raid-feed ${player.discFromRaid ? 'disconnected-bg' : player.isTransition ? 'transit-bg' : player.lastRaidSurvived ? 'survived-bg' : 'died-bg'}" id="last-raid-feed">
+        <h3 class="section-title ${player.discFromRaid ? 'disconnected' : player.isTransition ? 'transit' : player.lastRaidSurvived ? 'survived' : 'died'}">
+            Last Raid
+        </h3>
 
         <div class="raid-overview">
-            <span class="raid-result 
-                ${player.discFromRaid ? 'disconnected' :
-            player.isTransition ? 'transit' :
-                player.lastRaidSurvived ? 'survived' : 'died'}">
-                ${player.discFromRaid ? `<em class='bx bxs-log-out'></em> Left` :
-            player.isTransition ? `<i class='bx bx-loader-alt bx-spin' style='line-height: 0 !important;'></i> In Transit (${player.lastRaidMap} <em class='bx bxs-chevrons-right' style='position: relative; top: 2px;'></em> ${player.lastRaidTransitionTo || 'Unknown'})` :
-                player.lastRaidSurvived ? `<em class='bx bx-walk'></em> Survived` : `<em class='bx bxs-skull'></em> Killed in Action`}
+            <span class="raid-result ${player.discFromRaid ? 'disconnected' : player.isTransition ? 'transit' : player.lastRaidSurvived ? 'survived' : 'died'}">
+                ${player.discFromRaid ? `<em class="bx bxs-log-out"></em> Left` : player.isTransition ? `<i class="bx bx-loader-alt bx-spin" style="line-height: 0 !important;"></i> In Transit (${player.lastRaidMap}
+                <em class="bx bxs-chevrons-right" style="position: relative; top: 2px;"></em> ${player.lastRaidTransitionTo || 'Unknown'})` : player.lastRaidSurvived ? `<em class="bx bx-walk"></em> Survived` : `
+                <em class="bx bxs-skull"></em> Killed in Action`}
             </span>
             <span class="raid-meta">
                 ${player.lastRaidMap || 'Unknown'} • ${player.lastRaidAs || 'N/A'} • ${lastRaidDuration || '00:00'} • ${lastRaidAgo || 'Just Now'}
             </span>
-            </div>
-        
-            <div class="raid-stats-grid">
+        </div>
+
+        <div class="raid-stats-grid">
             <div class="raid-stat-block">
                 <span class="profile-stat-label">Kills:</span>
                 <span class="profile-stat-value">${player.lastRaidKills ?? 0}</span>
@@ -404,76 +394,173 @@ function showPublicProfile(container, player) {
                 <span class="profile-stat-label">Looting EXP:</span>
                 <span class="profile-stat-value">${player.lastRaidEXP ?? 0}</span>
             </div>
-            </div>
+        </div>
 
-            <!-- Latest Achievement Block -->
-            <div class="stat-block achievement-block">
-                <h3 class="section-title">Latest Achievement</h3>
-                <div class="achievement-content">
-                    <div class="achievement-icon">
-                    <img src="${lastAchievementIconResult || 'files/achievement/Standard_35_1.png'}" alt="Achievement Icon">
+        <!-- Latest Achievement Block -->
+        <div class="stat-block achievement-block">
+            <h3 class="section-title">Latest Achievement</h3>
+            <div class="achievement-content">
+                <div class="achievement-icon">
+                    <img src="${lastAchievementIconResult || 'files/achievement/Standard_35_1.png'}" alt="Achievement Icon" />
                     <div class="achievement-time">${lastAchivementAgo || 'N/A'}</div>
-                    </div>
-                    <div class="achievement-info">
+                </div>
+                <div class="achievement-info">
                     <div class="achievement-title">${player.latestAchievementName || 'Nothing to see here yet...'}</div>
                     <div class="achievement-description">${player.latestAchievementDescription || 'Nothing to see here yet...'}</div>
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-
-      <div class="stats-blocks" id="raid-stats-grid">
+    <div class="stats-blocks" id="raid-stats-grid">
         <!-- PMC Block -->
         <div class="stat-block pmc-block">
-          <h3 class="section-title">PMC</h3>
-          <div class="stat-row">
-            <span class="profile-stat-label">Level (Overall)</span>
-            <span class="profile-stat-value">${player.pmcLevel || 'N/A'}</span>
-          </div>
-          <div class="stat-row">
-            <span class="profile-stat-label">K/D Ratio</span>
-            <span class="profile-stat-value">${player.killToDeathRatio || 'N/A'}</span>
-          </div>
-          <div class="stat-row">
-            <span class="profile-stat-label">Raids</span>
-            <span class="profile-stat-value">${player.pmcRaids || 0}</span>
-          </div>
-          <div class="stat-row">
-            <span class="profile-stat-label">Survival Rate</span>
-            <span class="profile-stat-value">${player.survivalRate || 0}%</span>
-          </div>
+            <h3 class="section-title">PMC</h3>
+            <div class="stat-row">
+                <span class="profile-stat-label">Level (Overall)</span>
+                <span class="profile-stat-value">${player.pmcLevel || 'N/A'}</span>
+            </div>
+            <div class="stat-row">
+                <span class="profile-stat-label">K/D Ratio</span>
+                <span class="profile-stat-value">${player.killToDeathRatio || 'N/A'}</span>
+            </div>
+            <div class="stat-row">
+                <span class="profile-stat-label">Raids</span>
+                <span class="profile-stat-value">${player.pmcRaids || 0}</span>
+            </div>
+            <div class="stat-row">
+                <span class="profile-stat-label">Survival Rate</span>
+                <span class="profile-stat-value">${player.survivalRate || 0}%</span>
+            </div>
         </div>
 
         <!-- SCAV Block -->
         <div class="stat-block scav-block">
-          <h3 class="section-title scav">SCAV</h3>
-          <div class="stat-row">
-            <span class="profile-stat-label">Level (Overall)</span>
-            <span class="profile-stat-value">${player.scavLevel || 'N/A'}</span>
-          </div>
-          <div class="stat-row">
-            <span class="profile-stat-label">K/D Ratio</span>
-            <span class="profile-stat-value">${player.scavKillToDeathRatio || 'N/A'}</span>
-          </div>
-          <div class="stat-row">
-            <span class="profile-stat-label">Raids</span>
-            <span class="profile-stat-value">${player.scavRaids || 0}</span>
-          </div>
-          <div class="stat-row">
-            <span class="profile-stat-label">Survival Rate</span>
-            <span class="profile-stat-value">${player.scavSurvivalRate ? player.scavSurvivalRate + '%' : 'N/A'}</span>
-          </div>
+            <h3 class="section-title scav">SCAV</h3>
+            <div class="stat-row">
+                <span class="profile-stat-label">Level (Overall)</span>
+                <span class="profile-stat-value">${player.scavLevel || '0'}</span>
+            </div>
+            <div class="stat-row">
+                <span class="profile-stat-label">K/D Ratio</span>
+                <span class="profile-stat-value">${player.scavKillToDeathRatio || '0'}</span>
+            </div>
+            <div class="stat-row">
+                <span class="profile-stat-label">Raids</span>
+                <span class="profile-stat-value">${player.scavRaids || 0}</span>
+            </div>
+            <div class="stat-row">
+                <span class="profile-stat-label">Survival Rate</span>
+                <span class="profile-stat-value">${player.scavSurvivalRate ? player.scavSurvivalRate + '%' : '0'}</span>
+            </div>
         </div>
-      </div>
-    <div id="player-profile-hof">
-        Error.
-      </div>
     </div>
+
+    <div id="player-profile-hof">
+        <div class="stats-blocks">
+            <div class="stat-block hof-player-level">
+                <div class="level-info">
+                    <span class="level-label">Leaderboard Level:</span>
+                    <span class="level-value">0</span>
+                </div>
+                <div class="exp-bar-container">
+                    <div class="exp-bar">
+                        <div class="exp-progress" style="width: 0%;"></div>
+                    </div>
+                    <div class="exp-numbers">
+                        <span class="current-exp">0</span>
+                        <span class="exp-separator"></span>
+                        <span class="next-level-exp">0</span>
+                    </div>
+                </div>
+                <div class="exp-remaining">Until next level: <span class="remaining-value">0</span> EXP</div>
+            </div>
+            <div class="hof-player-unlocked-rewards">
+                Rewards
+            </div>
+        </div>
+    </div>
+
+    <div id="player-profile-hof-sec">
+        <div class="stats-blocks">
+            <div class="stat-block hof-player-fav-weapon">
+                <h3 class="section-title">Favorite Weapon</h3>
+                <div class="weapon-info">
+                    <div class="weapon-name">${getWeaponName(player)}</div>
+                    <div class="weapon-mastery">Mastery Level: <span class="level-value-wp">0</span></div>
+
+                    <div class="exp-bar-container">
+                        <div class="exp-bar">
+                            <div class="exp-progress-wp" style="width: 0%;"></div>
+                        </div>
+                        <div class="exp-numbers">
+                            <span class="current-exp-wp">0</span>
+                            <span class="exp-separator"></span>
+                            <span class="next-level-exp-wp">0</span>
+                        </div>
+                    </div>
+                    <div class="exp-remaining">Until next level: <span class="remaining-value-wp">0</span> EXP</div>
+
+                    <!-- player.stattrack -->
+                    ${player?.isUsingStattrack ? `<div class="weapon-extra-stats">
+                        <div class="raid-stats-grid">
+                            <div class="raid-stat-block">
+                                <span class="profile-stat-label">Kills:</span>
+                                <span class="profile-stat-value">${player.modWeaponStats.bestWeapon.stats.kills ? player.modWeaponStats.bestWeapon.stats.kills : 0}</span>
+                            </div>
+                            <div class="raid-stat-block">
+                                <span class="profile-stat-label">Headshots:</span>
+                                <span class="profile-stat-value">${player.modWeaponStats.bestWeapon.stats.headshots ? player.modWeaponStats.bestWeapon.stats.headshots : 0}</span>
+                            </div>
+                            <div class="raid-stat-block">
+                                <span class="profile-stat-label">Shots Fired:</span>
+                                <span class="profile-stat-value">${player.modWeaponStats.bestWeapon.stats.totalShots ? player.modWeaponStats.bestWeapon.stats.totalShots : 0}</span>
+                            </div>
+                            <div class="raid-stat-block">
+                                <span class="profile-stat-label">Times Lost:</span>
+                                <span class="profile-stat-value">${player.modWeaponStats.bestWeapon.stats.timesLost ? player.modWeaponStats.bestWeapon.stats.timesLost : 0}</span>
+                            </div>
+                        </div>
+                    </div>` : ''}
+
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-blocks">
+            <div class="stat-block">
+                <h3 class="section-title">Extra Stats</h3>
+                        <div class="raid-stats-grid">
+                            <div class="raid-stat-block">
+                                <span class="profile-stat-label">Longest Killshot:</span>
+                                <span class="profile-stat-value">${player.longestShot ? player.longestShot + 'm' : 0}</span>
+                            </div>
+                            <div class="raid-stat-block">
+                                <span class="profile-stat-label">Total Damage:</span>
+                                <span class="profile-stat-value">${player.damage}</span>
+                            </div>
+                        </div>
+            </div>
+        </div>
+      
+    </div>
+</div>
     `;
 
-    // Init hall of fame button once the thing has opened
+    // Init battlepass button once the profile has opened
     initHOF(player);
+}
+
+function getWeaponName(player) {
+    if (!player) return 'Unknown';
+
+    if (player.modWeaponStats && player.modWeaponStats.bestWeapon) {
+        return player.modWeaponStats.bestWeapon.name;
+    } else if (player.weaponMasteryId) {
+        return player.weaponMasteryId;
+    } else {
+        return 'Unknown';
+    }
 }
 
 // Helper function to generate badges HTML
@@ -489,7 +576,7 @@ function generateBadgesHTML(player) {
       </div>`;
     }
 
-    if (player?.trusted == true) {
+    if (player?.trusted && !player?.dev) {
         badges += `<div class="badge tooltip">
         <img src="media/trusted.png" width="30" height="30" alt="Trusted">
         <span class="tooltiptext">Official Tester</span>
@@ -516,13 +603,11 @@ function generateBadgesHTML(player) {
       </div>`;
     }
 
-    if (player.achievement) {
-        if (player.achievements.includes('survivor')) {
-            badges += `<div class="badge" title="Master Survivor">bimboom</div>`;
-        }
-        if (player.achievements.includes('coolest')) {
-            badges += `<div class="badge" title="Item Collector">hes cool</div>`;
-        }
+    if (player.hasKappa) {
+        badges += `<div class="badge tooltip">
+        <img src="media/kappa.png" width="35" height="35" alt="Kappa">
+        <span class="tooltiptext">This player acquired Kappa!</span>
+      </div>`;
     }
 
     // Add faction badge

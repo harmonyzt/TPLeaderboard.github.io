@@ -1,21 +1,24 @@
-// For announcement when needed
-// Close announcement modal function
-//document.addEventListener('DOMContentLoaded', function () {
-//    const announcement = document.getElementById('seasonAnnouncement');
-//   const closeBtn = document.getElementById('closeAnnouncement');
-//
-//    if (localStorage.getItem('announcementClosed') === 'true') {
-//        announcement.style.display = 'none';
-//    }
-//
-//    closeBtn.addEventListener('click', function () {
-//        announcement.style.display = 'none';
-//        localStorage.setItem('announcementClosed', 'true');
-//    });
-//
-//    document.addEventListener('keydown', function (e) {
-//        if (e.key === 'Escape') {
-//            closeBtn.click();
-//        }
-//    });
-//});
+document.addEventListener('DOMContentLoaded', function () {
+
+    const closeButton = document.querySelector('.close-notification');
+    const notification = document.querySelector('.leaderboard-notification');
+
+    if (closeButton && notification) {
+        closeButton.addEventListener('click', function () {
+            closeNotification();
+        });
+
+        // 50 second timeout
+        const autoCloseTimer = setTimeout(closeNotification, 50000);
+
+        function closeNotification() {
+            clearTimeout(autoCloseTimer);
+            notification.classList.add('hide');
+
+            notification.addEventListener('animationend', function handler() {
+                notification.removeEventListener('animationend', handler);
+                notification.remove();
+            });
+        }
+    }
+});

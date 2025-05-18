@@ -378,7 +378,6 @@ button,
 
 button:hover,
 .main-button:hover {
-    background-color: rgba(100, 255, 218, 0.1);
     color: var(--text-light);
     border-color: var(--accent-blue);
     transform: translateY(-1px);
@@ -416,7 +415,7 @@ button:hover,
 }
 
 .rank.silver {
-    color: #c0c0c0;
+    color: #c3e9ff;
     font-size: 1.3em;
 }
 
@@ -508,7 +507,7 @@ button:hover,
     font-family: 'Inter', 'Segoe UI', sans-serif;
     box-sizing: border-box;
     font-size: 0.96rem;
-    min-width: 1700px;
+    min-width: 1800px;
 }
 
 .stats-line {
@@ -771,82 +770,93 @@ button:hover,
     border: 1px solid rgba(100, 255, 218, 0.2);
 }
 
-/* Announcement */
-#updateAnnouncement {
-    background: rgba(10, 25, 47, 0.85);
-    border-radius: 16px;
-    margin: 15px auto;
-    max-width: 850px;
-    text-align: center;
-    box-shadow:
-        0 6px 20px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(100, 255, 218, 0.4);
-    color: var(--accent-teal);
-    border: 2px solid var(--accent-teal);
-    position: relative;
-    transition: all 0.5s ease;
-    backdrop-filter: blur(10px);
-    overflow: hidden;
+/* Announcement / Notification */
+.leaderboard-notification {
+    position: fixed;
+    top: 120px;
+    left: 20px;
+    max-width: 350px;
+    background: rgba(255, 255, 255, 0.048);
+    border-left: 4px solid #64ffda;
+    padding: 15px 40px 15px 15px;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: flex;
+    align-items: flex-start;
+    animation: slideIn 0.5s ease-out;
+    backdrop-filter: blur(5px);
+
 }
 
-#updateAnnouncement::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: linear-gradient(180deg, var(--accent-teal), rgba(100, 255, 218, 0.3));
-}
-
-#updateAnnouncement h2 {
-    font-size: 1.8rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-weight: 800;
-    text-shadow: 0 0 12px rgba(100, 255, 218, 0.5);
-}
-
-#updateAnnouncement ul {
-    text-align: left;
-    margin: 25px auto;
-    max-width: 700px;
-    padding-left: 20px;
-    list-style-type: none;
-}
-
-#updateAnnouncement li {
-    font-size: 1.2rem;
-    color: var(--text-light);
-    line-height: 1.3;
-    position: relative;
-    padding-left: 30px;
-}
-
-#updateAnnouncement li::before {
-    content: '▹';
-    position: absolute;
-    left: 0;
-    color: var(--accent-teal);
-    font-size: 1.4rem;
+.notification-content {
+    flex-grow: 1;
+    color: #ffffff;
+    font-size: 14px;
     line-height: 1.5;
+    padding-right: 10px;
 }
 
-#updateAnnouncement p {
-    font-size: 1.3rem;
-    margin: 30px 50px;
-    color: var(--text-light);
-    line-height: 1.7;
+.notification-content p {
+    margin: 0 0 10px 0;
 }
 
-.update-signature {
-    margin-top: 25px;
-    font-style: italic;
-    font-size: 1.1rem;
-    color: rgba(100, 255, 218, 0.7);
-    text-align: right;
-    padding-right: 20px;
-    position: relative;
+.notification-content p:last-child {
+    margin-bottom: 0;
+    font-weight: bold;
+    color: #bbfeff;
+}
+
+.close-notification {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+}
+
+.close-notification:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.leaderboard-notification.hide {
+    animation: slideOut 0.5s ease-in forwards;
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
 }
 
 .close-btn {
@@ -1160,6 +1170,7 @@ button:hover,
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
     border: 1px solid #3a3a4a;
     padding: 25px;
+    min-height: 840px;
 }
 
 .profile-close-btn {
@@ -1251,10 +1262,9 @@ button:hover,
     color: #b0b0c0;
     text-align: center;
     margin-bottom: 15px;
-    padding: 8px;
+    padding: 10px;
     background: rgb(255 255 255 / 6%);
     border-radius: 5px;
-    width: 100%;
 }
 
 .badges-container {
@@ -1628,14 +1638,12 @@ button:hover,
     color: #ccc;
 }
 
-/* Profile Hall of Fame */
+/* Profile Battlepass tab */
 .hall-of-fame-button-container {
-    margin-top: 15px;
-    padding-left: 30px;
+    margin-top: 20px;
+    padding-left: 35px;
     padding-top: 15px;
     display: flex;
-    justify-content: flex-start;
-    width: 100%;
     position: absolute;
     top: 0;
     left: 0;
@@ -1646,7 +1654,7 @@ button:hover,
     border: none;
     padding: 10px 18px;
     font-size: 0.95em;
-    color: white;
+    color: rgb(205, 239, 255);
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease-in-out, background 0.3s ease-in-out;
@@ -1660,7 +1668,154 @@ button:hover,
 
 #player-profile-hof {
     display: none;
+    grid-template-columns: 1fr;
     flex-direction: column;
     align-items: center;
     width: 100%;
+    height: fit-content;
+    align-self: flex-start;
+    font-family: Arial, sans-serif;
+    color: #fff;
+}
+
+/* Second row battlepass (I HAVE NO IDEA WHAT IS HAPPENING HERE) */
+#player-profile-hof-sec {
+    display: none;
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    align-self: flex-start;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    gap: 15px;
+}
+
+
+.hof-player-level {
+    padding: 15px;
+    border: 1px solid rgb(255 255 255 / 10%);
+    height: fit-content;
+    align-self: flex-start;
+    background: rgb(255 255 255 / 4%);
+    border-radius: 8px;
+}
+
+.level-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.level-label {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.level-value {
+    font-weight: bold;
+    color: #92fff0;
+}
+
+.level-value-wp {
+    font-weight: bold;
+    color: #deff92;
+}
+
+.exp-bar-container {
+    margin: 10px 0;
+}
+
+.exp-bar {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.exp-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #8ad0f096, #90ff9fcf);
+    border-radius: 5px;
+    transition: width 0.3s ease;
+}
+
+.exp-progress-wp {
+    height: 100%;
+    background: linear-gradient(90deg, #f0c48a96, #f8ff90cf);
+    border-radius: 5px;
+    transition: width 0.3s ease;
+}
+
+.exp-numbers {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.exp-remaining {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    margin-top: 8px;
+}
+
+.remaining-value {
+    color: #91dcff;
+    font-weight: bold;
+}
+
+.remaining-value-wp {
+    color: #ebff91;
+    font-weight: bold;
+}
+
+.hof-player-unlocked-rewards {
+    padding: 15px;
+    border: 1px solid rgb(255 255 255 / 10%);
+    height: fit-content;
+    align-self: flex-start;
+    background: rgb(255 255 255 / 4%);
+    border-radius: 8px;
+}
+
+.weapon-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.weapon-name {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #fff;
+}
+
+.weapon-mastery {
+    display: flex;
+    justify-content: space-between;
+    color: #a0a0a0;
+}
+
+.mastery-level {
+    color: #84d2ff;
+}
+
+.weapon-extra-stats {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgb(255 255 255 / 10%);
+    display: block;
+}
+
+.extra-stat {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    color: #fff;
 }
