@@ -39,13 +39,17 @@ function showPlayerNotification(player) {
     updateNotificationPositions();
 
     setTimeout(() => {
+        notification.style.animation = 'fadeOut 0.3s forwards';
+    }, 7000);
+
+    setTimeout(() => {
         notification.remove();
         const index = notificationStack.indexOf(notification);
         if (index > -1) {
             notificationStack.splice(index, 1);
         }
         updateNotificationPositions();
-    }, 5000);
+    }, 10000);
 }
 
 
