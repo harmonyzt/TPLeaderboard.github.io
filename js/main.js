@@ -456,10 +456,13 @@ function convertTimeToSeconds(time) {
 function calculateRanks(data) {
     const MIN_RAIDS = 50;
     const SOFT_CAP_RAIDS = 100;
+    const MIN_LIFE_TIME = 15; // tracking skill issue
+    const MAX_LIFE_TIME = 45;
 
     const maxKDR = Math.max(...data.map(p => p.killToDeathRatio));
     const maxSurvival = Math.max(...data.map(p => p.survivalRate));
     const maxRaids = Math.max(...data.map(p => p.pmcRaids));
+    const maxAvgLifeTime = Math.max(...data.map(p => Math.min(p.averageLifeTime, MAX_LIFE_TIME)));
 
     data.forEach(player => {
         if (player.disqualified) {
@@ -473,10 +476,18 @@ function calculateRanks(data) {
         const normKDR = maxKDR ? player.killToDeathRatio / maxKDR : 0;
         const normSurvival = maxSurvival ? player.survivalRate / maxSurvival : 0;
         const normRaids = maxRaids ? player.pmcRaids / maxRaids : 0;
+        
+        // Max 45 mins. No raid overhaul BS
+        const clampedLifeTime = Math.min(player.averageLifeTime, MAX_LIFE_TIME);
+        const normAvgLifeTime = maxAvgLifeTime ? clampedLifeTime / maxAvgLifeTime : 0;
 
-        let score = (normKDR * 0.15) + (normSurvival * 0.2) + (normRaids * 0.4);
+        let score = (normKDR * 0.10) + (normSurvival * 0.3) + (normRaids * 0.4) + (normAvgLifeTime * 0.2);
 
-        // Soft cap for raids
+        if (player.averageLifeTime < MIN_LIFE_TIME) {
+            score *= 0.9; // -10% penalty
+        }
+
+        // Soft Cap for raids
         if (player.pmcRaids <= MIN_RAIDS) {
             score *= 0.3;
         } else if (player.pmcRaids < SOFT_CAP_RAIDS) {
@@ -487,31 +498,12 @@ function calculateRanks(data) {
         player.totalScore = score;
     });
 
-
     data.sort((a, b) => b.totalScore - a.totalScore);
-
 
     data.forEach((player, index) => {
         player.rank = index + 1;
         player.medal = ['🥇', '🥈', '🥉'][index] || '';
     });
-}
-
-// Get skill rank label
-function getRankLabel(totalScore) {
-    if (totalScore < 0.2) return 'L-';
-    if (totalScore < 0.35) return 'L';
-    if (totalScore < 0.45) return 'L+';
-    if (totalScore < 0.55) return 'M-';
-    if (totalScore < 0.65) return 'M';
-    if (totalScore < 0.72) return 'M+';
-    if (totalScore < 0.78) return 'H-';
-    if (totalScore < 0.84) return 'H';
-    if (totalScore < 0.9) return 'H+';
-    if (totalScore < 0.94) return 'P-';
-    if (totalScore < 0.97) return 'P';
-    if (totalScore < 0.99) return 'P+';
-    return 'G';
 }
 
 // Calculate all stats + dynamic update support
