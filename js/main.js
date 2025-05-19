@@ -54,7 +54,7 @@ async function detectSeasons() {
     //}
 
     // Load the latest season data by default
-    if (seasons.length > 0) {
+    if (seasons.length > 0 && leaderboardData !== oldLeaderboardData) {
         loadAllSeasonsData();
         loadSeasonData(seasons[0]);
         saveCurrentStats();
@@ -165,7 +165,7 @@ async function loadSeasonData(season) {
             checkRecentPlayers(leaderboardData);
         }
     } finally {
-        
+        oldLeaderboardData = leaderboardData;
     }
 }
 
