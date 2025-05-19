@@ -1,0 +1,64 @@
+.streets-bg {
+    background: url(media/rewards/card_background/streets1.png);
+    background-position: center;
+    background-size: cover;
+}
+
+.streets2-bg {
+    background: url(media/rewards/card_background/streets2.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.streets3-bg {
+    background: url(media/rewards/card_background/streets3.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.purple-bg {
+    background: url(media/rewards/card_background/purple.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.labs-bg {
+    background: url(media/rewards/card_background/labs.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+.labs-bg {
+    background: url(media/rewards/card_background/labs.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.usec-background {
+    background: url(media/rewards/main_background/Usec.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.bear-background {
+    background: url(media/rewards/main_background/Bear.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.box-style {
+    border-radius: 10%;
+}
+
+.wide-style {
+    border-radius: 10%;
+    width: 100px;
+}
