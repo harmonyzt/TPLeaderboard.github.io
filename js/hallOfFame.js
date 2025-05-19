@@ -29,6 +29,7 @@ function initHOF(player) {
 
     updatePlayerProfile(player);
     updatePlayerProfileMastery(player);
+    refreshRewards(player);
 }
 
 function calculatePlayerLevel(player) {
@@ -45,6 +46,8 @@ function calculatePlayerLevel(player) {
     const level = Math.floor(totalExp / 1800);
     const currentLevelExp = totalExp % 1000;
     const expForNextLevel = 1000;
+
+    player.battlePassLevel = level;
 
     return {
         level: level,

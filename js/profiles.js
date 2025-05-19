@@ -1,4 +1,4 @@
-openedPlayerData = [];
+let openedPlayerData = [];
 
 function openProfile(playerId) {
     const modal = document.getElementById('playerProfileModal');
@@ -341,8 +341,8 @@ function showPublicProfile(container, player) {
     container.innerHTML = `
 <div class="profile-grid-layout" id="profile-main-grid">
     <!-- Main -->
-    <div class="profile-main-card">
-        <img src="${player.profilePicture}" class="player-avatar" alt="${player.name}" onerror="this.src='/media/default_avatar.png';" />
+    <div class="profile-main-card" id="main-profile-card">
+        <img src="${player.profilePicture}" class="player-avatar" id="profile-avatar" alt="${player.name}" onerror="this.src='/media/default_avatar.png';" />
         <div class="player-status">
             <div class="status-indicator ${player.isOnline ? 'status-online' : 'status-offline'}"></div>
             <span>${player.isOnline ? 'Online' : 'Offline'}</span>
@@ -391,7 +391,7 @@ function showPublicProfile(container, player) {
                 <span class="profile-stat-value">${player.lastRaidHits ?? 0}</span>
             </div>
             <div class="raid-stat-block">
-                <span class="profile-stat-label">Looting EXP:</span>
+                <span class="profile-stat-label">Loot EXP:</span>
                 <span class="profile-stat-value">${player.lastRaidEXP ?? 0}</span>
             </div>
         </div>
@@ -475,8 +475,110 @@ function showPublicProfile(container, player) {
                 </div>
                 <div class="exp-remaining">Until next level: <span class="remaining-value">0</span> EXP</div>
             </div>
-            <div class="hof-player-unlocked-rewards">
-                Rewards
+            <div class="hof-player-trader-info">
+                <div class="trader-grid">
+
+                    <div class="trader-card" data-unlocked="true">
+                        <div class="trader-image-container">
+                            <img src="media/traders/prapor.png" alt="Prapor" class="trader-image">
+                            <div class="trader-lock" style="display: none;">🔒</div>
+                        </div>
+                        <div class="trader-name">Prapor</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.PRAPOR.standing.toFixed(2)) : 0}</div>
+                    </div>
+
+                    <div class="trader-card" data-unlocked="true">
+                        <div class="trader-image-container">
+                            <img src="media/traders/therapist.png" alt="Therapist" class="trader-image">
+                            <div class="trader-lock" style="display: none;">🔒</div>
+                        </div>
+                        <div class="trader-name">Therapist</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.THERAPIST.standing.toFixed(2)) : 0}</div>
+                    </div>
+
+                    <div class="trader-card" data-unlocked="true">
+                        <div class="trader-image-container">
+                            <img src="media/traders/fence.png" alt="Fence" class="trader-image">
+                            <div class="trader-lock" style="display: none;">🔒</div>
+                        </div>
+                        <div class="trader-name">Fence</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.FENCE.standing.toFixed(2)) : 0}</div>
+                    </div>
+
+                    <div class="trader-card" data-unlocked="true">
+                        <div class="trader-image-container">
+                            <img src="media/traders/skier.png" alt="Skier" class="trader-image">
+                            <div class="trader-lock" style="display: none;">🔒</div>
+                        </div>
+                        <div class="trader-name">Skier</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.SKIER.standing.toFixed(2)) : 0}</div>
+                    </div>
+
+                    <div class="trader-card" data-unlocked="true">
+                        <div class="trader-image-container">
+                            <img src="media/traders/peacekeeper.png" alt="Peacekeeper" class="trader-image">
+                            <div class="trader-lock" style="display: none;">🔒</div>
+                        </div>
+                        <div class="trader-name">Peacekeeper</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.PEACEKEEPER.standing.toFixed(2)) : 0}</div>
+                    </div>
+
+                    <div class="trader-card" data-unlocked="true">
+                        <div class="trader-image-container">
+                            <img src="media/traders/mechanic.png" alt="Mechanic" class="trader-image">
+                            <div class="trader-lock" style="display: none;">🔒</div>
+                        </div>
+                        <div class="trader-name">Mechanic</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.MECHANIC.standing.toFixed(2)) : 0}</div>
+                    </div>
+
+                    <div class="trader-card" data-unlocked="true">
+                        <div class="trader-image-container">
+                            <img src="media/traders/ragman.png" alt="Ragman" class="trader-image">
+                            <div class="trader-lock" style="display: none;">🔒</div>
+                        </div>
+                        <div class="trader-name">Ragman</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.RAGMAN.standing.toFixed(2)) : 0}</div>
+                    </div>
+
+                    <div class="trader-card" data-unlocked="true">
+                        <div class="trader-image-container">
+                            <img src="media/traders/jaeger.png" alt="Jaeger" class="trader-image">
+                            <div class="trader-lock" style="display: none;">🔒</div>
+                        </div>
+                        <div class="trader-name">Jaeger</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.JAEGER.standing.toFixed(2)) : 0}</div>
+                    </div>
+
+                    <div class="trader-card" data-unlocked="true">
+                        <div class="trader-image-container">
+                            <img src="media/traders/ref.png" alt="Ref" class="trader-image">
+                            <div class="trader-lock" style="display: none;">🔒</div>
+                        </div>
+                        <div class="trader-name">Ref</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.REF.standing.toFixed(2)) : 0}</div>
+                    </div>
+
+                    <div class="trader-card" data-unlocked="true">
+                        <div class="trader-image-container">
+                            <img src="media/traders/lightkeeper.png" alt="Lightkeeper" class="trader-image">
+                            <div class="trader-lock" style="display: none;">🔒</div>
+                        </div>
+                        <div class="trader-name">Lightkeeper</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.LIGHTKEEPER.standing.toFixed(2)) : 0}</div>
+                    </div>
+
+                    <div class="trader-card" data-unlocked="true">
+                        <div class="trader-image-container">
+                            <img src="media/traders/btr.png" alt="BTR Driver" class="trader-image">
+                            <div class="trader-lock" style="display: none;">🔒</div>
+                        </div>
+                        <div class="trader-name">BTR Driver</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.BTR_DRIVER.standing.toFixed(2)) : 0}</div>
+                    </div>
+
+
+                </div>
             </div>
         </div>
     </div>
@@ -484,7 +586,7 @@ function showPublicProfile(container, player) {
     <div id="player-profile-hof-sec">
         <div class="stats-blocks">
             <div class="stat-block hof-player-fav-weapon">
-                <h3 class="section-title">Favorite Weapon</h3>
+                <h3 class="section-title">Meta Gun</h3>
                 <div class="weapon-info">
                     <div class="weapon-name">${getWeaponName(player)}</div>
                     <div class="weapon-mastery">Mastery Level: <span class="level-value-wp">0</span></div>
@@ -495,7 +597,6 @@ function showPublicProfile(container, player) {
                         </div>
                         <div class="exp-numbers">
                             <span class="current-exp-wp">0</span>
-                            <span class="exp-separator"></span>
                             <span class="next-level-exp-wp">0</span>
                         </div>
                     </div>
