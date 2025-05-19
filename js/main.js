@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', detectSeasons);
 
 let leaderboardData = []; // For keeping current season data
-let oldLeaderboardData = []; // For keeping current season data
+let oldLeaderboardData = []; // For keeping old season data
 let allSeasonsCombinedData = []; // For keeping combined data from all seasons
 let sortDirection = {}; // Sort direction
 let seasons = []; // Storing available seasons
@@ -162,6 +162,7 @@ async function loadSeasonData(season) {
         } else {
             processSeasonData(leaderboardData);
             displayLeaderboard(leaderboardData);
+            checkRecentPlayers(leaderboardData);
         }
     } finally {
         oldLeaderboardData = leaderboardData;
