@@ -16,7 +16,8 @@ function showPlayerNotification(player) {
             <div class="notification-text">
                 <span class="notification-name-r">${player.name}</span>
                 <span class="notification-info-r">Finished a raid</span>
-        <div class="raid-overview-notify">
+        ${player.publicProfile? `
+            <div class="raid-overview-notify">
             <span class="raid-result-r ${player.discFromRaid ? 'disconnected' : player.isTransition ? 'transit' : player.lastRaidSurvived ? 'survived' : 'died'}">
                 ${player.discFromRaid ? `<em class="bx bxs-log-out"></em> Left` : player.isTransition ? `<i class="bx bx-loader-alt bx-spin" style="line-height: 0 !important;"></i> In Transit (${player.lastRaidMap}
                 <em class="bx bxs-chevrons-right" style="position: relative; top: 2px;"></em> ${player.lastRaidTransitionTo || 'Unknown'})` : player.lastRaidSurvived ? `<em class="bx bx-walk"></em> Survived` : `
@@ -26,6 +27,7 @@ function showPlayerNotification(player) {
                 ${player.lastRaidMap || 'Unknown'} • ${player.lastRaidAs || 'N/A'}
             </span>
         </div>
+        `: ''}
             </div>
         </div>
     `;
