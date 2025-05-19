@@ -506,6 +506,23 @@ function calculateRanks(data) {
     });
 }
 
+// Get skill rank label
+function getRankLabel(totalScore) {
+    if (totalScore < 0.2) return 'L-';
+    if (totalScore < 0.35) return 'L';
+    if (totalScore < 0.45) return 'L+';
+    if (totalScore < 0.55) return 'M-';
+    if (totalScore < 0.65) return 'M';
+    if (totalScore < 0.72) return 'M+';
+    if (totalScore < 0.78) return 'H-';
+    if (totalScore < 0.84) return 'H';
+    if (totalScore < 0.9) return 'H+';
+    if (totalScore < 0.94) return 'P-';
+    if (totalScore < 0.97) return 'P';
+    if (totalScore < 0.99) return 'P+';
+    return 'G';
+}
+
 // Calculate all stats + dynamic update support
 function calculateOverallStats(data) {
     data.forEach(player => {
