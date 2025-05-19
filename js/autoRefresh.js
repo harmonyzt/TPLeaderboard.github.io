@@ -1,4 +1,4 @@
-let updateInterval = 3; // seconds
+let updateInterval = 5; // seconds
 let timeLeft = updateInterval;
 let autoUpdateEnabled = true;
 let updateTimer;
