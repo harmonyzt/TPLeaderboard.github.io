@@ -2,7 +2,6 @@
 document.addEventListener('DOMContentLoaded', detectSeasons);
 
 let leaderboardData = []; // For keeping current season data
-let oldLeaderboardData = ['PLACEHOLDER']; // For keeping old season data
 let allSeasonsCombinedData = []; // For keeping combined data from all seasons
 let sortDirection = {}; // Sort direction
 let seasons = []; // Storing available seasons
@@ -58,7 +57,7 @@ async function detectSeasons() {
     //}
 
     // Load the latest season data by default
-    if (seasons.length > 0 && !areArraysEqual(leaderboardData, oldLeaderboardData)) {
+    if (seasons.length > 0) {
         loadAllSeasonsData();
         loadSeasonData(seasons[0]);
         saveCurrentStats();
@@ -169,7 +168,7 @@ async function loadSeasonData(season) {
             checkRecentPlayers(leaderboardData);
         }
     } finally {
-        oldLeaderboardData = leaderboardData;
+        
     }
 }
 
