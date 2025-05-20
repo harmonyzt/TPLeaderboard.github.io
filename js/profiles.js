@@ -302,7 +302,7 @@ function showPublicProfile(container, player) {
     const profileModal = document.querySelector('.profile-modal-content');
 
     profileModal.classList.remove('theme-dark', 'theme-light', 'theme-gradient', 'theme-default');
-    profileModal.classList.add(`theme-${player.profileTheme.toLowerCase()}`);
+    profileModal.classList.add(`theme-${player.profileTheme?.toLowerCase()? player.profileTheme?.toLowerCase() : 'default' }`);
 
     // About me
     const aboutText = player.profileAboutMe && player.profileAboutMe.length <= 80
