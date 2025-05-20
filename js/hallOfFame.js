@@ -36,7 +36,7 @@ function calculatePlayerLevel(player) {
     const expFromRaids = player.pmcRaids * 80;
     const expFromKills = player.pmcKills * 30;
     const expFromSurvival = player.survived * 75;
-    const expFromDamage = Math.floor(player.damage / 100);
+    const expFromDamage = Math.floor(player.damage / 1000);
     const expFromSkill = Math.round(player.totalScore * 1500);
 
     // get summary
