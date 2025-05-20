@@ -54,7 +54,6 @@ function openProfile(playerId) {
 function showPrivateProfile(container, player) {
     const profileModal = document.querySelector('.profile-modal-content');
     profileModal.style.background = "#1e1e2d";
-    resetStyles(mainBackground, profileCard, profileAvatar);
 
     container.innerHTML = `
    <div class="profile-grid-layout banned">
