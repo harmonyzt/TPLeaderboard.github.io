@@ -85,7 +85,7 @@ function applyMainBackgroundReward(player, mainBackground) {
 
 function applyPfpStyleReward(player, profileAvatar) {
     const level = player.battlePassLevel;
-    const reward = player.bp_pfpStyle;
+    const reward = player.bp_pfpstyle;
 
     if (reward === 'box' && level >= 5) {
         profileAvatar.classList.add('box-style');
