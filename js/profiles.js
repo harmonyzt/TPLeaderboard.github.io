@@ -299,20 +299,10 @@ function showPublicProfile(container, player) {
         : 'Unknown';
 
     // Profile Theme
-    const profileModal = document.querySelectorAll('.profile-modal-content');
-    switch (player.profileTheme) {
-        case "Dark":
-            profileModal.style.background = "#000000eb;";
-            break;
-        case "Light":
-            profileModal.style.background = "rgb(61 87 106)";
-            break;
-        case "Gradient":
-            profileModal.style.background = "linear-gradient(169deg,rgba(62, 150, 141, 1) 0%, rgba(49, 49, 92, 1) 42%, rgba(60, 62, 99, 1) 69%)";
-            break;
-        default:
-            profileModal.style.background = "#1e1e2d";
-    }
+    const profileModal = document.querySelector('.profile-modal-content');
+
+    profileModal.classList.remove('theme-dark', 'theme-light', 'theme-gradient', 'theme-default');
+    profileModal.classList.add(`theme-${player.profileTheme.toLowerCase()}`);
 
     // About me
     const aboutText = player.profileAboutMe && player.profileAboutMe.length <= 80

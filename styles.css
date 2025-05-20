@@ -1198,6 +1198,23 @@ button:hover,
     transform: scale(1.1);
 }
 
+/* Themes */
+.theme-default {
+    background-color: #1e1e2d;
+}
+
+.theme-dark {
+    background-color: #000000eb;
+}
+
+.theme-light {
+    background-color: rgb(61, 87, 106);
+}
+
+.theme-gradient {
+    background: linear-gradient(169deg, rgba(62, 150, 141, 1) 0%, rgba(49, 49, 92, 1) 42%, rgba(60, 62, 99, 1) 69%);
+}
+
 /* Player Info */
 .player-avatar {
     width: 80px;
@@ -1969,7 +1986,8 @@ button:hover,
     gap: 6px;
 }
 
-.raid-result-r em, .raid-result-r i {
+.raid-result-r em,
+.raid-result-r i {
     font-size: 14px;
 }
 
@@ -1999,15 +2017,23 @@ button:hover,
 
 
 @keyframes slideInLastRaid {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 @keyframes fadeOut {
-    from { 
-        opacity: 1; 
+    from {
+        opacity: 1;
     }
-    to { 
-        opacity: 0; 
+
+    to {
+        opacity: 0;
     }
 }
