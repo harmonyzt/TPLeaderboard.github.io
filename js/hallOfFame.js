@@ -61,7 +61,10 @@ function calculateMasteryLevel(player) {
     let expFromMastery = 0;
 
     if(player?.isUsingStattrack){
-        expFromMastery = player.weaponMasteryProgress * 150;
+        expFromMastery = 
+            (player.modWeaponStats.bestWeapon.stats.totalShots * 0.1) + 
+            (player.modWeaponStats.bestWeapon.stats.kills * 10) + 
+            (player.modWeaponStats.bestWeapon.stats.headshots * 5);
     } else {
         expFromMastery = 0;
     }
