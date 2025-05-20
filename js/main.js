@@ -24,6 +24,10 @@ let oldTotalPlayTime = 0;
 const seasonPath = "https://visuals.nullcore.net/hidden/season";
 const seasonPathEnd = ".json";
 
+function areArraysEqual(a, b) {
+    return JSON.stringify(a) === JSON.stringify(b);
+}
+
 // Check if season file exists
 async function checkSeasonExists(seasonNumber) {
     try {
