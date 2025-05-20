@@ -299,7 +299,7 @@ function showPublicProfile(container, player) {
         : 'Unknown';
 
     // Profile Theme
-    const profileModal = document.querySelectorAll('profile-modal-content');
+    const profileModal = document.querySelectorAll('.profile-modal-content');
     switch (player.profileTheme) {
         case "Dark":
             profileModal.style.background = "#000000eb;";
