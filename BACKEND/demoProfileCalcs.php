@@ -1,10 +1,16 @@
 <?php
-// Configuration
+// Note - this isn't a complete working PHP file ready to be deployed.
+// All of the updating code was given along with other stuff - you're free to implement your own system on how to store tokens and ids, or just completely get rid of them. 
+
+
+// Statistics where all players will be written to
 $STATS_FILE = __DIR__ . '/season3.json';
 
-
-// $data - Incoming data
+// $data - Incoming data.
+// Feel free to tinker on how you get the data off SPT mod and process it later on
+// Token is forever tied to player ID. and is saved separately.
 // $player - Existing (OR NOT) player data
+
 function updatePlayerStats($data, $suspicious, $isBanned)
 {
     global $STATS_FILE;
@@ -49,7 +55,7 @@ function updatePlayerStats($data, $suspicious, $isBanned)
                 // Global thingies
                 $player['pmcRaids'] = ($player['pmcRaids'] ?? 0) + 1;
                 $player['averageLifeTime'] = calculateNewAverage($player['averageLifeTime'] ?? 0, $player['pmcRaids'], $data['raidTime']);
-                
+
                 $deaths = max(1, $player['pmcDeaths']);
                 $player['killToDeathRatio'] = round($player['pmcKills'] / $deaths, 2);
 
@@ -66,10 +72,8 @@ function updatePlayerStats($data, $suspicious, $isBanned)
                 'pmcLevel',
                 'accountType',
                 'sptVer',
-                'disqualified',
                 'publicProfile',
                 'registrationDate',
-                'currentWinstreak'
             ];
 
             foreach ($updateFields as $field) {
@@ -80,17 +84,6 @@ function updatePlayerStats($data, $suspicious, $isBanned)
 
             // IF PROFILE IS PUBLIC
             if ($data['publicProfile']) {
-                // *sigh* since EntryPoint returns this on gz, let's do this...
-                $lastMap = "Unknown";
-
-                if ($data['lastRaidMap'] === "east") {
-                    $lastMap = "Ground Zero - Low";
-                } else if ($data['lastRaidMap'] === "west") {
-                    $lastMap = "Ground Zero - High";
-                } else {
-                    $lastMap = $data['lastRaidMap'];
-                }
-
                 $player['profileAboutMe'] = $data['profileAboutMe'] ?? '';
                 $player['profilePicture'] = $data['profilePicture'] ?? '';
                 $player['profileTheme'] = $data['profileTheme'] ?? '';
@@ -104,7 +97,7 @@ function updatePlayerStats($data, $suspicious, $isBanned)
                 $player['lastRaidKills'] = $data['raidKills'];
                 $player['lastRaidAs'] = $data['playedAs'];
                 $player['lastRaidDamage'] = $data['raidDamage'];
-                $player['lastRaidMap'] = $lastMap;
+                $player['lastRaidMap'] = $data['lastRaidMap'];
                 $player['lastRaidSurvived'] = $survived ? true : false;
                 $player['lastRaidTimeSeconds'] = $data['raidTime'];
                 $player['lastRaidEXP'] = $data['lastRaidEXP'];
@@ -117,10 +110,39 @@ function updatePlayerStats($data, $suspicious, $isBanned)
                 $player['latestAchievementDescription'] = $data['latestAchievementDescription'];
                 $player['latestAchievementImageUrl'] = $data['latestAchievementImageUrl'];
                 $player['latestAchievementTimestamp'] = $data['latestAchievementTimestamp'];
+
+                // User profiles
+                $player['hasKappa'] = $data['hasKappa'];
+                $player['weaponMasteryId'] = $data['weaponMasteryId'];
+                $player['weaponMasteryProgress'] = $data['weaponMasteryProgress'];
+                $player['isUsingStattrack'] = $data['isUsingStattrack'];
+                $player['modWeaponStats'] = $data['modWeaponStats'];
+                $player['traderInfo'] = $data['traderInfo'];
+
+                $player['bp_prestigebg'] = $data['bp_prestigebg'];
+                $player['bp_cardbg'] = $data['bp_cardbg'];
+                $player['bp_mainbg'] = $data['bp_mainbg'];
+                $player['bp_cat'] = $data['bp_cat'];
+                $player['bp_pfpstyle'] = $data['bp_pfpstyle'];
+                $player['bp_pfpbordercolor'] = $data['bp_pfpbordercolor'];
+            } else {
+                // To prevent any issues with frontend
+                $player['profileTheme'] = 'Default';
             }
+
+
+            // Add playtime to a profile
+            $currentTime = (int) ($player['totalPlayTime'] ?? 0);
+            $raidTimeToAdd = (int) ($data['raidTime'] ?? 0);
+            $player['totalPlayTime'] = $currentTime + $raidTimeToAdd;
 
             $player['suspicious'] = $suspicious;
             $player['disqualified'] = $isBanned;
+
+            // Developer
+            if ($data['token'] === "e1291fbc34a9efebf4652f14902847ab60bdd72322a3a963d1b3e5b9af88d934") {
+                $player['dev'] = true;
+            }
 
             break;
         }
@@ -137,11 +159,12 @@ function updatePlayerStats($data, $suspicious, $isBanned)
 
 function calculateNewAverage($oldAverage, $totalRaids, $newRaidTime)
 {
-    if ($totalRaids <= 1) return $newRaidTime;
+    if ($totalRaids <= 1)
+        return $newRaidTime;
     return round((($oldAverage * ($totalRaids - 1)) + $newRaidTime) / $totalRaids);
 }
 
-function addNewPlayer($data, $trusted, $suspicious, $isBanned)
+function addNewPlayer($data, $trusted, $suspicious, $isBanned, $isDev)
 {
     global $STATS_FILE;
     $stats = file_exists($STATS_FILE) ? json_decode(file_get_contents($STATS_FILE), true) : ['leaderboard' => []];
@@ -150,6 +173,14 @@ function addNewPlayer($data, $trusted, $suspicious, $isBanned)
     $raidKills = $data['raidKills'] ?? 0;
     $survived = ($data['raidResult'] === 'Survived') ? 1 : 0;
     $died = ($data['raidResult'] === 'Killed') ? 1 : 0;
+
+    if (!$isDev && !$trusted) {
+        $newPlayer['trusted'] = false;
+    } else if ($trusted) {
+        $newPlayer['trusted'] = true;
+    } else if ($isDev) {
+        $newPlayer['dev'] = true;
+    }
 
     $newPlayer = [
         'id' => $data['id'],
@@ -163,7 +194,6 @@ function addNewPlayer($data, $trusted, $suspicious, $isBanned)
         'publicProfile' => $data['publicProfile'] ?? false,
         'currentWinstreak' => $data['winRaidStreak'] ?? 0,
         'longestShot' => $data['longestShot'] ?? 0,
-        'trusted' => $trusted,
         'suspicious' => $suspicious
     ];
 
@@ -194,6 +224,20 @@ function addNewPlayer($data, $trusted, $suspicious, $isBanned)
         $newPlayer['latestAchievementTimestamp'] = $data['latestAchievementTimestamp'];
         $newPlayer['lastRaidEXP'] = $data['lastRaidEXP'];
         $newPlayer['lastRaidHits'] = $data['lastRaidHits'];
+
+        $newPlayer['hasKappa'] = $data['hasKappa'];
+        $newPlayer['weaponMasteryId'] = $data['weaponMasteryId'];
+        $newPlayer['weaponMasteryProgress'] = $data['weaponMasteryProgress'];
+        $newPlayer['isUsingStattrack'] = $data['isUsingStattrack'];
+        $newPlayer['modWeaponStats'] = $data['modWeaponStats'];
+        $newPlayer['traderInfo'] = $data['traderInfo'];
+
+        $newPlayer['bp_prestigebg'] = $data['bp_prestigebg'];
+        $newPlayer['bp_cardbg'] = $data['bp_cardbg'];
+        $newPlayer['bp_mainbg'] = $data['bp_mainbg'];
+        $newPlayer['bp_cat'] = $data['bp_cat'];
+        $newPlayer['bp_pfpstyle'] = $data['bp_pfpstyle'];
+        $newPlayer['bp_pfpbordercolor'] = $data['bp_pfpbordercolor'];
 
         if ($data['lastRaidMap'] === "east") {
             $newPlayer['lastRaidMap'] = "Ground Zero - Low";
@@ -230,7 +274,7 @@ function addNewPlayer($data, $trusted, $suspicious, $isBanned)
 
             // Send this anyways - it won't be updated anyways
         } else {
-            // PMC stats
+            // PMC Public stats
             $newPlayer['pmcRaids'] = 1;
             $newPlayer['pmcKills'] = $raidKills;
             $newPlayer['pmcDeaths'] = $died;
