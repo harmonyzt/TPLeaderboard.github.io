@@ -63,7 +63,7 @@ function calculateMasteryLevel(player) {
     if(player?.isUsingStattrack){
         expFromMastery = player.weaponMasteryProgress * 150;
     } else {
-        return;
+        expFromMastery = 0;
     }
 
     // get summary
