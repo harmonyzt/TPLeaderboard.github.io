@@ -62,3 +62,7 @@
     border-radius: 10%;
     width: 100px;
 }
+
+.red-border {
+    border-color: rgb(206, 89, 89);
+}

@@ -28,7 +28,7 @@ function resetStyles(mainBackground, profileCard, profileAvatar) {
 
 
     profileAvatar.classList.remove(
-        'wide-style', 'red-border', 'pink-border', 'white-border', 'black-border'
+        'wide-style', 'box-style', 'red-border', 'pink-border', 'white-border', 'black-border'
     );
 }
 
@@ -80,7 +80,6 @@ function applyPfpStyleReward(player, profileAvatar) {
     } else if (reward === 'wide' && level >= 10) {
         profileAvatar.classList.add('wide-style');
     }
-    // dont do anything for default
 }
 
 function applyPfpBorderReward(player, profileAvatar) {
