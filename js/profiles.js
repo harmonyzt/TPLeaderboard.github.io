@@ -302,7 +302,7 @@ function showPublicProfile(container, player) {
     const profileModal = document.querySelector('.profile-modal-content');
     switch (player.profileTheme) {
         case "Dark":
-            profileModal.style.background = "rgb(10 10 10 90%)";
+            profileModal.style.background = "#000000eb;";
             break;
         case "Light":
             profileModal.style.background = "rgb(61 87 106)";
