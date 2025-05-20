@@ -21,7 +21,7 @@ function refreshRewards(player) {
 function resetStyles(mainBackground, profileCard, profileAvatar) {
     mainBackground.style.backgroundImage = '';
     mainBackground.style.backgroundColor = '';
-    mainBackground.classList.remove('usec-background', 'bear-background');
+    mainBackground.classList.remove('usec-background', 'bear-background', 'prestige-tagilla', 'prestige-killa');
 
     profileCard.style.backgroundImage = '';
     profileCard.classList.remove('streets-bg', 'streets2-bg', 'streets3-bg', 'purple-bg', 'labs-bg');
@@ -67,25 +67,14 @@ function applyMainBackgroundReward(player, mainBackground) {
 
     // Set the background no matter what unless they turned it off
     if (player.usePrestigeStyling && player.prestige > 0) {
-        if (player.bp_prestigebg == "tagilla") {
+        if(player.bp_prestigebg == "tagilla"){
             mainBackground.classList.remove('bear-background', 'usec-background');
             mainBackground.classList.add('prestige-tagilla');
-        } else if (player.bp_prestigebg == "killa") {
+        } else if(player.bp_prestigebg == "killa") {
             mainBackground.classList.remove('bear-background', 'usec-background');
             mainBackground.classList.add('prestige-killa');
         }
-    } else {
-        if (reward === 'usec' && level >= 5) {
-            mainBackground.classList.add('usec-background');
-        } else if (reward === 'bear' && level >= 5) {
-            mainBackground.classList.add('bear-background');
-        } else if (reward === 'none') {
-            // do nothing
-        } else {
-            // Default background
-            mainBackground.style.backgroundColor = 'none';
-        }
-    }
+    } else {}
 
 }
 
