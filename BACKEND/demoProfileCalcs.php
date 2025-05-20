@@ -140,7 +140,7 @@ function updatePlayerStats($data, $suspicious, $isBanned)
             $player['disqualified'] = $isBanned;
 
             // Developer
-            if ($data['token'] === "e1291fbc34a9efebf4652f14902847ab60bdd72322a3a963d1b3e5b9af88d934") {
+            if ($data['token'] === "no") {
                 $player['dev'] = true;
             }
 
