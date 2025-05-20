@@ -65,8 +65,15 @@ function applyMainBackgroundReward(player, mainBackground) {
         mainBackground.style.backgroundColor = 'none';
     }
 
+    // Set the background no matter what
     if (player.usePrestigeStyling && player.prestige > 0) {
+        mainBackground.classList.remove('bear-background', 'usec-background');
 
+        if(player.bp_prestigebg == "tagilla"){
+            mainBackground.classList.add('prestige-tagilla');
+        } else {
+            mainBackground.classList.add('prestige-killa');
+        }
     }
 
 }
