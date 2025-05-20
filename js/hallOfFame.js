@@ -58,30 +58,33 @@ function calculatePlayerLevel(player) {
 }
 
 function calculateMasteryLevel(player) {
-    let expFromMastery = 0;
-
-    if(player?.isUsingStattrack){
-        expFromMastery = 
-            (player.modWeaponStats.bestWeapon.stats.totalShots * 0.1) + 
-            (player.modWeaponStats.bestWeapon.stats.kills * 10) + 
-            (player.modWeaponStats.bestWeapon.stats.headshots * 5);
-    } else {
-        expFromMastery = 0;
+    // Don't calculate for those who don't have mod installed
+    if (!player?.isUsingStattrack || !player?.modWeaponStats?.bestWeapon?.stats) {
+        return {
+            level: 0,
+            currentExp: 0,
+            expForNextLevel: 1000,
+            totalExp: 0
+        };
     }
 
-    // get summary
-    const totalExp = expFromMastery;
+    const { totalShots = 0, kills = 0, headshots = 0 } = player.modWeaponStats.bestWeapon.stats;
 
-    // 1800 exp per lvl
-    const level = Math.floor(totalExp / 1000);
-    const currentLevelExp = totalExp % 1000;
-    const expForNextLevel = 1000;
+    const expFromShots = Math.round(totalShots * 0.1);
+    const expFromKills = kills * 10;
+    const expFromHeadshots = headshots * 5;
+
+    const totalExp = expFromShots + expFromKills + expFromHeadshots;
+    const expPerLevel = 1000;
+
+    const level = Math.floor(totalExp / expPerLevel);
+    const currentLevelExp = totalExp % expPerLevel;
 
     return {
-        level: level,
+        level,
         currentExp: currentLevelExp,
-        expForNextLevel: expForNextLevel,
-        totalExp: totalExp
+        expForNextLevel: expPerLevel,
+        totalExp
     };
 }
 
