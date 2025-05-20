@@ -11,6 +11,11 @@ function refreshRewards(player) {
     // Reset
     resetStyles(mainBackground, profileCard, profileAvatar);
 
+    // Nuke 
+    if(!player.publicProfile){
+        return;
+    }
+
     // Now apply
     applyBackgroundReward(player, profileCard);
     applyMainBackgroundReward(player, mainBackground);
