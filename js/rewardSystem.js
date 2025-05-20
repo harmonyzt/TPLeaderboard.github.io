@@ -12,7 +12,7 @@ function refreshRewards(player) {
     resetStyles(mainBackground, profileCard, profileAvatar);
 
     // Nuke 
-    if(!player.publicProfile){
+    if (!player.publicProfile) {
         return;
     }
 
@@ -72,14 +72,14 @@ function applyMainBackgroundReward(player, mainBackground) {
 
     // Set the background no matter what unless they turned it off
     if (player.usePrestigeStyling && player.prestige > 0) {
-        if(player.bp_prestigebg == "tagilla"){
+        if (player.bp_prestigebg == "tagilla") {
             mainBackground.classList.remove('bear-background', 'usec-background');
             mainBackground.classList.add('prestige-tagilla');
-        } else if(player.bp_prestigebg == "killa") {
+        } else if (player.bp_prestigebg == "killa") {
             mainBackground.classList.remove('bear-background', 'usec-background');
             mainBackground.classList.add('prestige-killa');
         }
-    } else {}
+    } else { }
 
 }
 

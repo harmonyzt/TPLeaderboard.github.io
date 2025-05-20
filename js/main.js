@@ -480,7 +480,7 @@ function calculateRanks(data) {
         const normKDR = maxKDR ? player.killToDeathRatio / maxKDR : 0;
         const normSurvival = maxSurvival ? player.survivalRate / maxSurvival : 0;
         const normRaids = maxRaids ? player.pmcRaids / maxRaids : 0;
-        
+
         // Max 45 mins. No raid overhaul BS
         const clampedLifeTime = Math.min(player.averageLifeTime, MAX_LIFE_TIME);
         const normAvgLifeTime = maxAvgLifeTime ? clampedLifeTime / maxAvgLifeTime : 0;

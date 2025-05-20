@@ -302,7 +302,7 @@ function showPublicProfile(container, player) {
     const profileModal = document.querySelector('.profile-modal-content');
 
     profileModal.classList.remove('theme-dark', 'theme-light', 'theme-gradient', 'theme-default');
-    profileModal.classList.add(`theme-${player.profileTheme?.toLowerCase()? player.profileTheme?.toLowerCase() : 'default' }`);
+    profileModal.classList.add(`theme-${player.profileTheme?.toLowerCase() ? player.profileTheme?.toLowerCase() : 'default'}`);
 
     // About me
     const aboutText = player.profileAboutMe && player.profileAboutMe.length <= 80
@@ -474,7 +474,7 @@ function showPublicProfile(container, player) {
                             <div class="trader-lock" style="display: none;">🔒</div>
                         </div>
                         <div class="trader-name">Prapor</div>
-                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.PRAPOR.standing.toFixed(2)) : 0}</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo ? Number(player.traderInfo.PRAPOR.standing.toFixed(2)) : 0}</div>
                     </div>
 
                     <div class="trader-card" data-unlocked="true">
@@ -483,7 +483,7 @@ function showPublicProfile(container, player) {
                             <div class="trader-lock" style="display: none;">🔒</div>
                         </div>
                         <div class="trader-name">Therapist</div>
-                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.THERAPIST.standing.toFixed(2)) : 0}</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo ? Number(player.traderInfo.THERAPIST.standing.toFixed(2)) : 0}</div>
                     </div>
 
                     <div class="trader-card" data-unlocked="true">
@@ -492,7 +492,7 @@ function showPublicProfile(container, player) {
                             <div class="trader-lock" style="display: none;">🔒</div>
                         </div>
                         <div class="trader-name">Fence</div>
-                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.FENCE.standing.toFixed(2)) : 0}</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo ? Number(player.traderInfo.FENCE.standing.toFixed(2)) : 0}</div>
                     </div>
 
                     <div class="trader-card" data-unlocked="true">
@@ -501,7 +501,7 @@ function showPublicProfile(container, player) {
                             <div class="trader-lock" style="display: none;">🔒</div>
                         </div>
                         <div class="trader-name">Skier</div>
-                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.SKIER.standing.toFixed(2)) : 0}</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo ? Number(player.traderInfo.SKIER.standing.toFixed(2)) : 0}</div>
                     </div>
 
                     <div class="trader-card" data-unlocked="true">
@@ -510,7 +510,7 @@ function showPublicProfile(container, player) {
                             <div class="trader-lock" style="display: none;">🔒</div>
                         </div>
                         <div class="trader-name">Peacekeeper</div>
-                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.PEACEKEEPER.standing.toFixed(2)) : 0}</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo ? Number(player.traderInfo.PEACEKEEPER.standing.toFixed(2)) : 0}</div>
                     </div>
 
                     <div class="trader-card" data-unlocked="true">
@@ -519,7 +519,7 @@ function showPublicProfile(container, player) {
                             <div class="trader-lock" style="display: none;">🔒</div>
                         </div>
                         <div class="trader-name">Mechanic</div>
-                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.MECHANIC.standing.toFixed(2)) : 0}</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo ? Number(player.traderInfo.MECHANIC.standing.toFixed(2)) : 0}</div>
                     </div>
 
                     <div class="trader-card" data-unlocked="true">
@@ -528,7 +528,7 @@ function showPublicProfile(container, player) {
                             <div class="trader-lock" style="display: none;">🔒</div>
                         </div>
                         <div class="trader-name">Ragman</div>
-                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.RAGMAN.standing.toFixed(2)) : 0}</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo ? Number(player.traderInfo.RAGMAN.standing.toFixed(2)) : 0}</div>
                     </div>
 
                     <div class="trader-card" data-unlocked="true">
@@ -537,7 +537,7 @@ function showPublicProfile(container, player) {
                             <div class="trader-lock" style="display: none;">🔒</div>
                         </div>
                         <div class="trader-name">Jaeger</div>
-                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.JAEGER.standing.toFixed(2)) : 0}</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo ? Number(player.traderInfo.JAEGER.standing.toFixed(2)) : 0}</div>
                     </div>
 
                     <div class="trader-card" data-unlocked="true">
@@ -546,7 +546,7 @@ function showPublicProfile(container, player) {
                             <div class="trader-lock" style="display: none;">🔒</div>
                         </div>
                         <div class="trader-name">Ref</div>
-                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.REF.standing.toFixed(2)) : 0}</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo ? Number(player.traderInfo.REF.standing.toFixed(2)) : 0}</div>
                     </div>
 
                     <div class="trader-card" data-unlocked="true">
@@ -555,7 +555,7 @@ function showPublicProfile(container, player) {
                             <div class="trader-lock" style="display: none;">🔒</div>
                         </div>
                         <div class="trader-name">Lightkeeper</div>
-                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.LIGHTKEEPER.standing.toFixed(2)) : 0}</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo ? Number(player.traderInfo.LIGHTKEEPER.standing.toFixed(2)) : 0}</div>
                     </div>
 
                     <div class="trader-card" data-unlocked="true">
@@ -564,7 +564,7 @@ function showPublicProfile(container, player) {
                             <div class="trader-lock" style="display: none;">🔒</div>
                         </div>
                         <div class="trader-name">BTR Driver</div>
-                        <div class="trader-standing">Loyalty: ${player.traderInfo? Number(player.traderInfo.BTR_DRIVER.standing.toFixed(2)) : 0}</div>
+                        <div class="trader-standing">Loyalty: ${player.traderInfo ? Number(player.traderInfo.BTR_DRIVER.standing.toFixed(2)) : 0}</div>
                     </div>
 
 
