@@ -1,13 +1,20 @@
 const shownPlayerNotifications = new Set();
+const playerLastRaidTimes = new Map();
 const notificationStack = [];
 
 function showPlayerNotification(player) {
 
-    if (shownPlayerNotifications.has(player.id)) {
+    if (!player.lastPlayed) return;
+
+    const lastRaidTime = player.lastPlayed;
+    const lastNotifiedRaidTime = playerLastRaidTimes.get(player.id);
+
+    // skip if that raid was already shown
+    if (lastNotifiedRaidTime === lastRaidTime) {
         return;
     }
 
-    shownPlayerNotifications.add(player.id);
+    playerLastRaidTimes.set(player.id, lastRaidTime);
 
     const notification = document.createElement('div');
     notification.className = 'player-notification-r';
@@ -16,7 +23,7 @@ function showPlayerNotification(player) {
             <div class="notification-text">
                 <span class="notification-name-r">${player.name}</span>
                 <span class="notification-info-r">Finished a raid</span>
-        ${player.publicProfile? `
+        ${player.publicProfile ? `
             <div class="raid-overview-notify">
             <span class="raid-result-r ${player.discFromRaid ? 'disconnected' : player.isTransition ? 'transit' : player.lastRaidSurvived ? 'survived' : 'died'}">
                 ${player.discFromRaid ? `<em class="bx bxs-log-out"></em> Left` : player.isTransition ? `<i class="bx bx-loader-alt bx-spin" style="line-height: 0 !important;"></i> In Transit (${player.lastRaidMap}
@@ -79,7 +86,7 @@ function createNotificationsContainer() {
 
 function checkRecentPlayers(leaderboardData) {
     const currentTime = Math.floor(Date.now() / 1000);
-    const fiveMinutesAgo = currentTime - 300;
+    const fiveMinutesAgo = currentTime - 1200;
 
     leaderboardData.forEach(player => {
         if (player.lastPlayed && player.lastPlayed > fiveMinutesAgo) {
