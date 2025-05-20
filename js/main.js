@@ -485,10 +485,10 @@ function calculateRanks(data) {
         const clampedLifeTime = Math.min(player.averageLifeTime, MAX_LIFE_TIME);
         const normAvgLifeTime = maxAvgLifeTime ? clampedLifeTime / maxAvgLifeTime : 0;
 
-        let score = (normKDR * 0.10) + (normSurvival * 0.3) + (normRaids * 0.4) + (normAvgLifeTime * 0.2);
+        let score = (normKDR * 0.10) + (normSurvival * 0.1) + (normRaids * 0.4) + (normAvgLifeTime * 0.3);
 
         if (player.averageLifeTime < MIN_LIFE_TIME) {
-            score *= 0.5; // -50% penalty
+            score *= 0.4; // -60% penalty
         }
 
         // Soft Cap for raids
