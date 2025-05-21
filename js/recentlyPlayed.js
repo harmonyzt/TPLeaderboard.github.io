@@ -25,7 +25,7 @@ function showPlayerNotification(player) {
     const timeoutId = setTimeout(() => {
         console.debug(`[NOTIFY] Timeout expired – removing data for player ${player.name}.`);
         playerNotificationData.delete(player.id);
-    }, 300000); // 5 min
+    }, 400000); // 5 min
 
     playerNotificationData.set(player.id, {
         lastRaidTime: lastRaidTime,
@@ -66,7 +66,7 @@ function showPlayerNotification(player) {
     setTimeout(() => {
         notification.style.animation = 'fadeOut 0.3s forwards';
         console.debug(`[NOTIFY] Notification fade started for ${player.name}`);
-    }, 7000);
+    }, 67000);
 
     setTimeout(() => {
         notification.remove();
@@ -76,7 +76,7 @@ function showPlayerNotification(player) {
         }
         updateNotificationPositions();
         console.debug(`[NOTIFY] Notification removed for ${player.name}`);
-    }, 10000);
+    }, 70000);
 }
 
 function updateNotificationPositions() {
@@ -112,7 +112,7 @@ function checkRecentPlayers(leaderboardData) {
 
     leaderboardData.forEach(player => {
         if (!player.lastPlayed) {
-            console.debug(`[CHECK] Skipping player ${player.name} – no lastPlayed.`);
+            console.debug(`[CHECK] Skipping player ${player.name} - no lastPlayed.`);
             return;
         }
 
