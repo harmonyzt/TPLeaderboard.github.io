@@ -25,7 +25,7 @@ function showPlayerNotification(player) {
     const timeoutId = setTimeout(() => {
         console.debug(`[NOTIFY] Timeout expired – removing data for player ${player.name}.`);
         playerNotificationData.delete(player.id);
-    }, 10000); // 5 min
+    }, 300000); // 5 min
 
     playerNotificationData.set(player.id, {
         lastRaidTime: lastRaidTime,
