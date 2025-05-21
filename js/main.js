@@ -28,12 +28,16 @@ const seasonPathEnd = ".json";
 async function checkSeasonExists(seasonNumber) {
     try {
         const response = await fetch(`${seasonPath}${seasonNumber}${seasonPathEnd}`);
-        if (!response.ok) return false;
-
-        // Verify that the response contains valid data
-        const data = await response.json();
-        return data && !data.error;
+        
+        // If response status is 404 - season doesn't exist
+        if (response.status === 404) {
+            return false;
+        }
+        
+        // consider season exists if response is ok
+        return response.ok;
     } catch (error) {
+        // Network errors or other issues - treat as non-existent season
         console.error(`Error checking season ${seasonNumber}:`, error);
         return false;
     }
@@ -44,20 +48,13 @@ async function detectSeasons() {
     let seasonNumber = 1;
     seasons = [];
 
-    // Check seasons until we find one that doesn't exist
-    while (seasonNumber <= MAX_SEASONS) {
-        if (await checkSeasonExists(seasonNumber)) {
-            seasons.push(seasonNumber);
-            seasonNumber++;
-        } else {
-            break; // Exit when season doesn't exist
-        }
+    while (true) {
+        const exists = await checkSeasonExists(seasonNumber);
+        if (!exists) break;
+        
+        seasons.push(seasonNumber);
+        seasonNumber++;
     }
-
-    // Sort from newest to oldest
-    seasons.sort((a, b) => b - a);
-
-    populateSeasonDropdown();
 
     /* 
     // Load previous winners (unused due to season 1)
@@ -67,6 +64,11 @@ async function detectSeasons() {
         }
     }
     */
+
+    // Sort from newest to oldest
+    seasons.sort((a, b) => b - a);
+
+    populateSeasonDropdown();
 
     // Load data if we found any seasons
     if (seasons.length > 0) {
