@@ -23,10 +23,6 @@ let oldTotalPlayTime = 0;
 const seasonPath = "https://visuals.nullcore.net/hidden/season";
 const seasonPathEnd = ".json";
 
-function areArraysEqual(a, b) {
-    return JSON.stringify(a) === JSON.stringify(b);
-}
-
 // Check if season file exists
 async function checkSeasonExists(seasonNumber) {
     try {
@@ -58,11 +54,32 @@ async function detectSeasons() {
 
     // Load the latest season data by default
     if (seasons.length > 0) {
+        const currentSeason = seasons[0];
         loadAllSeasonsData();
-        loadSeasonData(seasons[0]);
+        loadSeasonData(currentSeason);
+        startAutoRefreshCurrentSeason(currentSeason);
         saveCurrentStats();
     }
 }
+
+function startAutoRefreshCurrentSeason(season) {
+    setInterval(async () => {
+        try {
+            const response = await fetch(`${seasonPath}${season}${seasonPathEnd}`);
+            if (!response.ok) throw new Error('Auto-refresh failed');
+
+            const data = await response.json();
+            
+            if (data.leaderboard) {
+                checkRecentPlayers(data.leaderboard);
+            }
+        } catch (error) {
+            console.error('Auto-refresh error:', error);
+        }
+    }, 3000); 
+}
+
+
 
 // Previous season winners functionality
 async function loadPreviousSeasonWinners() {
@@ -145,30 +162,29 @@ function populateSeasonDropdown() {
 
 // Load data for a specific season
 async function loadSeasonData(season) {
-    const emptyLeaderboardNotification = document.getElementById('emptyLeaderboardNotification');
-
-    emptyLeaderboardNotification.style.display = 'none';
-
     try {
         const response = await fetch(`${seasonPath}${season}${seasonPathEnd}`);
-
-        if (!response.ok) {
-            throw new Error('Failed to load season data');
-        }
+        if (!response.ok) throw new Error('Failed to load season data');
 
         const data = await response.json();
-        leaderboardData = data.leaderboard || [];
+        handleSeasonData(data);
+    } catch (error) {
+        console.error('Error loading season:', error);
+    }
+}
 
-        if (leaderboardData.length === 0 || (leaderboardData.length === 1 && Object.keys(leaderboardData[0]).length === 0)) {
-            emptyLeaderboardNotification.style.display = 'block';
-            resetStats();
-        } else {
-            processSeasonData(leaderboardData);
-            displayLeaderboard(leaderboardData);
-            checkRecentPlayers(leaderboardData);
-        }
-    } finally {
-        
+function handleSeasonData(data) {
+    leaderboardData = data.leaderboard || [];
+
+    const emptyLeaderboardNotification = document.getElementById('emptyLeaderboardNotification');
+    if (leaderboardData.length === 0 || (leaderboardData.length === 1 && Object.keys(leaderboardData[0]).length === 0)) {
+        emptyLeaderboardNotification.style.display = 'block';
+        resetStats();
+    } else {
+        emptyLeaderboardNotification.style.display = 'none';
+        processSeasonData(leaderboardData);
+        displayLeaderboard(leaderboardData);
+        checkRecentPlayers(leaderboardData);
     }
 }
 
