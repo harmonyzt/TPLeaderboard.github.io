@@ -5,8 +5,9 @@ let leaderboardData = []; // For keeping current season data
 let allSeasonsCombinedData = []; // For keeping combined data from all seasons
 let sortDirection = {}; // Sort direction
 let seasons = []; // Storing available seasons
+const MAX_SEASONS = 10; // Max seasons to check
 
-// For dynamic stat count
+// For dynamic stats counters
 let oldTotalRaids = 0;
 let oldTotalKills = 0;
 let oldTotalDeaths = 0;
@@ -18,7 +19,7 @@ let oldTotalPlayers = 0;
 let oldOnlinePlayers = 0;
 let oldTotalPlayTime = 0;
 
-// https://visuals.nullcore.net/hidden/season
+// https://visuals.nullcore.net/hidden/seasons/season
 // season/season [DEBUG]
 const seasonPath = "https://visuals.nullcore.net/hidden/seasons/season";
 const seasonPathEnd = ".json";
@@ -27,8 +28,13 @@ const seasonPathEnd = ".json";
 async function checkSeasonExists(seasonNumber) {
     try {
         const response = await fetch(`${seasonPath}${seasonNumber}${seasonPathEnd}`);
-        return response.ok;
+        if (!response.ok) return false;
+
+        // Verify that the response contains valid data
+        const data = await response.json();
+        return data && !data.error;
     } catch (error) {
+        console.error(`Error checking season ${seasonNumber}:`, error);
         return false;
     }
 }
@@ -38,24 +44,36 @@ async function detectSeasons() {
     let seasonNumber = 1;
     seasons = [];
 
-    while (await checkSeasonExists(seasonNumber)) {
-        seasons.push(seasonNumber);
-        seasonNumber++;
+    // Check seasons until we find one that doesn't exist
+    while (seasonNumber <= MAX_SEASONS) {
+        if (await checkSeasonExists(seasonNumber)) {
+            seasons.push(seasonNumber);
+            seasonNumber++;
+        } else {
+            break; // Exit when season doesn't exist
+        }
     }
 
-    seasons.sort((a, b) => b - a); // Sort from newest to oldest
+    // Sort from newest to oldest
+    seasons.sort((a, b) => b - a);
 
     populateSeasonDropdown();
 
-    // Determine previous winners if we have latest leaderboard
-    //if (seasons.length > 1) {
-    //    loadPreviousSeasonWinners();
-    //}
+    /* 
+    // Load previous winners (unused due to season 1)
+    function loadPreviousSeasonWinners() {
+        if (seasons.length > 1) {
+            loadPreviousSeasonWinners();
+        }
+    }
+    */
 
-    // Load the latest season data by default
+    // Load data if we found any seasons
     if (seasons.length > 0) {
-        loadAllSeasonsData();
-        loadSeasonData(seasons[0]);
+        await Promise.all([
+            loadAllSeasonsData(),
+            loadSeasonData(seasons[0])
+        ]);
         saveCurrentStats();
     }
 }
@@ -164,7 +182,7 @@ async function loadSeasonData(season) {
             checkRecentPlayers(leaderboardData);
         }
     } finally {
-        
+
     }
 }
 
