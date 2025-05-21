@@ -1,3 +1,9 @@
+//   _____ ____  ______   __    _________    ____  __________  ____  ____  ___    ____  ____ 
+//  / ___// __ \/_  __/  / /   / ____/   |  / __ \/ ____/ __ \/ __ )/ __ \/   |  / __ \/ __ \
+//  \__ \/ /_/ / / /    / /   / __/ / /| | / / / / __/ / /_/ / __  / / / / /| | / /_/ / / / /
+// ___/ / ____/ / /    / /___/ /___/ ___ |/ /_/ / /___/ _, _/ /_/ / /_/ / ___ |/ _, _/ /_/ / 
+///____/_/     /_/    /_____/_____/_/  |_/_____/_____/_/ |_/_____/\____/_/  |_/_/ |_/_____/  
+
 // When data loaded
 document.addEventListener('DOMContentLoaded', detectSeasons);
 
@@ -5,7 +11,6 @@ let leaderboardData = []; // For keeping current season data
 let allSeasonsCombinedData = []; // For keeping combined data from all seasons
 let sortDirection = {}; // Sort direction
 let seasons = []; // Storing available seasons
-const MAX_SEASONS = 10; // Max seasons to check
 
 // For dynamic stats counters
 let oldTotalRaids = 0;
@@ -24,16 +29,20 @@ let oldTotalPlayTime = 0;
 const seasonPath = "https://visuals.nullcore.net/hidden/seasons/season";
 const seasonPathEnd = ".json";
 
-// Check if season file exists
+/**
+ * Checks if a season with the given number exists on the server
+ * @param {number} seasonNumber - The season number to check
+ * @returns {Promise<boolean>} - True if season exists, false otherwise
+ */
 async function checkSeasonExists(seasonNumber) {
     try {
         const response = await fetch(`${seasonPath}${seasonNumber}${seasonPathEnd}`);
-        
+
         // If response status is 404 - season doesn't exist
         if (response.status === 404) {
             return false;
         }
-        
+
         // consider season exists if response is ok
         return response.ok;
     } catch (error) {
@@ -43,7 +52,10 @@ async function checkSeasonExists(seasonNumber) {
     }
 }
 
-// Detect available seasons
+/**
+ * Detects all available seasons by calling checkSeasonExists(seasonNumber) until 404 is received
+ * @returns {Promise<void>}
+ */
 async function detectSeasons() {
     let seasonNumber = 1;
     seasons = [];
@@ -51,7 +63,7 @@ async function detectSeasons() {
     while (true) {
         const exists = await checkSeasonExists(seasonNumber);
         if (!exists) break;
-        
+
         seasons.push(seasonNumber);
         seasonNumber++;
     }
@@ -80,7 +92,16 @@ async function detectSeasons() {
     }
 }
 
-// Previous season winners functionality
+/**
+ * Loads and displays winners from the previous season (if available)
+ * 
+ * @description
+ * Fetches data for the previous season if there are more than 2 available seasons
+ * 
+ * @returns {Promise<void>} Doesn't return any value
+ * 
+ * 
+ */
 async function loadPreviousSeasonWinners() {
     if (seasons.length < 2) return;
 
@@ -100,6 +121,10 @@ async function loadPreviousSeasonWinners() {
     }
 }
 
+/**
+ * Displays top 3 winners in the UI
+ * @param {Array<Object>} data - Leaderboard entries of previous season from loadPreviousSeasonWinners()
+ */
 function displayWinners(data) {
     const winnersTab = document.getElementById('winners');
 
@@ -131,6 +156,10 @@ function displayWinners(data) {
     winnersTab.appendChild(winnersContainer);
 }
 
+/**
+ * Returns text based on player rankings for displayWinners()
+ * @param {Array<Object>} rank - 3 winners determined by displayWinners() - player.rank
+ */
 function getRankText(rank) {
     switch (rank) {
         case 1: return '👑 First place 👑';
@@ -140,7 +169,9 @@ function getRankText(rank) {
     }
 }
 
-// Populate season dropdown menu
+/**
+ * For each existing season fills the dropdown menu where you can select seasons
+ */
 function populateSeasonDropdown() {
     const seasonSelect = document.getElementById('seasonSelect');
     seasonSelect.innerHTML = '';
@@ -159,7 +190,11 @@ function populateSeasonDropdown() {
     });
 }
 
-// Load data for a specific season
+/**
+ * Loads and processes data for specified season called by other functions
+ * @param {number} season - Season number to load
+ * @returns {Promise<void>}
+ */
 async function loadSeasonData(season) {
     const emptyLeaderboardNotification = document.getElementById('emptyLeaderboardNotification');
 
@@ -175,6 +210,7 @@ async function loadSeasonData(season) {
         const data = await response.json();
         leaderboardData = data.leaderboard || [];
 
+        // Leaderboard data is empty.. Clean and do nothing
         if (leaderboardData.length === 0 || (leaderboardData.length === 1 && Object.keys(leaderboardData[0]).length === 0)) {
             emptyLeaderboardNotification.style.display = 'block';
             resetStats();
@@ -184,11 +220,14 @@ async function loadSeasonData(season) {
             checkRecentPlayers(leaderboardData);
         }
     } finally {
-
+        // Nothing..? Yet.
     }
 }
 
-// Load and combine data from all seasons
+/**
+ * Loads all of the seasons and determines who played in previous seasons
+ * @returns {Promise<void>}
+ */
 async function loadAllSeasonsData() {
     try {
         const uniquePlayers = {};
@@ -239,14 +278,20 @@ async function loadAllSeasonsData() {
     }
 }
 
-// Process season data
+/**
+ * Processes season data when it was loaded
+ * @returns {Promise<void>}
+ */
 function processSeasonData(data) {
     addColorIndicators(data);
     calculateRanks(data);
     calculateOverallStats(data);
 }
 
-// Reset stats when no data is available
+/**
+ * Resets global statistic counters when called
+ * @returns {Promise<void>}
+ */
 function resetStats() {
     animateNumber('totalDeaths', 0);
     animateNumber('totalRaids', 0);
@@ -285,7 +330,11 @@ function formatSeconds(seconds) {
     return `${mins}:${secs}`;
 }
 
-// Display leaderboard table
+/**
+ * Renders player leaderboard data in a table
+ * @param {Array<Object>} data - Leaderboard data with all the season entries
+ * @returns {void}
+ */
 function displayLeaderboard(data) {
     const tableBody = document.querySelector('#leaderboardTable tbody');
     tableBody.innerHTML = '';
@@ -471,7 +520,19 @@ function convertTimeToSeconds(time) {
     return minutes * 60 + seconds;
 }
 
-// Calculate player ranks
+/**
+ * Calculates and assigns ranks to players based on their stats
+ * @param {Array<Object>} data - Leaderboard data with all the season entries
+ * @returns {void}
+ * 
+ * @description
+ * Calculates player skill scores considering:
+ * - Kill/death ratio
+ * - Survival rate
+ * - Raid count
+ * - Average lifetime
+ * Applies penalties for low raid count and short lifetimes
+ */
 function calculateRanks(data) {
     const MIN_RAIDS = 50;
     const SOFT_CAP_RAIDS = 100;
