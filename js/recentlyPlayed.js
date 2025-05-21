@@ -119,8 +119,6 @@ function checkRecentPlayers(leaderboardData) {
         if (player.lastPlayed > fiveMinutesAgo) {
             console.debug(`[CHECK] Player ${player.name} finished raid at ${player.lastPlayed}, showing notification.`);
             showPlayerNotification(player);
-        } else {
-            console.debug(`[CHECK] Player ${player.name} last raid too old (${player.lastPlayed}). Skipping.`);
         }
     });
 }
