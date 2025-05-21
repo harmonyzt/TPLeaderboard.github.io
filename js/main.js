@@ -34,19 +34,28 @@ async function checkSeasonExists(seasonNumber) {
 }
 
 // Detect available seasons
-async function detectSeasons(limit = 3) {
-    const checks = [];
-    for (let i = 1; i <= limit; i++) {
-        checks.push(checkSeasonExists(i).then(exists => exists ? i : null));
+async function detectSeasons() {
+    let seasonNumber = 1;
+    seasons = [];
+
+    while (await checkSeasonExists(seasonNumber)) {
+        seasons.push(seasonNumber);
+        seasonNumber++;
     }
 
-    const results = await Promise.all(checks);
-    seasons = results.filter(Boolean).sort((a, b) => b - a);
+    seasons.sort((a, b) => b - a); // Sort from newest to oldest
 
     populateSeasonDropdown();
 
+    // Determine previous winners if we have latest leaderboard
+    //if (seasons.length > 1) {
+    //    loadPreviousSeasonWinners();
+    //}
+
+    // Load the latest season data by default
     if (seasons.length > 0) {
-        await Promise.all([loadAllSeasonsData(), loadSeasonData(seasons[0])]);
+        loadAllSeasonsData();
+        loadSeasonData(seasons[0]);
         saveCurrentStats();
     }
 }
@@ -155,7 +164,7 @@ async function loadSeasonData(season) {
             checkRecentPlayers(leaderboardData);
         }
     } finally {
-
+        
     }
 }
 
