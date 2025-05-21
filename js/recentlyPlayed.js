@@ -1,20 +1,38 @@
 const shownPlayerNotifications = new Set();
 const playerLastRaidTimes = new Map();
 const notificationStack = [];
+const playerNotificationData = new Map();
 
 function showPlayerNotification(player) {
-
-    if (!player.lastPlayed) return;
-
-    const lastRaidTime = player.lastPlayed;
-    const lastNotifiedRaidTime = playerLastRaidTimes.get(player.id);
-
-    // skip if that raid was already shown
-    if (lastNotifiedRaidTime === lastRaidTime) {
+    if (!player.lastPlayed) {
+        console.debug(`[NOTIFY] Skipping player ${player.name} – no lastPlayed data.`);
         return;
     }
 
-    playerLastRaidTimes.set(player.id, lastRaidTime);
+    const lastRaidTime = player.lastPlayed;
+    const currentData = playerNotificationData.get(player.id);
+
+    if (currentData && currentData.lastRaidTime === lastRaidTime) {
+        console.debug(`[NOTIFY] Player ${player.name} already shown for this raid at ${lastRaidTime}.`);
+        return;
+    }
+
+    if (currentData && currentData.timeoutId) {
+        console.debug(`[NOTIFY] Clearing existing timeout for player ${player.name}.`);
+        clearTimeout(currentData.timeoutId);
+    }
+
+    const timeoutId = setTimeout(() => {
+        console.debug(`[NOTIFY] Timeout expired – removing data for player ${player.name}.`);
+        playerNotificationData.delete(player.id);
+    }, 300); // 5 min
+
+    playerNotificationData.set(player.id, {
+        lastRaidTime: lastRaidTime,
+        timeoutId: timeoutId
+    });
+
+    console.debug(`[NOTIFY] Showing notification for player ${player.name}, lastPlayed: ${lastRaidTime}`);
 
     const notification = document.createElement('div');
     notification.className = 'player-notification-r';
@@ -47,6 +65,7 @@ function showPlayerNotification(player) {
 
     setTimeout(() => {
         notification.style.animation = 'fadeOut 0.3s forwards';
+        console.debug(`[NOTIFY] Notification fade started for ${player.name}`);
     }, 7000);
 
     setTimeout(() => {
@@ -56,9 +75,9 @@ function showPlayerNotification(player) {
             notificationStack.splice(index, 1);
         }
         updateNotificationPositions();
+        console.debug(`[NOTIFY] Notification removed for ${player.name}`);
     }, 10000);
 }
-
 
 function updateNotificationPositions() {
     const offset = 10;
@@ -81,6 +100,7 @@ function createNotificationsContainer() {
     container.style.width = '300px';
     container.style.pointerEvents = 'none';
     document.body.appendChild(container);
+    console.debug(`[NOTIFY] Notification container created.`);
     return container;
 }
 
@@ -88,9 +108,19 @@ function checkRecentPlayers(leaderboardData) {
     const currentTime = Math.floor(Date.now() / 1000);
     const fiveMinutesAgo = currentTime - 1200;
 
+    console.debug(`[CHECK] Checking for recent players... Time now: ${currentTime}`);
+
     leaderboardData.forEach(player => {
-        if (player.lastPlayed && player.lastPlayed > fiveMinutesAgo) {
+        if (!player.lastPlayed) {
+            console.debug(`[CHECK] Skipping player ${player.name} – no lastPlayed.`);
+            return;
+        }
+
+        if (player.lastPlayed > fiveMinutesAgo) {
+            console.debug(`[CHECK] Player ${player.name} finished raid at ${player.lastPlayed}, showing notification.`);
             showPlayerNotification(player);
+        } else {
+            console.debug(`[CHECK] Player ${player.name} last raid too old (${player.lastPlayed}). Skipping.`);
         }
     });
 }
