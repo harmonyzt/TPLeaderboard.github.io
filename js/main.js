@@ -34,7 +34,7 @@ async function checkSeasonExists(seasonNumber) {
 }
 
 // Detect available seasons
-async function detectSeasons(limit = 100) {
+async function detectSeasons(limit = 3) {
     const checks = [];
     for (let i = 1; i <= limit; i++) {
         checks.push(checkSeasonExists(i).then(exists => exists ? i : null));
